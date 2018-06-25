@@ -144,6 +144,8 @@ public class QianduanController {
 			
 			record.setUserId(teacher.getId());
 			record.setRole(1);
+			
+			modelMap.put("teacher", teacher);
 		}else if(selectAllScreen.size()!=0){
 			//设置session时间为永久
 			 
@@ -161,6 +163,10 @@ public class QianduanController {
 			
 			record.setUserId(screen.getId());
 			record.setRole(4);
+			
+			screen = selectAllScreen.get(0);
+			Room room = roomService.selectScreenByRoom(screen.getRoom());
+			modelMap.put("room", room);
 		}else if(student!=null){
 			session.setAttribute("student", student);
 			servletContext.setAttribute(student.getUsername(), session);
@@ -172,6 +178,8 @@ public class QianduanController {
 			
 			record.setUserId(student.getId());
 			record.setRole(2);
+			
+			modelMap.put("student", student);
 		}
 		session.setMaxInactiveInterval(-1);
 		session.setAttribute("count", 0);
