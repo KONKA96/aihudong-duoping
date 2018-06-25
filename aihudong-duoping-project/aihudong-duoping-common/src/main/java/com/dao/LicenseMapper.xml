@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.LicenseMapper" >
+  <resultMap id="BaseResultMap" type="com.model.License" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="remaining_time" property="remainingTime" jdbcType="VARCHAR" />
+    <result column="screen_num" property="screenNum" jdbcType="INTEGER" />
+    <result column="people_num" property="peopleNum" jdbcType="INTEGER" />
+    <result column="screen_num_sametime" property="screenNumSametime" jdbcType="INTEGER" />
+    <result column="license_id" property="licenseId" jdbcType="VARCHAR" />
+    <result column="license_size" property="licenseSize" jdbcType="VARCHAR" />
+    <result column="license_type" property="licenseType" jdbcType="VARCHAR" />
+    <result column="is_current" property="isCurrent" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, remaining_time, screen_num, people_num, screen_num_sametime, license_id, license_size, 
+    license_type, is_current
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from license
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from license
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.License" >
+    insert into license (id, remaining_time, screen_num, 
+      people_num, screen_num_sametime, license_id, 
+      license_size, license_type, is_current
+      )
+    values (#{id,jdbcType=INTEGER}, #{remainingTime,jdbcType=VARCHAR}, #{screenNum,jdbcType=INTEGER}, 
+      #{peopleNum,jdbcType=INTEGER}, #{screenNumSametime,jdbcType=INTEGER}, #{licenseId,jdbcType=VARCHAR}, 
+      #{licenseSize,jdbcType=VARCHAR}, #{licenseType,jdbcType=VARCHAR}, #{isCurrent,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.License" >
+    insert into license
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="remainingTime != null" >
+        remaining_time,
+      </if>
+      <if test="screenNum != null" >
+        screen_num,
+      </if>
+      <if test="peopleNum != null" >
+        people_num,
+      </if>
+      <if test="screenNumSametime != null" >
+        screen_num_sametime,
+      </if>
+      <if test="licenseId != null" >
+        license_id,
+      </if>
+      <if test="licenseSize != null" >
+        license_size,
+      </if>
+      <if test="licenseType != null" >
+        license_type,
+      </if>
+      <if test="isCurrent != null" >
+        is_current,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="remainingTime != null" >
+        #{remainingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="screenNum != null" >
+        #{screenNum,jdbcType=INTEGER},
+      </if>
+      <if test="peopleNum != null" >
+        #{peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="screenNumSametime != null" >
+        #{screenNumSametime,jdbcType=INTEGER},
+      </if>
+      <if test="licenseId != null" >
+        #{licenseId,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseSize != null" >
+        #{licenseSize,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseType != null" >
+        #{licenseType,jdbcType=VARCHAR},
+      </if>
+      <if test="isCurrent != null" >
+        #{isCurrent,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.License" >
+    update license
+    <set >
+      <if test="remainingTime != null" >
+        remaining_time = #{remainingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="screenNum != null" >
+        screen_num = #{screenNum,jdbcType=INTEGER},
+      </if>
+      <if test="peopleNum != null" >
+        people_num = #{peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="screenNumSametime != null" >
+        screen_num_sametime = #{screenNumSametime,jdbcType=INTEGER},
+      </if>
+      <if test="licenseId != null" >
+        license_id = #{licenseId,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseSize != null" >
+        license_size = #{licenseSize,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseType != null" >
+        license_type = #{licenseType,jdbcType=VARCHAR},
+      </if>
+      <if test="isCurrent != null" >
+        is_current = #{isCurrent,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.License" >
+    update license
+    set remaining_time = #{remainingTime,jdbcType=VARCHAR},
+      screen_num = #{screenNum,jdbcType=INTEGER},
+      people_num = #{peopleNum,jdbcType=INTEGER},
+      screen_num_sametime = #{screenNumSametime,jdbcType=INTEGER},
+      license_id = #{licenseId,jdbcType=VARCHAR},
+      license_size = #{licenseSize,jdbcType=VARCHAR},
+      license_type = #{licenseType,jdbcType=VARCHAR},
+      is_current = #{isCurrent,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllLicense" resultType="License">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	 from license
+  </select>
+</mapper>

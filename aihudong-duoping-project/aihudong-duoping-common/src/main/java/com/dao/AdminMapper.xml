@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.model.Admin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="truename" property="truename" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="power" property="power" jdbcType="INTEGER" />
+    <result column="higher_id" property="higherId" jdbcType="INTEGER" />
+    <result column="screen_num" property="screenNum" jdbcType="INTEGER" />
+    <result column="screen_remain" property="screenRemain" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num, 
+    screen_remain
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.Admin" >
+    insert into admin (id, username, password, 
+      truename, sex, telephone, 
+      email, power, higher_id, 
+      screen_num, screen_remain)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{truename,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{power,jdbcType=INTEGER}, #{higherId,jdbcType=INTEGER}, 
+      #{screenNum,jdbcType=INTEGER}, #{screenRemain,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.Admin" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="truename != null" >
+        truename,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="power != null" >
+        power,
+      </if>
+      <if test="higherId != null" >
+        higher_id,
+      </if>
+      <if test="screenNum != null" >
+        screen_num,
+      </if>
+      <if test="screenRemain != null" >
+        screen_remain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null" >
+        #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="power != null" >
+        #{power,jdbcType=INTEGER},
+      </if>
+      <if test="higherId != null" >
+        #{higherId,jdbcType=INTEGER},
+      </if>
+      <if test="screenNum != null" >
+        #{screenNum,jdbcType=INTEGER},
+      </if>
+      <if test="screenRemain != null" >
+        #{screenRemain,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.Admin" >
+    update admin
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null" >
+        truename = #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="power != null" >
+        power = #{power,jdbcType=INTEGER},
+      </if>
+      <if test="higherId != null" >
+        higher_id = #{higherId,jdbcType=INTEGER},
+      </if>
+      <if test="screenNum != null" >
+        screen_num = #{screenNum,jdbcType=INTEGER},
+      </if>
+      <if test="screenRemain != null" >
+        screen_remain = #{screenRemain,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.Admin" >
+    update admin
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      truename = #{truename,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      power = #{power,jdbcType=INTEGER},
+      higher_id = #{higherId,jdbcType=INTEGER},
+      screen_num = #{screenNum,jdbcType=INTEGER},
+      screen_remain = #{screenRemain,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAllAdmin" resultType="Admin" parameterType="Admin">
+  	select id,username,password,truename,sex,telephone,email,power,screen_num
+  	from admin
+  	<where>
+  		power != 0 
+  		<if test="id!=null">
+  			and id=#{id}
+  		</if>
+  		<if test="truename!='' and truename!=null">
+  			and concat (username,truename) like concat('%',#{truename},'%')
+  		</if>
+  		<if test="power!=null">
+  			and power=#{power}
+  		</if>
+  	</where>
+  </select>
+  <select id="adminLogin" resultType="Admin" parameterType="Admin">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	 from admin
+  	<where>
+  		username=#{username}
+  		and password=#{password}
+  	</where>
+  </select>
+  <resultMap type="Admin" id="adminMap1" autoMapping="true">
+  	<id column="ad1_id" property="id"/>
+  	<collection property="adminList" ofType="Admin" autoMapping="true">
+  		<id column="ad2_id" property="id"/>
+  		<result column="ad2_truename" property="truename"/>
+  		<result column="ad2_sex" property="sex"/>
+  		<result column="ad2_telephone" property="telephone"/>
+  		<result column="ad2_email" property="email"/>
+  		<result column="ad2_power" property="power"/>
+  		<result column="ad2_higher_id" property="higherId"/>
+  		<result column="ad2_screen_num" property="screenNum"/>
+  		<result column="ad2_screen_remain" property="screenRemain"/>
+  	</collection>
+  </resultMap>
+  
+  <resultMap type="Admin" id="facultyAdminMap" autoMapping="true">
+  	<id column="ad1_id" property="id"/>
+  	<collection property="facultyList" ofType="Faculty" autoMapping="true">
+  		<id column="fa_id" property="id"/>
+  	</collection>
+  </resultMap>
+  <sql id="YijiAdmin">
+	  select
+	  		ad1.id ad1_id,ad1.truename,ad1.sex,ad1.telephone,ad1.email,ad1.power,ad1.screen_num,
+	  		ad1.higher_id,ad1.screen_remain,
+	  		ad2.id ad2_id,ad2.truename ad2_truename,ad2.sex ad2_sex,ad2.telephone ad2_telephone,
+	  		ad2.email ad2_email,ad2.power ad2_power,ad2.screen_num ad2_screen_num,
+	  		ad2.higher_id ad2_higher_id,ad2.screen_remain ad2_screen_remain
+	  	from admin ad1 left join admin ad2 
+	  	on ad1.id=ad2.higher_id 
+	  	where ad1.power=1
+  </sql>
+  <select id="selectYijiAdmin" resultMap="adminMap1" parameterType="java.util.Map">
+  		<include refid="YijiAdmin"></include>
+  		<if test="adminId1!=null">
+  			and ad1.id=#{adminId1}
+  		</if>
+  		<if test="adminId2!=null">
+  			and ad2.id=#{adminId2}
+  		</if>
+  </select>
+  <select id="selectAllFaculty" resultMap="facultyAdminMap" parameterType="Admin">
+  	select
+	  		ad1.id ad1_id,ad1.truename,ad1.sex,ad1.telephone,ad1.email,ad1.power,ad1.screen_num,
+	  		ad1.higher_id,ad1.screen_remain,
+	  		fa.id fa_id, fa.faculty_name, fa.admin_id, fa.`desc`
+	from admin ad1,faculty fa
+	where ad1.id=fa.admin_id
+  	<if test="id!=null">
+  			and ad1.id=#{id}
+  		</if>
+  </select>
+  
+  <resultMap type="Admin" id="buildingMap" autoMapping="true">
+  	<id column="ad1_id" property="id"/>
+  	<collection property="buildingList" ofType="Building" autoMapping="true">
+  		<id column="b_id" property="id"/>
+  	</collection>
+  </resultMap>
+  <select id="selectAllBuilding" resultMap="buildingMap" parameterType="Admin">
+  	select
+	  		ad1.id ad1_id,ad1.truename,ad1.sex,ad1.telephone,ad1.email,ad1.power,ad1.screen_num,
+	  		b.id b_id,b.building_name,b.admin_id,b.zone_id
+	  	from admin ad1,building b
+	  	where ad1.id=b.admin_id
+	  		and ad1.power=2
+	  		and ad1.id=#{id}
+  </select>
+ <!-- 查询所有管理员下的学生  -->
+  <resultMap type="Admin" id="studentAdminMap" autoMapping="true">
+  	<id column="ad_id" property="id"/>
+  	<result column="ad_truename" property="truename"/>
+  	<result column="ad_sex" property="sex"/>
+  	<result column="ad_telephone" property="telephone"/>
+  	<result column="ad_email" property="email"/>
+  	<result column="ad_power" property="power"/>
+  	<collection property="facultyList" ofType="Faculty" autoMapping="true">
+  		<id column="fac_id" property="id"/>
+  		<collection property="subjectList" ofType="Subject" autoMapping="true">
+  			<id column="sub_id" property="id"/>
+  			<collection property="studentList" ofType="Student" autoMapping="true">
+  				<id column="stu_id" property="id"/>
+  				
+  			</collection>
+  		</collection>
+  	</collection>
+  </resultMap>
+  <select id="selectStudentAdmin" parameterType="java.util.Map" resultMap="studentAdminMap">
+  	select 
+  		stu.id stu_id, stu.username, stu.password, stu.truename, stu.nickname,
+  		stu.sex, stu.telephone, stu.email, stu.subject_id, stu.duration, stu.time, stu.remake, stu.group_id,
+  		sub.id sub_id, sub.subject_name, sub.faculty_id, sub.desc sub_desc,
+  		fac.id fac_id, fac.faculty_name, fac.admin_id, fac.`desc`,
+  		ad.id ad_id, ad.truename ad_truename, ad.sex ad_sex, ad.telephone ad_telephone, 
+  		ad.email ad_email, ad.power ad_power,ad.higher_id, ad.screen_num, ad.screen_remain
+  	from student stu,subject sub,faculty fac,admin ad
+  	where stu.subject_id=sub.id and sub.faculty_id=fac.id and fac.admin_id=ad.id
+  	<if test="id!=null">
+  		and ad.id=#{admin.id}
+  	</if>
+  	<if test="subjectId!=null">
+  		and sub.id=#{subjectId}
+  	</if>
+  	<if test="facultyId!=null">
+  		and fac.id=#{facultyId}
+  	</if>
+  	
+  </select>
+  
+  <select id="selectGenJiAdmin" resultType="Admin">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	 from admin where power=0;
+  </select>
+</mapper>

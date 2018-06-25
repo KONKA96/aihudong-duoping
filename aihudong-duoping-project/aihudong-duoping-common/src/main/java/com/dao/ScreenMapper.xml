@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.ScreenMapper" >
+   <resultMap id="BaseResultMap" type="com.model.Screen" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="room_id" property="roomId" jdbcType="VARCHAR" />
+    <result column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="duration" property="duration" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="resolution" property="resolution" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, room_id, admin_id, duration, number, type, resolution
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from screen
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from screen
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.Screen" >
+    insert into screen (id, username, password, 
+      room_id, admin_id, duration, 
+      number, type, resolution
+      )
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{roomId,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.Screen" >
+    insert into screen
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="roomId != null" >
+        room_id,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="duration != null" >
+        duration,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="resolution != null" >
+        resolution,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null" >
+        #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null" >
+        #{resolution,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.Screen" >
+    update screen
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null" >
+        room_id = #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null" >
+        duration = #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null" >
+        resolution = #{resolution,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.Screen" >
+    update screen
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      room_id = #{roomId,jdbcType=VARCHAR},
+      admin_id = #{adminId,jdbcType=INTEGER},
+      duration = #{duration,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      resolution = #{resolution,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   <resultMap type="Screen" id="screenMap" autoMapping="true">
+  	<id column="sc_id" property="id"/>
+  	<association property="admin" javaType="Admin" autoMapping="true">
+  		<id column="ad_id" property="id"/>
+  	</association>
+  	<association property="room" javaType="Room" autoMapping="true">
+  		<id column="ro_id" property="id"/>
+  		<association property="building" javaType="Building" autoMapping="true">
+  			<id column="bu_id" property="id"/>
+  			<association property="zone" javaType="Zone" autoMapping="true">
+  				<id column="zo_id" property="id"/>
+  			</association>
+  		</association>
+  	</association>
+  
+  </resultMap>
+  
+  <sql id="allScreen">
+  	select 
+  		sc.id sc_id,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.admin_id,sc.type,
+  		ad.id ad_id,ad.truename,
+  		ro.id ro_id,ro.num,ro.building_id,
+  		bu.id bu_id,bu.building_name,bu.admin_id bu_admin_id,
+  		zo.id zo_id,zo.zone_name
+  	from screen sc 
+  	left join admin ad on sc.admin_id=ad.id
+  	left join room ro on sc.room_id=ro.id
+  	left join building bu on ro.building_id=bu.id
+  	left join zone zo on bu.zone_id=zo.id
+  	
+  </sql>
+  <select id="selectAllScreen" resultMap="screenMap" parameterType="Screen">
+  		<include refid="allScreen"/>
+  		<where> 
+			<if test="id!=null">
+				and sc.id=#{id}
+			</if>
+			<if test="roomId!=null and roomId!=''">
+				and sc.room_id=#{roomId}
+			</if>
+			<if test="duration !='' and duration!=null">
+				and concat (sc.username,zo.zone_name,bu.building_name,ro.num,sc.id) like concat ('%',#{duration},'%')  	
+			</if>
+			<if test="username!='' and username !=null">
+				and sc.username=#{username}
+			</if>
+			<if test="adminId!=null">
+				and ad.id=#{adminId}
+			</if>
+		</where> 
+		order by zo.id,bu.id,ro.id 
+  </select>
+  
+  <select id="selectScreenByZoneOrBuilding" parameterType="java.util.Map" resultMap="screenMap">
+  	<include refid="allScreen"/>
+  	<where>
+  		<if test="zoneId!=null">
+  			and zo.id=#{zoneId}
+  		</if>
+  		<if test="buildingId!=null">
+  			and bu.id=#{buildingId}
+  		</if>
+  		<if test="adminId!=null">
+  			and ad.id=#{adminId}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="selectAdminLastScreen" resultType="java.lang.Integer" parameterType="Admin">
+  	select count(*) 
+  	from screen s,room r,building b
+  	where s.room_id=r.id and r.building_id=b.id
+  		and b.admin_id=#{id}
+  </select>
+  
+  <select id="selectAllId" resultType="java.lang.String">
+ 	select id from screen
+ </select>
+ 
+ <select id="selectAllUsername" resultType="java.lang.String">
+ 	select username from screen
+ </select>
+</mapper>

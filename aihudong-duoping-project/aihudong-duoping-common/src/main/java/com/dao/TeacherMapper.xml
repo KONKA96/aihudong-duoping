@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.TeacherMapper" >
+   <resultMap id="BaseResultMap" type="com.model.Teacher" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="truename" property="truename" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="subject_id" property="subjectId" jdbcType="INTEGER" />
+    <result column="screen_num_sametime" property="screenNumSametime" jdbcType="INTEGER" />
+    <result column="duration" property="duration" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="remake" property="remake" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, truename, nickname, sex, telephone, email, job, subject_id, 
+    screen_num_sametime, duration, times, remake
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from teacher
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from teacher
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.Teacher" >
+    insert into teacher (id, username, password, 
+      truename, nickname, sex, 
+      telephone, email, job, 
+      subject_id, screen_num_sametime, duration, 
+      times, remake)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{truename,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
+      #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
+      #{subjectId,jdbcType=INTEGER}, #{screenNumSametime,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
+      #{times,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.Teacher" >
+    insert into teacher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="truename != null" >
+        truename,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+      <if test="screenNumSametime != null" >
+        screen_num_sametime,
+      </if>
+      <if test="duration != null" >
+        duration,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="remake != null" >
+        remake,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null" >
+        #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=INTEGER},
+      </if>
+      <if test="screenNumSametime != null" >
+        #{screenNumSametime,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="remake != null" >
+        #{remake,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.Teacher" >
+    update teacher
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null" >
+        truename = #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=INTEGER},
+      </if>
+      <if test="screenNumSametime != null" >
+        screen_num_sametime = #{screenNumSametime,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null" >
+        duration = #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="remake != null" >
+        remake = #{remake,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.Teacher" >
+    update teacher
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      truename = #{truename,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      subject_id = #{subjectId,jdbcType=INTEGER},
+      screen_num_sametime = #{screenNumSametime,jdbcType=INTEGER},
+      duration = #{duration,jdbcType=VARCHAR},
+      times = #{times,jdbcType=INTEGER},
+      remake = #{remake,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <resultMap type="Teacher" id="teacherMap" autoMapping="true">
+  	<id column="t_id" property="id"/>
+  	<association property="subject" javaType="Subject" autoMapping="true">
+  		<id column="s_id" property="id"/>
+  		<association property="faculty" javaType="Faculty" autoMapping="true">
+  			<id column="f_id" property="id"/>
+  		</association>
+  	</association>
+  </resultMap>
+  
+  <sql id="teacher">
+  	select 
+  		t.id t_id,t.username,t.password,t.truename,t.sex,t.telephone,t.email,t.job,
+  		t.duration,t.times,t.screen_num_sametime,
+  		s.id s_id,s.subject_name,
+  		f.id f_id,f.faculty_name
+  	from teacher t left join subject s on t.subject_id=s.id
+  	left join faculty f on s.faculty_id=f.id 
+  	left join admin ad1 on f.admin_id=ad1.id
+  	
+  </sql>
+  <select id="selectTeacherByAdmin" resultMap="teacherMap" parameterType="java.util.Map">
+  	<include refid="teacher"/>
+  	<where>
+	  	<if test="adminId1!=null">
+	  		and ad1.id=#{adminId1}
+	  	</if>
+  	</where>
+  </select>
+  
+  <select id="selectAll" resultMap="teacherMap" parameterType="Teacher">
+  	<include refid="teacher"/>
+  	<where>
+	  	<if test="id!=null and id!=''">
+	  		and t.id=#{id}
+	  	</if>
+	  	<if test="subjectId!=null">
+	  		and t.subject_id=#{subjectId}
+	  	</if>
+	  	<if test="username!='' and username!=null">
+			and concat (t.username,t.truename,t.job,s.subject_name,f.faculty_name) like concat ('%',#{username},'%')  	
+	  	</if>
+  	</where>
+  </select>
+  
+  <select id="selectTeacherByFaculty" parameterType="java.util.Map" resultMap="teacherMap">
+  	<include refid="teacher"/>
+  	<where>
+	  	<if test="facultyId!=null and facultyId!=''">
+	  		and f.id=#{facultyId}
+	  	</if>
+	  	<if test="username!='' and username!=null">
+			and concat (t.username,t.truename,t.job,s.subject_name,f.faculty_name) like concat ('%',#{username},'%')  	
+	  	</if>
+  	</where>
+  </select>
+  <select id="selectTeacherFromAdmin" resultMap="teacherMap" parameterType="java.util.Map">
+  	<include refid="teacher"/>
+  		<if test="admin!=null">
+  			and f.admin_id=#{admin.id}
+  		</if>
+  </select>
+  
+  <resultMap type="Teacher" id="teacherLoginMap" autoMapping="true">
+  	<id column="t_id" property="id"/>
+  	<association property="subject" javaType="Subject" autoMapping="true">
+  		<id column="s_id" property="id"/>
+  	</association>
+  </resultMap>
+  <select id="teacherLogin" parameterType="Teacher" resultMap="teacherLoginMap">
+  	select 
+  		t.id t_id,t.username,t.password,t.truename,t.sex,t.telephone,t.email,t.job,
+  		t.duration,t.times,t.screen_num_sametime,t.nickname,
+  		s.id s_id,s.subject_name,s.desc 
+  	from teacher t,subject s
+  	where t.subject_id=s.id
+  		and username=#{username} and password=#{password} 
+  </select>
+ 
+ <select id="selectAllId" resultType="java.lang.String">
+ 	select id from teacher
+ </select>
+</mapper>

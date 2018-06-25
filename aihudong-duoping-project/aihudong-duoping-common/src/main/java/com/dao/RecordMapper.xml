@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.RecordMapper" >
+  <resultMap id="BaseResultMap" type="com.model.Record" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="screen_id" property="screenId" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="INTEGER" />
+    <result column="system_id" property="systemId" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, screen_id, role, system_id, start_time, end_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.Record" >
+    insert into record (id, user_id, screen_id, 
+      role, system_id, start_time, 
+      end_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{screenId,jdbcType=VARCHAR}, 
+      #{role,jdbcType=INTEGER}, #{systemId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.Record" >
+    insert into record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="screenId != null" >
+        screen_id,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="systemId != null" >
+        system_id,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="screenId != null" >
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="systemId != null" >
+        #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+     <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	    	SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.Record" >
+    update record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="screenId != null" >
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="systemId != null" >
+        system_id = #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.Record" >
+    update record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      screen_id = #{screenId,jdbcType=VARCHAR},
+      role = #{role,jdbcType=INTEGER},
+      system_id = #{systemId,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <select id="selectRecord" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select sum(timediff(end_time,start_time)) as sumTime
+  	from record
+  	where role= ${role} and
+  	user_id in  
+  	<foreach item="item" index="index" collection="userId" open="("  
+            separator="," close=")">  
+            #{item}  
+    </foreach> 
+  	and start_time between #{endTime} and #{startTime}
+  </select>
+  
+  <select id="selectBingfa" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select count(*) as times
+  	from record
+  	where role=#{role} and
+  	user_id in
+  	<foreach item="item" index="index" collection="userId" open="("  
+            separator="," close=")">  
+            #{item}  
+    </foreach>
+    and #{startTime} between start_time and end_time
+  </select>
+  
+  <select id="selectTeacherOrderByTime" parameterType="java.util.Map" resultType="java.util.Map">
+  	select 
+  		t.id t_id,t.truename,
+  		sum(timediff(r.end_time,r.start_time)) as time
+  	from teacher t,subject s,faculty f,admin ad1,record r
+  	where t.subject_id=s.id and s.faculty_id=f.id and f.admin_id=ad1.id
+  	and t.id=r.user_id
+  	<if test="adminId1!=null">
+  		and ad1.id=#{adminId1}
+  	</if>
+  	and r.role =#{role}
+  	group by r.user_id order by sum(timediff(r.end_time,r.start_time)) desc limit 10
+  </select>
+  <select id="selectStudentOrderByTime" parameterType="java.util.Map" resultType="java.util.Map">
+  	select 
+  		stu.id stu_id,stu.truename,
+  		sum(timediff(r.end_time,r.start_time)) as time
+  	from student stu,subject s,faculty f,admin ad1,record r
+  	where stu.subject_id=s.id and s.faculty_id=f.id and f.admin_id=ad1.id and stu.id=r.user_id
+  	<if test="adminId1!=null">
+  		and ad1.id=#{adminId1}
+  	</if>
+  	and r.role =#{role}
+  	group by r.user_id order by sum(timediff(r.end_time,r.start_time)) desc limit 10
+  </select>
+  
+  <select id="selectAllScreenRecord" resultType="Record" parameterType="Record">
+  	select 
+  		id, user_id, screen_id, role, system_id, start_time, end_time
+  	from record where role=4
+  </select>
+</mapper>
