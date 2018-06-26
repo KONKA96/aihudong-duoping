@@ -20,7 +20,7 @@
 		<!-- 数据库连接 -->
 		<property name="url"
 			value="jdbc:mysql://localhost:3306/aihudong_duoping?useUnicode=true&amp;characterEncoding=utf-8"></property>
-		<property name="username" value="root"></property>
+		<property name="username" value="aihudong_duoping"></property>
 		<property name="password" value="WWW.123.com"></property>
 	</bean>
 
