@@ -145,7 +145,7 @@ public class QianduanController {
 			record.setUserId(teacher.getId());
 			record.setRole(1);
 			
-			modelMap.put("teacher", teacher);
+			modelMap.put("role", 1);
 		}else if(selectAllScreen.size()!=0){
 			//设置session时间为永久
 			 
@@ -166,7 +166,8 @@ public class QianduanController {
 			
 			screen = selectAllScreen.get(0);
 			Room room = roomService.selectScreenByRoom(screen.getRoom());
-			modelMap.put("room", room);
+			modelMap.put("role", 4);
+			modelMap.put("meetingName", room.getNum());
 		}else if(student!=null){
 			session.setAttribute("student", student);
 			servletContext.setAttribute(student.getUsername(), session);
@@ -179,7 +180,7 @@ public class QianduanController {
 			record.setUserId(student.getId());
 			record.setRole(2);
 			
-			modelMap.put("student", student);
+			modelMap.put("role", 2);
 		}
 		session.setMaxInactiveInterval(-1);
 		session.setAttribute("count", 0);
@@ -320,17 +321,6 @@ public class QianduanController {
 	public String connectToScreen(@RequestParam String usernameUser,@RequestParam String usernameScreen,
 			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws Exception{
 		ServletContext servletContext = request.getServletContext();
-		/*modelMap.put("action", "create");
-		modelMap.put("username", usernameUser);
-		modelMap.put("usernameScreen", usernameScreen);*/
-	/*	BASE64Encoder encoder = new BASE64Encoder();
-		BASE64Decoder decoder = new BASE64Decoder();*/
-		/*string=new String(decoder.decodeBuffer(string), "UTF-8");
-		JSONObject fromObject = JSONObject.fromObject(string);*/
-		//String usernameUser =fromObject.getString("usernameUser");
-		//String sessionId=fromObject.getString("sessionId");
-		//String usernameScreen =fromObject.getString("usernameScreen");
-		//String password =fromObject.getString("password");
 		HttpSession session=(HttpSession) servletContext.getAttribute(usernameUser);
 		String joinMeetingParameters = null;
 //		如果session中没有用户，则session失效，报1002
@@ -363,11 +353,7 @@ public class QianduanController {
 					}
 					scr.setRandomname(StringRandom.getStringRandom(3));
 				}
-				if (room != null) {
-					/*
-					 * String jsonRoom = JsonUtils.objectToJson(room); encode =
-					 * encoder.encode(jsonRoom.getBytes());
-					 */
+				/*if (room != null) {
 					String meetingRunningParameters = bbbApi.isMeetingRunning(room.getNum(),salt);
 					String sendRunning = HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/isMeetingRunning", meetingRunningParameters);
 					logger.info(httpUrl + "/bigbluebutton/api/isMeetingRunning"+meetingRunningParameters);
@@ -379,7 +365,7 @@ public class QianduanController {
 						String sendGET = HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/create", createMeetingParameters);
 						logger.info(httpUrl + "/bigbluebutton/api/create"+createMeetingParameters);
 					}
-				}
+				}*/
 
 				// 更新记录中连接的屏幕ID
 				int id = (int) session.getAttribute("recordId");
@@ -388,13 +374,24 @@ public class QianduanController {
 				record.setScreenId(screen.getId());
 				recordService.updateByPrimaryKeySelective(record);
 				
-				joinMeetingParameters=bbbApi.joinMeeting(room.getNum(),usernameUser,salt);
-				logger.info(httpUrl+"/bigbluebutton/api/join?"+joinMeetingParameters);
+				modelMap.put("username", usernameUser);
+				if(session.getAttribute("teacher")!=null) {
+					modelMap.put("role", 1);
+				}else if(session.getAttribute("student")!=null) {
+					modelMap.put("role", 2);
+				}else if(session.getAttribute("screen")!=null) {
+					modelMap.put("role", 4);
+					modelMap.put(usernameScreen, usernameScreen);
+				}
+				
+				modelMap.put("meetingName", room.getNum());
+				/*joinMeetingParameters=bbbApi.joinMeeting(room.getNum(),usernameUser,salt);
+				logger.info(httpUrl+"/bigbluebutton/api/join?"+joinMeetingParameters);*/
 				//HttpUtil.sendGET(BigBlueButtonURL+"api/join",joinMeetingParameters);
 			}
 		}
 		
-		return "redirect:"+httpUrl+"/bigbluebutton/api/join?"+joinMeetingParameters;
+		return "redirect:"+httpUrl+"/demo/demo_join.jsp";
 	}
 	
 	@RequestMapping("/uploadFileRecordUser")
