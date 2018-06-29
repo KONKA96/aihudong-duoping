@@ -22,6 +22,20 @@
 			value="jdbc:mysql://localhost:3306/aihudong_duoping?useUnicode=true&amp;characterEncoding=utf-8"></property>
 		<property name="username" value="aihudong_duoping"></property>
 		<property name="password" value="WWW.123.com"></property>
+		
+		<!-- <property name="maxWait" value="86400000"></property> -->
+		<!-- 验证连接是否成功, SQL SELECT 指令至少要返回一行 -->
+		<property name="validationQuery" value="SELECT 1" />
+		<!-- 取得对象时是否进行验证，检查对象是否有效，默认为false -->
+		<property name="testOnBorrow" value="true"></property>
+		<!-- 返回对象时是否进行验证，检查对象是否有效，默认为false -->
+		<property name="testOnReturn" value="true"></property>
+		<!-- 空闲时是否进行验证，检查对象是否有效，默认为false -->
+		<property name="testWhileIdle" value="true"></property>
+		<!-- some positive integer -->
+		<property name="timeBetweenEvictionRunsMillis" value="3600000"></property>
+		<!-- set to something smaller than 'wait_timeout' -->
+		<property name="minEvictableIdleTimeMillis" value="18000000"></property>
 	</bean>
 
 	<!-- 3.整合mybatis -->

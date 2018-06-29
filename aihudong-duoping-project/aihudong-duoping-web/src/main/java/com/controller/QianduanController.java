@@ -70,9 +70,12 @@ public class QianduanController {
 	private String BigBlueButtonURL = httpUrl+"/bigbluebutton/";
 	/**
 	 * 用户登录
-	 * @param string 传过来的所有信息
+	 * @param username 用户名
+	 * @param password 密码
 	 * @param response
 	 * @param request
+	 * @param modelMap
+	 * @return
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/userLogin")
@@ -318,8 +321,10 @@ public class QianduanController {
 	 * @throws IOException
 	 */
 	@RequestMapping("/connectToScreen")
-	public String connectToScreen(@RequestParam String usernameUser,@RequestParam String usernameScreen,
+	public String connectToScreen(@RequestParam String usernameUser,@RequestParam String usernameScreen,@RequestParam String role,
 			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws Exception{
+		modelMap.put("role", role);
+		
 		ServletContext servletContext = request.getServletContext();
 		HttpSession session=(HttpSession) servletContext.getAttribute(usernameUser);
 		String joinMeetingParameters = null;
@@ -375,11 +380,7 @@ public class QianduanController {
 				recordService.updateByPrimaryKeySelective(record);
 				
 				modelMap.put("username", usernameUser);
-				if(session.getAttribute("teacher")!=null) {
-					modelMap.put("role", 1);
-				}else if(session.getAttribute("student")!=null) {
-					modelMap.put("role", 2);
-				}else if(session.getAttribute("screen")!=null) {
+				if(session.getAttribute("screen")!=null) {
 					modelMap.put("role", 4);
 					modelMap.put(usernameScreen, usernameScreen);
 				}
