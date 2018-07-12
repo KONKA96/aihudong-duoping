@@ -1,53 +1,53 @@
 package com.model;
 
 public class System {
-    private Integer id;
+	private String sid;
 
-    private String osver;
+	private String osver;
 
-    private String cpu;
+	private String cpu;
 
-    private String memory;
+	private String memory;
 
-    private String graphicscard;
+	private String graphicscard;
 
-    public Integer getId() {
-        return id;
-    }
+	public String getSid() {
+		return sid;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setSid(String sid) {
+		this.sid = sid == null ? null : sid.trim();
+	}
 
-    public String getOsver() {
-        return osver;
-    }
+	public String getOsver() {
+		return osver;
+	}
 
-    public void setOsver(String osver) {
-        this.osver = osver == null ? null : osver.trim();
-    }
+	public void setOsver(String osver) {
+		this.osver = osver == null ? null : osver.trim();
+	}
 
-    public String getCpu() {
-        return cpu;
-    }
+	public String getCpu() {
+		return cpu;
+	}
 
-    public void setCpu(String cpu) {
-        this.cpu = cpu == null ? null : cpu.trim();
-    }
+	public void setCpu(String cpu) {
+		this.cpu = cpu == null ? null : cpu.trim();
+	}
 
-    public String getMemory() {
-        return memory;
-    }
+	public String getMemory() {
+		return memory;
+	}
 
-    public void setMemory(String memory) {
-        this.memory = memory == null ? null : memory.trim();
-    }
+	public void setMemory(String memory) {
+		this.memory = memory == null ? null : memory.trim();
+	}
 
-    public String getGraphicscard() {
-        return graphicscard;
-    }
+	public String getGraphicscard() {
+		return graphicscard;
+	}
 
-    public void setGraphicscard(String graphicscard) {
-        this.graphicscard = graphicscard == null ? null : graphicscard.trim();
-    }
+	public void setGraphicscard(String graphicscard) {
+		this.graphicscard = graphicscard == null ? null : graphicscard.trim();
+	}
 }

@@ -31,6 +31,16 @@ public class Screen {
 	
 	private String randomname;
 	
+	private String sid;
+	
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+
 	public String getRandomname() {
 		return randomname;
 	}
@@ -202,8 +212,7 @@ public class Screen {
 		return "Screen [id=" + id + ", username=" + username + ", password=" + password + ", roomId=" + roomId
 				+ ", adminId=" + adminId + ", duration=" + duration + ", number=" + number + ", divice=" + divice
 				+ ", room=" + room + ", role=" + role + ", sessionId=" + sessionId + ", type=" + type + ", resolution="
-				+ resolution + ", admin=" + admin + "]";
+				+ resolution + ", admin=" + admin + ", randomname=" + randomname + ", sid=" + sid + "]";
 	}
 
-	
 }

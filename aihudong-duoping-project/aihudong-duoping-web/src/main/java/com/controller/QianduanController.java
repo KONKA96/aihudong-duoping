@@ -2,6 +2,7 @@ package com.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -79,59 +80,53 @@ public class QianduanController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/userLogin")
-	public String UserLogin(@RequestParam String username,@RequestParam String password,
+	public String UserLogin(@RequestParam(required=false) String username,@RequestParam(required=false) String password,@RequestParam(required=false) String sid,
 			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws IOException{
 		response.setCharacterEncoding("utf-8");
 		ServletContext servletContext = request.getServletContext();
-//		modelMap.put("action", "create");
-		modelMap.put("username", username);
-		// 
-/*//		base64转码
-		BASE64Encoder encoder = new BASE64Encoder();
-//		base64解码
-		BASE64Decoder decoder = new BASE64Decoder();*/
-		/*string=new String(decoder.decodeBuffer(string), "UTF-8");
-		JSONObject fromObject = JSONObject.fromObject(string);*/
-		
-		/*String username =fromObject.getString("username");
-		String password=fromObject.getString("password");
-		String device=fromObject.getString("device");*/
-//		Set<Entry<String, String>> entrySet = map.entrySet();
-		/*Set<Entry<String, String>> entrySet = new HashSet<>();
-		for (Entry<String, String> entry : entrySet) {
-			if(entry.getKey().equals("username")){
-				username=entry.getValue();
-			}
-			if(entry.getKey().equals("password")){
-				password=entry.getValue();
-			}
-		}*/
 		HttpSession session = request.getSession();
-//		通过用户名密码在数据库中查，看该用户是教师、屏幕、学生这三者的其中一种
+//		modelMap.put("action", "create");
 		Teacher teacher=new Teacher();
-		teacher.setUsername(username);
-		teacher.setPassword(password);
-		teacher = teacherService.teacherLogin(teacher);
-		
 		Screen screen=new Screen();
-		screen.setUsername(username);
-		screen.setPassword(password);
-		List<Screen> selectAllScreen = screenService.selectAllScreen(screen);
-		
 		Student student=new Student();
-		student.setUsername(username);
-		student.setPassword(password);
-		student=studentService.studentLogin(student);
+		List<Screen> selectAllScreen = new ArrayList<>();
+		if(username!=null) {
+			modelMap.put("username", username);
+			
+//			通过用户名密码在数据库中查，看该用户是教师、屏幕、学生这三者的其中一种
+			
+			teacher.setUsername(username);
+			teacher.setPassword(password);
+			teacher = teacherService.teacherLogin(teacher);
+			
+			student.setUsername(username);
+			student.setPassword(password);
+			student=studentService.studentLogin(student);
+			
+			screen.setUsername(username);
+			screen.setPassword(password);
+			selectAllScreen = screenService.selectAllScreen(screen);
+		}else {
+			//用户名为空
+			if(sid==null) {
+				//机器码同为空,操作不正确
+				return "redirect:"+httpUrl+"/demo/error.jsp";
+			}else {
+				screen.setSid(sid);
+				selectAllScreen = screenService.selectAllScreen(screen);
+				if(selectAllScreen.size()==0) {
+					//未查到有此机器码，操作失败!
+					return "redirect:"+httpUrl+"/demo/error.jsp";
+				}
+			}
+		}
+
 //		Subject sub=null;
 //		保存的记录对象
 		Record record=new Record();
 		
 //		如果都没有查询到，则报1001
 		if(teacher==null&&selectAllScreen.size()==0&&student==null){
-			/*Err err = new Err(1001,"用户名不存在或密码错误");
-			String errString = JsonUtils.objectToJson(err);
-			String errEncode = encoder.encode(errString.getBytes());
-			writer.write(errEncode);*/
 			return "redirect:"+httpUrl+"/demo/error.jsp";
 		}else if(teacher!=null){
 			session.setAttribute("teacher", teacher);
@@ -141,7 +136,6 @@ public class QianduanController {
 			teacher.setSessionId(sessionId);
 			
 			teacher.setRole(1);
-			/*String jsonTeacher = JsonUtils.objectToJson(teacher);*/
 			
 //			sub=teacher.getSubject();
 			
@@ -150,19 +144,23 @@ public class QianduanController {
 			
 			modelMap.put("role", 1);
 		}else if(selectAllScreen.size()!=0){
-			//设置session时间为永久
-			 
 			session.setAttribute("screen", screen);
 			String stringRandom=StringRandom.getStringRandom(3);
 			
 			servletContext.setAttribute(screen.getUsername(), stringRandom);
 			servletContext.setAttribute(stringRandom, session);
 			screen=selectAllScreen.get(0);
+			
+			//第一次登陆，未绑定机器码，需要绑定机器码
+			if(screen.getSid()==null) {
+				screen.setSid(sid);
+				screenService.updateByPrimaryKeySelective(screen);
+			}
+			
 			screen.setRole(4);
 			String sessionId = session.getId();
 			screen.setSessionId(sessionId);
 			screen.setRandomname(stringRandom);
-			/*String jsonScreen = JsonUtils.objectToJson(screen);*/
 			
 			record.setUserId(screen.getId());
 			record.setRole(4);
@@ -177,7 +175,6 @@ public class QianduanController {
 			student.setRole(2);
 			String sessionId = session.getId();
 			student.setSessionId(sessionId);
-			/*String jsonStudent = JsonUtils.objectToJson(student);*/
 //			sub=student.getSubject();
 			
 			record.setUserId(student.getId());
@@ -187,7 +184,7 @@ public class QianduanController {
 		}
 		session.setMaxInactiveInterval(-1);
 		session.setAttribute("count", 0);
-		// 灏嗙敤鎴蜂俊鎭紶鍒板墠绔�
+		// 记录登陆时间，存放在session中
 		session.setAttribute("startTime", new Date());
 		// 新建记录对象，新增的数据库中，还缺少登出时间和连接的屏幕id
 		record.setStartTime(new Date());
@@ -381,8 +378,7 @@ public class QianduanController {
 				
 				modelMap.put("username", usernameUser);
 				if(session.getAttribute("screen")!=null) {
-					modelMap.put("role", 4);
-					modelMap.put(usernameScreen, usernameScreen);
+					modelMap.put("usernameScreen", usernameScreen);
 				}
 				
 				modelMap.put("meetingName", room.getNum());
@@ -392,6 +388,7 @@ public class QianduanController {
 			}
 		}
 		
+		System.out.println(modelMap.toString());
 		return "redirect:"+httpUrl+"/demo/demo_join.jsp";
 	}
 	

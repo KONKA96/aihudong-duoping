@@ -1,19 +1,16 @@
 package com.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 
 import com.BaseTest;
 import com.model.Admin;
 import com.model.Logger;
-import com.model.Teacher;
 import com.service.AdminService;
+import com.util.HttpUtil;
 
 public class testController extends BaseTest{
 	
@@ -67,14 +64,19 @@ public class testController extends BaseTest{
 		}
 	}
 	
-	/*@Test
-	public void frontLogin(HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws IOException {
-		Teacher teacher=new Teacher();
+	@Test
+	public void frontLogin(){
+		/*Teacher teacher=new Teacher();
 		teacher.setUsername("2");
-		teacher.setPassword("2");
-		QianduanController q=new QianduanController();
-		q.UserLogin("2","2",response,request,modelMap);
-	}*/
+		teacher.setPassword("2");*/
+		//String sendGET = HttpUtil.sendGET("http://www.51asj.com:9093/aihudong-duoping-web/front/userLogin", "username=2&password=2");
+		
+		Map<String,String> map=new HashMap<>();
+		map.put("username", "2");
+		map.put("password", "2");
+		String sendPost = HttpUtil.sendPost("http://www.51asj.com:9093/aihudong-duoping-web/front/userLogin", map);
+		System.out.println("sendPost="+sendPost);
+	}
 	
 	
 }

@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 // 告诉junit spring配置文件
-@ContextConfiguration({ "classpath:spring-ioc.xml", "classpath:spring-mvc.xml" })
+@ContextConfiguration({ "classpath:spring-ioc.xml", "classpath:spring-mvc.xml" ,"classpath:mybatis-config.xml" })
 public class BaseTest {
 
 }

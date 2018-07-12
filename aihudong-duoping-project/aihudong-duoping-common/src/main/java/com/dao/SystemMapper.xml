@@ -2,36 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.SystemMapper" >
   <resultMap id="BaseResultMap" type="com.model.System" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="sid" property="sid" jdbcType="VARCHAR" />
     <result column="osver" property="osver" jdbcType="VARCHAR" />
     <result column="cpu" property="cpu" jdbcType="VARCHAR" />
     <result column="memory" property="memory" jdbcType="VARCHAR" />
     <result column="graphicscard" property="graphicscard" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, osver, cpu, memory, graphicscard
+    sid, osver, cpu, memory, graphicscard
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from system
-    where id = #{id,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from system
-    where id = #{id,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.model.System" >
-    insert into system (id, osver, cpu, 
+    insert into system (sid, osver, cpu, 
       memory, graphicscard)
-    values (#{id,jdbcType=INTEGER}, #{osver,jdbcType=VARCHAR}, #{cpu,jdbcType=VARCHAR}, 
+    values (#{sid,jdbcType=VARCHAR}, #{osver,jdbcType=VARCHAR}, #{cpu,jdbcType=VARCHAR}, 
       #{memory,jdbcType=VARCHAR}, #{graphicscard,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.model.System" >
     insert into system
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
+      <if test="sid != null" >
+        sid,
       </if>
       <if test="osver != null" >
         osver,
@@ -47,8 +47,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="sid != null" >
+        #{sid,jdbcType=VARCHAR},
       </if>
       <if test="osver != null" >
         #{osver,jdbcType=VARCHAR},
@@ -80,7 +80,7 @@
         graphicscard = #{graphicscard,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.model.System" >
     update system
@@ -88,6 +88,6 @@
       cpu = #{cpu,jdbcType=VARCHAR},
       memory = #{memory,jdbcType=VARCHAR},
       graphicscard = #{graphicscard,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=VARCHAR}
   </update>
 </mapper>

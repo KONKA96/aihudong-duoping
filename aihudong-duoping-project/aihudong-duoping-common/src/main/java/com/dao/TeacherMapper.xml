@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="truename" property="truename" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="INTEGER" />
@@ -18,8 +19,8 @@
     <result column="remake" property="remake" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, truename, nickname, sex, telephone, email, job, subject_id, 
-    screen_num_sametime, duration, times, remake
+    id, username, password, open_id, truename, nickname, sex, telephone, email, job, 
+    subject_id, screen_num_sametime, duration, times, remake
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -33,15 +34,17 @@
   </delete>
   <insert id="insert" parameterType="com.model.Teacher" >
     insert into teacher (id, username, password, 
-      truename, nickname, sex, 
-      telephone, email, job, 
-      subject_id, screen_num_sametime, duration, 
-      times, remake)
+      open_id, truename, nickname, 
+      sex, telephone, email, 
+      job, subject_id, screen_num_sametime, 
+      duration, times, remake
+      )
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{truename,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
-      #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
-      #{subjectId,jdbcType=INTEGER}, #{screenNumSametime,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
-      #{times,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR})
+      #{openId,jdbcType=VARCHAR}, #{truename,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{job,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER}, #{screenNumSametime,jdbcType=INTEGER}, 
+      #{duration,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.model.Teacher" >
     insert into teacher
@@ -54,6 +57,9 @@
       </if>
       <if test="password != null" >
         password,
+      </if>
+      <if test="openId != null" >
+        open_id,
       </if>
       <if test="truename != null" >
         truename,
@@ -99,6 +105,9 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
       <if test="truename != null" >
         #{truename,jdbcType=VARCHAR},
       </if>
@@ -143,6 +152,9 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
       <if test="truename != null" >
         truename = #{truename,jdbcType=VARCHAR},
       </if>
@@ -183,6 +195,7 @@
     update teacher
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
       truename = #{truename,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=INTEGER},
@@ -196,6 +209,7 @@
       remake = #{remake,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
   <resultMap type="Teacher" id="teacherMap" autoMapping="true">
   	<id column="t_id" property="id"/>
   	<association property="subject" javaType="Subject" autoMapping="true">

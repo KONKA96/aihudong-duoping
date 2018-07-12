@@ -6,6 +6,8 @@ public class Student {
     private String username;
 
     private String password;
+    
+    private String openId;
 
     private String truename;
 
@@ -35,6 +37,14 @@ public class Student {
     
     private String sessionId;
 	
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -173,10 +183,11 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", username=" + username + ", password=" + password + ", truename=" + truename
-				+ ", nickname=" + nickname + ", sex=" + sex + ", telephone=" + telephone + ", email=" + email
-				+ ", subjectId=" + subjectId + ", duration=" + duration + ", time=" + time + ", remake=" + remake
-				+ ", groupId=" + groupId + ", subject=" + subject + ", group=" + group + "]";
+		return "Student [id=" + id + ", username=" + username + ", password=" + password + ", openId=" + openId
+				+ ", truename=" + truename + ", nickname=" + nickname + ", sex=" + sex + ", telephone=" + telephone
+				+ ", email=" + email + ", subjectId=" + subjectId + ", duration=" + duration + ", time=" + time
+				+ ", remake=" + remake + ", groupId=" + groupId + ", subject=" + subject + ", group=" + group
+				+ ", role=" + role + ", sessionId=" + sessionId + "]";
 	}
-    
+
 }

@@ -56,13 +56,15 @@
 	</bean>
 
 	<!-- 5.自动扫描配置文件 -->
-	<bean id="propertyBean"  
+	<!-- <bean id="propertyBean"  
     class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
     <property name="locations">  
         <array>  
             <value>classpath:*.properties</value>  
         </array>  
     </property>  
-</bean>
+	</bean> -->
+	
+	<context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true"/>
 
 </beans>
