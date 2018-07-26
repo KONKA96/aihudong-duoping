@@ -2,17 +2,23 @@ package com.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.model.Admin;
+import com.model.Logger;
 import com.model.Subject;
 import com.service.SubjectService;
 
 @Controller
 @RequestMapping("/subject")
 public class SubjectController {
+	
+	protected Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private SubjectService subjectService;
@@ -24,11 +30,14 @@ public class SubjectController {
 	 */
 	@ResponseBody
 	@RequestMapping("/updateSubjectAdmin")
-	public String updateSubjectAdmin(Subject subject){
+	public String updateSubjectAdmin(Subject subject,HttpSession session){
+		Admin SjAdmin=(Admin) session.getAttribute("admin");
+		
 		List<Subject> subjectList = subjectService.selectSubjectByName(subject);
 		Subject oldSubject=null;
 //		数据库内匹配不到输入的字符串，输入有误
 		if(subjectList.size()<=0){
+			logger.info(SjAdmin.getUsername()+"修改科目失败!");
 			return "none";
 		}else{
 			oldSubject=subjectList.get(0);
@@ -39,6 +48,7 @@ public class SubjectController {
 			return "error";
 		}*/
 		if(subjectService.updateByPrimaryKeySelective(subject)>0){
+			logger.info(SjAdmin.getUsername()+"修改科目:"+subject.getSubjectName());
 			return "success";
 		}
 		return "";
@@ -50,10 +60,13 @@ public class SubjectController {
 	 */
 	@ResponseBody
 	@RequestMapping("/deleteSubejctAdmin")
-	public String deleteSubejctAdmin(Subject subject){
+	public String deleteSubejctAdmin(Subject subject,HttpSession session){
+		Admin SjAdmin=(Admin) session.getAttribute("admin");
+		
 		List<Subject> subjectList = subjectService.selectSubjectByName(subject);
 //		subjectList.get(0).setAdminId(0);
 		if(subjectService.updateByPrimaryKeySelective(subjectList.get(0))>0){
+			logger.info(SjAdmin.getUsername()+"删除科目:"+subject.getSubjectName());
 			return "success";
 		}
 		return "";

@@ -8,4 +8,6 @@ public interface SubjectService {
 	List<Subject> selectSubjectByName(Subject subject);
 	
 	int updateByPrimaryKeySelective(Subject subject);
+	
+	Subject selectByPrimaryKey(Integer id);
 }

@@ -100,4 +100,30 @@
   <select id="selectAllId" resultType="java.lang.String">
  	select id from room
  </select>
+ 
+ <resultMap type="Room" id="roomBuildZoneMap" autoMapping="true">
+ 	<id column="r_id" property="id"/>
+ 	<association property="building" javaType="Building" autoMapping="true">
+ 		<id column="b_id" property="id"/>
+ 		<association property="zone" javaType="Zone" autoMapping="true">
+ 			<id column="z_id" property="id"/>
+ 		</association>
+ 	</association>
+ 	
+ </resultMap>
+ 
+ <select id="selectRoomBuildZone" parameterType="java.util.Map" resultMap="roomBuildZoneMap">
+ 	select
+ 		r.id r_id, r.num, r.building_id,
+ 		b.id b_id, b.building_name, b.admin_id, b.zone_id,
+ 		z.id z_id, z.zone_name
+ 	from room r 
+ 	left join building b on r.building_id=b.id
+ 	left join zone z on b.zone_id=z.id
+ 	<where>
+ 		<if test="roomId!='' and roomId!=null">
+ 			and r.id=#{roomId}
+ 		</if>
+ 	</where>
+ </select>
 </mapper>

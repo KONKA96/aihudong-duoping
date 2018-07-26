@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +22,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.model.Admin;
 import com.model.Faculty;
+import com.model.Logger;
 import com.model.Student;
 import com.model.Subject;
 import com.model.Teacher;
@@ -34,6 +38,8 @@ import com.util.ProduceId;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+	
+	protected Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private StudentService studentService;
@@ -56,9 +62,17 @@ public class StudentController {
 	@RequestMapping("/showAllStudent")
 	public String showAllStudent(Student student,ModelMap modelMap,@RequestParam(required=true,defaultValue="1") Integer index,
             @RequestParam(required=false,defaultValue="15") Integer pageSize,HttpServletRequest request,@RequestParam(required=false) String facultyId){
+		HttpSession session = request.getSession();
+		Admin admin=(Admin) session.getAttribute("admin");
+		
 		//查询院系、专业
 		List<Faculty> facultyList = facultyService.selectAllFaculty(null);
 		modelMap.put("facultyList", facultyList);
+		
+		//打印日志
+		String logSubject=null;
+		String logfaculty=null;
+		String logUsername=null;
 		
 		PageHelper.startPage(index, pageSize);
 		Page<Student> studentList=null;
@@ -69,6 +83,7 @@ public class StudentController {
 			map.put("facultyId", facultyId);
 			if(student.getUsername()!=null) {
 				map.put("username", student.getUsername());
+				logUsername=student.getUsername();
 			}
 			studentList = (Page<Student>) studentService.selectStudentByFaculty(map);
 		}
@@ -79,7 +94,21 @@ public class StudentController {
 			subject.setId(student.getSubjectId());
 			subject.setFaculty(faculty);
 			student.setSubject(subject);
+			
+			logSubject=subject.getSubjectName();
+			logfaculty=faculty.getFacultyName();
 		}
+		
+		String logInfo=admin.getUsername()+"搜索学生信息";
+		if(logSubject!=null) {
+			logInfo+=",院系:"+logfaculty+",专业:"+logSubject;
+		}else if(logfaculty!=null) {
+			logInfo+=",院系:"+logfaculty;
+		}
+		if(logUsername!=null) {
+			logInfo+=",模糊搜索关键字:"+logUsername;
+		}
+		logger.info(logInfo);
 		 
 		pageUtil.setPageInfo(studentList, index, pageSize,request);
 		modelMap.put("studentList", studentList);
@@ -106,32 +135,60 @@ public class StudentController {
 	}
 	
 	/**
+	 * 对比输入的密码和旧密码是否一致
+	 * @param password
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/testStudentOldPwd")
+	public String testStudentOldPwd(Student student) {
+		
+		List<Student> selectAllStudent = studentService.selectAllStudent(student);
+		if(selectAllStudent.size()==0) {
+			return "error";
+		}else {
+			if(new Md5Hash(student.getPassword(), selectAllStudent.get(0).getUsername(), 2).toString().equals(selectAllStudent.get(0).getPassword())) {
+				return "same";
+			}
+		}
+		return "success";
+	}
+	
+	/**
 	 * 根据有无Id判断进行更新或者新增操作
 	 * @param teacher
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/updateInfo")
-	public String updateInfo(Student student){
+	public String updateInfo(Student student,HttpSession session){
+		Admin SjAdmin=(Admin) session.getAttribute("admin");
+		
 		List<Teacher> teacherList = teacherService.selectAllTeacher(null);
 		for (Teacher teacher : teacherList) {
-			if(student.getUsername().equals(teacher.getUsername())) {
+			if(student.getUsername()!=null && student.getUsername().equals(teacher.getUsername())) {
+				logger.info("用户名存在,操作失败!");
 				return "exists";
 			}
 		}
 		if(student.getId()!=null && student.getId()!=""){
 //			除了本身的用户名，还有和其用户名相同的，则判定为用户名重复
-			Student studentOld=studentService.selectStudentByUsername(student);
-			if(!studentOld.getId().equals(student.getId())){
-				return "exists";
+			if(student.getUsername()!=null) {
+				Student studentOld=studentService.selectStudentByUsername(student);
+				if(!studentOld.getId().equals(student.getId())){
+					logger.info("用户名存在,操作失败!");
+					return "exists";
+				}
 			}
 			if(studentService.updateByPrimaryKeySelective(student)>0){
+				logger.info(SjAdmin.getUsername()+"修改了学生:"+student.getId()+"的信息");
 				return "success";
 			}
 		}else{
 //			如果有相同用户名的则直接判定为用户名相同
 			Student studentOld=studentService.selectStudentByUsername(student);
 			if(studentOld!=null){
+				logger.info("用户名存在,操作失败!");
 				return "exists";
 			}
 //			查询所有id,将参数传递
@@ -148,6 +205,7 @@ public class StudentController {
 				student.setId(newId);
 			}
 			if(studentService.insertSelective(student)>0){
+				logger.info(SjAdmin.getUsername()+"添加学生:"+student.getUsername());
 				return "success";
 			}
 		}
@@ -162,8 +220,10 @@ public class StudentController {
 	 */
 	@ResponseBody
 	@RequestMapping("/deleteStudent")
-	public String deleteStudent(Student student){
+	public String deleteStudent(Student student,HttpSession session){
+		Admin SjAdmin=(Admin) session.getAttribute("admin");
 		if(studentService.deleteByPrimaryKey(student)>0){
+			logger.info(SjAdmin.getUsername()+"删除学生:"+student.getId());
 			return "success";
 		}
 		return "error";
@@ -175,7 +235,9 @@ public class StudentController {
      * @throws Exception  
      */  
     @RequestMapping(value="uploadExcel",method={RequestMethod.GET,RequestMethod.POST})  
-    public  String  uploadExcel(HttpServletRequest request) throws Exception {  
+    public  String  uploadExcel(HttpServletRequest request,HttpSession session) throws Exception {
+    	Admin SjAdmin=(Admin) session.getAttribute("admin");
+    	
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;    
         System.out.println("通过传统方式form表单提交方式导入excel文件！");  
           
@@ -226,7 +288,7 @@ public class StudentController {
         }else{
         	result+="共"+resultList.size()+"条信息，成功导入"+i+"条信息，导入失败"+(resultList.size()-i)+"条信息";
         }
-        System.out.println(result);
+        logger.info(SjAdmin.getUsername()+result);
         return "redirect:showAllStudent";  
     }
 }

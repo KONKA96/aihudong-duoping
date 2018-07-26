@@ -183,8 +183,9 @@
   	<include refid="Base_Column_List"/>
   	 from admin
   	<where>
-  		username=#{username}
-  		and password=#{password}
+  		<if test="username!='' and username!=null">
+  			and username=#{username}
+  		</if>
   	</where>
   </select>
   <resultMap type="Admin" id="adminMap1" autoMapping="true">

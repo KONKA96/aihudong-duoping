@@ -1,8 +1,10 @@
 package com.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,6 +79,8 @@ public class testController extends BaseTest{
 		String sendPost = HttpUtil.sendPost("http://www.51asj.com:9093/aihudong-duoping-web/front/userLogin", map);
 		System.out.println("sendPost="+sendPost);
 	}
+	
+	
 	
 	
 }

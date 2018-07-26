@@ -1,9 +1,9 @@
 package com.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,16 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.model.Err;
 import com.model.FileRecord;
 import com.model.Record;
 import com.model.Room;
@@ -41,9 +40,8 @@ import com.util.StringRandom;
 import com.util.XMLUtil;
 import com.util.bbbApi;
 
-import net.sf.json.JSONObject;
+import net.sf.json.util.JSONUtils;
 import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 @Controller
 @RequestMapping("/front")
@@ -79,12 +77,18 @@ public class QianduanController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value="/userLogin")
+	@ResponseBody
+	@RequestMapping(value="/userLogin",produces = "text/json;charset=UTF-8")
 	public String UserLogin(@RequestParam(required=false) String username,@RequestParam(required=false) String password,@RequestParam(required=false) String sid,
 			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws IOException{
 		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		ServletContext servletContext = request.getServletContext();
 		HttpSession session = request.getSession();
+		
+		//存放参数的集合
+		Map<String,Object> argMap=new HashMap<>();
+		
 //		modelMap.put("action", "create");
 		Teacher teacher=new Teacher();
 		Screen screen=new Screen();
@@ -96,27 +100,31 @@ public class QianduanController {
 //			通过用户名密码在数据库中查，看该用户是教师、屏幕、学生这三者的其中一种
 			
 			teacher.setUsername(username);
-			teacher.setPassword(password);
+			teacher.setPassword(new Md5Hash(password, username ,2).toString());
 			teacher = teacherService.teacherLogin(teacher);
 			
 			student.setUsername(username);
-			student.setPassword(password);
+			student.setPassword(new Md5Hash(password, username ,2).toString());
 			student=studentService.studentLogin(student);
 			
 			screen.setUsername(username);
-			screen.setPassword(password);
+			screen.setPassword(new Md5Hash(password, username ,2).toString());
 			selectAllScreen = screenService.selectAllScreen(screen);
 		}else {
 			//用户名为空
 			if(sid==null) {
 				//机器码同为空,操作不正确
-				return "redirect:"+httpUrl+"/demo/error.jsp";
+				argMap.put("code", 1001);
+				argMap.put("message", "机器码为空");
+				return JsonUtils.objectToJson(argMap);
 			}else {
 				screen.setSid(sid);
 				selectAllScreen = screenService.selectAllScreen(screen);
 				if(selectAllScreen.size()==0) {
 					//未查到有此机器码，操作失败!
-					return "redirect:"+httpUrl+"/demo/error.jsp";
+					argMap.put("code", 1001);
+					argMap.put("message", "未查到有此机器码");
+					return JsonUtils.objectToJson(argMap);
 				}
 			}
 		}
@@ -127,7 +135,9 @@ public class QianduanController {
 		
 //		如果都没有查询到，则报1001
 		if(teacher==null&&selectAllScreen.size()==0&&student==null){
-			return "redirect:"+httpUrl+"/demo/error.jsp";
+			argMap.put("code", 1001);
+			argMap.put("message", "用户不存在");
+			return JsonUtils.objectToJson(argMap);
 		}else if(teacher!=null){
 			session.setAttribute("teacher", teacher);
 //			将session存放在application里面，其用户名username作为session的键
@@ -142,7 +152,7 @@ public class QianduanController {
 			record.setUserId(teacher.getId());
 			record.setRole(1);
 			
-			modelMap.put("role", 1);
+			argMap.put("role", 1);
 		}else if(selectAllScreen.size()!=0){
 			session.setAttribute("screen", screen);
 			String stringRandom=StringRandom.getStringRandom(3);
@@ -167,20 +177,19 @@ public class QianduanController {
 			
 			screen = selectAllScreen.get(0);
 			Room room = roomService.selectScreenByRoom(screen.getRoom());
-			modelMap.put("role", 4);
-			modelMap.put("meetingName", room.getNum());
+			argMap.put("role", 4);
+			argMap.put("meetingName", room.getNum());
 		}else if(student!=null){
 			session.setAttribute("student", student);
 			servletContext.setAttribute(student.getUsername(), session);
 			student.setRole(2);
 			String sessionId = session.getId();
 			student.setSessionId(sessionId);
-//			sub=student.getSubject();
 			
 			record.setUserId(student.getId());
 			record.setRole(2);
 			
-			modelMap.put("role", 2);
+			argMap.put("role", 2);
 		}
 		session.setMaxInactiveInterval(-1);
 		session.setAttribute("count", 0);
@@ -194,11 +203,9 @@ public class QianduanController {
 		session.setAttribute("startTime", record.getStartTime());
 		session.setAttribute("role", record.getRole());
 		session.setAttribute("userId", record.getUserId());
-		/*return "success";*/
-		return "redirect:"+httpUrl+"/demo/demo_join.jsp";
-		/*ClientHeart client = new ClientHeart(session,username);
-        client.start();*/
-		/*writer.close();*/
+		argMap.put("code", 200);
+		
+		return JsonUtils.objectToJson(argMap);
 	}
 	
 	/**
@@ -317,21 +324,21 @@ public class QianduanController {
 	 * @param request
 	 * @throws IOException
 	 */
+	@ResponseBody
 	@RequestMapping("/connectToScreen")
 	public String connectToScreen(@RequestParam String usernameUser,@RequestParam String usernameScreen,@RequestParam String role,
 			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws Exception{
-		modelMap.put("role", role);
+		//存放参数的集合
+		Map<String,Object> argMap=new HashMap<>();
+		argMap.put("role", role);
 		
 		ServletContext servletContext = request.getServletContext();
 		HttpSession session=(HttpSession) servletContext.getAttribute(usernameUser);
-		String joinMeetingParameters = null;
 //		如果session中没有用户，则session失效，报1002
 		if(session==null){
-			/*Err err = new Err(1002,"浼氳瘽杩囨湡");
-			String errString = JsonUtils.objectToJson(err);
-			encode = encoder.encode(errString.getBytes());
-			writer.write(encode);*/
-			//return "redirect:"+httpUrl+"/demo/error.jsp";
+			argMap.put("code", 1002);
+			argMap.put("message", "session失效");
+			return JsonUtils.objectToJson(argMap);
 		} else {
 
 			// 通过用户名密码查询屏幕
@@ -340,11 +347,9 @@ public class QianduanController {
 			List<Screen> selectAllScreen = screenService.selectAllScreen(screen);
 			// 如果没有查到，报1001
 			if (selectAllScreen.size() <= 0) {
-				/*Err err = new Err(1003, "屏幕不存在!");
-				String errString = JsonUtils.objectToJson(err);
-				encode = encoder.encode(errString.getBytes());
-				writer.write(encode);*/
-				return "redirect:"+httpUrl+"/demo/error.jsp";
+				argMap.put("code", 1003);
+				argMap.put("message", "屏幕不存在");
+				return JsonUtils.objectToJson(argMap);
 			} else {
 				screen = selectAllScreen.get(0);
 				Room room = roomService.selectScreenByRoom(screen.getRoom());
@@ -355,19 +360,6 @@ public class QianduanController {
 					}
 					scr.setRandomname(StringRandom.getStringRandom(3));
 				}
-				/*if (room != null) {
-					String meetingRunningParameters = bbbApi.isMeetingRunning(room.getNum(),salt);
-					String sendRunning = HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/isMeetingRunning", meetingRunningParameters);
-					logger.info(httpUrl + "/bigbluebutton/api/isMeetingRunning"+meetingRunningParameters);
-					Map doXMLParse = XMLUtil.doXMLParse(sendRunning);
-					String string = (String) doXMLParse.get("running");
-					if("false".equals(string)) {
-						// 新创建的房间
-						String createMeetingParameters = bbbApi.createMeeting(room.getNum(),salt);
-						String sendGET = HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/create", createMeetingParameters);
-						logger.info(httpUrl + "/bigbluebutton/api/create"+createMeetingParameters);
-					}
-				}*/
 
 				// 更新记录中连接的屏幕ID
 				int id = (int) session.getAttribute("recordId");
@@ -376,20 +368,17 @@ public class QianduanController {
 				record.setScreenId(screen.getId());
 				recordService.updateByPrimaryKeySelective(record);
 				
-				modelMap.put("username", usernameUser);
+				argMap.put("username", usernameUser);
 				if(session.getAttribute("screen")!=null) {
-					modelMap.put("usernameScreen", usernameScreen);
+					argMap.put("usernameScreen", usernameScreen);
 				}
 				
-				modelMap.put("meetingName", room.getNum());
-				/*joinMeetingParameters=bbbApi.joinMeeting(room.getNum(),usernameUser,salt);
-				logger.info(httpUrl+"/bigbluebutton/api/join?"+joinMeetingParameters);*/
-				//HttpUtil.sendGET(BigBlueButtonURL+"api/join",joinMeetingParameters);
+				argMap.put("meetingName", room.getNum());
 			}
 		}
-		
+		argMap.put("code", 200);
 		System.out.println(modelMap.toString());
-		return "redirect:"+httpUrl+"/demo/demo_join.jsp";
+		return JsonUtils.objectToJson(argMap);
 	}
 	
 	@RequestMapping("/uploadFileRecordUser")

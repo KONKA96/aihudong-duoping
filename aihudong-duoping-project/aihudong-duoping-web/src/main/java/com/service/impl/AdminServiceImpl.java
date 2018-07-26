@@ -3,6 +3,7 @@ package com.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,10 @@ public class AdminServiceImpl implements AdminService {
 				return 0;
 			}
 		}
+		
+		if(admin.getPassword()!=null) {
+			admin.setPassword(new Md5Hash(admin.getPassword(), admin.getUsername() ,2).toString());
+		}
 		if(admin.getScreenNum()==null){
 			admin.setScreenNum(0);
 		}
@@ -49,6 +54,10 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateByPrimaryKeySelective(Admin admin) {
 		// TODO Auto-generated method stub
+		if(admin.getPassword()!=null) {
+			Admin oldAdmin = adminMapper.selectByPrimaryKey(admin.getId());
+			admin.setPassword(new Md5Hash(admin.getPassword(), oldAdmin.getUsername() ,2).toString());
+		}
 		return adminMapper.updateByPrimaryKeySelective(admin);
 	}
 

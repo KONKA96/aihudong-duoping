@@ -1,10 +1,13 @@
 package com.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.model.Room;
 
 public interface RoomMapper {
+	Room selectRoomBuildZone(Map<String,Object> map);
+	
 	List<String> selectAllId();
 	
 	Room selectScreenByRoom(Room room);

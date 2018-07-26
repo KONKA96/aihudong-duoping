@@ -1,18 +1,15 @@
 package com.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,31 +23,23 @@ import com.model.Admin;
 import com.model.Building;
 import com.model.Faculty;
 import com.model.License;
-import com.model.Subject;
-import com.model.Teacher;
+import com.model.Logger;
 import com.service.AdminService;
 import com.service.BuildingService;
 import com.service.FacultyService;
 import com.service.LicenseService;
-import com.service.RecordService;
-import com.service.TeacherService;
+import com.service.impl.AdminServiceImpl;
 import com.util.JsonUtils;
 import com.util.PageUtil;
-
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 	
-	private static Logger log=LoggerFactory.getLogger(AdminController.class);
+	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
-	private TeacherService teacherService;
-	@Autowired
 	private FacultyService facultyService;
-	@Autowired
-	private RecordService recordService;
 	@Autowired
 	private AdminService adminService;
 	@Autowired
@@ -59,7 +48,6 @@ public class AdminController {
 	private BuildingService buildingService;
 	@Autowired
 	private PageUtil pageUtil;
-	
 	
 	/**
 	 * 跳转到登录后首页
@@ -76,6 +64,7 @@ public class AdminController {
 		session.setAttribute("admin", admin);*/
 		return "index";
 	}
+	
 	/**
 	 * 登录后跳转的首页
 	 * @return
@@ -95,6 +84,25 @@ public class AdminController {
 	@RequestMapping("/toAdminInfo")
 	public String toAdminInfo(){
 		return "/adminuser/admin-info";
+	}
+	
+	/**
+	 * 检测输入的旧密码是否和原来匹配（个人）
+	 * 
+	 * @param password
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/testOldPwd")
+	public String testOldPwd(String password) {
+		Subject subject = SecurityUtils.getSubject();
+		Admin admin=new Admin();
+		admin.setUsername((String) subject.getPrincipal());
+		admin=adminService.adminLogin(admin);
+		if (new Md5Hash(password, admin.getUsername(), 2).toString().equals(admin.getPassword())) {
+			return "success";
+		}
+		return "";
 	}
     /**
      * 查询所有下级管理员，包含模糊搜索、分页
@@ -116,6 +124,13 @@ public class AdminController {
     	
     	PageHelper.startPage(index, pageSize);
     	Page<Admin> adminList = (Page<Admin>) adminService.selectAllAdmin(admin);
+    	
+    	String logInfo=Sjadmin.getUsername()+"搜索管理员信息";
+    	if(Sjadmin.getTruename()!=null) {
+    		logInfo+=",模糊搜索关键字:"+admin.getTruename();
+    	}
+    	logger.info(logInfo);
+    	
     	pageUtil.setPageInfo(adminList, index, pageSize,request);
     	
     	/*log.info(adminList.toString());*/
@@ -192,13 +207,14 @@ public class AdminController {
     		admin.setPower(2);
     	}
 //    	如果修改为一级管理员，则其上一级为根级管理员
-    	if(admin.getPower()==1){
+    	if(admin.getPower()!=null && admin.getPower()==1){
 			Admin GenJiAdmin = adminService.selectGenJiAdmin();
 			admin.setHigherId(GenJiAdmin.getId());
 		}
     	List<Admin> adminList = adminService.selectAllAdmin(null);
     	for (Admin ad : adminList) {
 			if(ad.getUsername().equals(admin.getUsername())){
+				logger.info(admin.getUsername()+"用户名已存在，修改失败!");
 				return "exist";
 			}
 		}
@@ -208,10 +224,12 @@ public class AdminController {
     			if(admin.getId().equals(SjAdmin.getId())){
     				session.setAttribute("admin", admin);
     			}
+    			logger.info(SjAdmin.getUsername()+"修改"+admin.getId()+"的信息成功!");
     			return "success";
     		}
     	}else{
     		if(adminService.insertSelective(admin)>0){
+    			logger.info(SjAdmin.getUsername()+"添加管理员:"+admin.getUsername());
     			return "success";
     		}
     	}
@@ -224,7 +242,9 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping("/deleteAdmin")
-    public String deleteAdmin(Admin admin){
+    public String deleteAdmin(Admin admin,HttpSession session){
+    	Admin Sjadmin=(Admin) session.getAttribute("admin");
+    	
 //    	将自己剩余的屏幕数量还给自己上级管理员
     	admin=adminService.selectByPrimaryKey(admin);
     	Admin shangji=new Admin();
@@ -234,6 +254,7 @@ public class AdminController {
     	adminService.updateByPrimaryKeySelective(shangji);
 //    	进行删除
     	if(adminService.deleteByPrimaryKey(admin)>0){
+    		logger.info(Sjadmin.getUsername()+"删除了管理员:"+admin.getId());
     		return "success";
     	}
     	return "error";
@@ -282,6 +303,7 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("/updateScreenNum")
     public String updateScreenNum(Admin admin,HttpSession session){
+    	Admin Sjadmin=(Admin) session.getAttribute("admin");
 //    	admin = adminService.selectByPrimaryKey(admin);
     	Map<String,Object> map=new HashMap<>();
     	int changeNum=0;
@@ -304,10 +326,12 @@ public class AdminController {
         	int already=erjiAdminOld.getScreenNum()-erjiAdminOld.getScreenRemain();
 //        	如果屏幕数量加上新修改的屏幕数量大于上一级的屏幕数量，则修改失败
         	if(YijiAdmin.getScreenRemain()-changeNum<0){
+        		logger.info(Sjadmin.getUsername()+"进行屏幕数量分配操作,"+YijiAdmin.getUsername()+"数量不足,分配失败!");
         		return "error";
         	}
 //        	如果分配的屏幕小于已经分配的屏幕数量，同样失败
         	if(admin.getScreenNum()<already){
+        		logger.info(Sjadmin.getUsername()+"进行屏幕数量分配操作,"+admin.getId()+"数量不足,分配失败!");
         		return "error2";
         	}
         	YijiAdmin.setScreenRemain(YijiAdmin.getScreenRemain()-changeNum);
@@ -316,10 +340,12 @@ public class AdminController {
         	erjiAdminOld.setScreenRemain(erjiAdminOld.getScreenRemain()+changeNum);
         	if(admin.getId()!=null){
         		if(adminService.updateByPrimaryKeySelective(erjiAdminOld)>0){
+        			logger.info(Sjadmin.getUsername()+"进行屏幕数量分配操作,"+erjiAdminOld.getUsername()+"的剩余屏幕数为:"+erjiAdminOld.getScreenRemain());
             		return "success";
             	}
         	}else{
         		if(adminService.insertSelective(erjiAdminOld)>0){
+        			logger.info(Sjadmin.getUsername()+"添加操作管理员:"+erjiAdminOld.getUsername());
             		return "success";
             	}
         	}
@@ -333,6 +359,7 @@ public class AdminController {
     		
     		changeNum=admin.getScreenNum()-yijiAdminOld.getScreenNum();
     		if(genjiAdmin.getScreenRemain()<changeNum){
+    			logger.info(Sjadmin.getUsername()+"进行屏幕数量分配操作,"+genjiAdmin.getUsername()+"数量不足,分配失败!");
     			return "error";
     		}
     		genjiAdmin.setScreenRemain(genjiAdmin.getScreenRemain()-changeNum);
@@ -342,6 +369,7 @@ public class AdminController {
     		yijiAdminOld.setScreenNum(admin.getScreenNum());
     		yijiAdminOld.setScreenRemain(yijiAdminOld.getScreenRemain()+changeNum);
     		if(adminService.updateByPrimaryKeySelective(yijiAdminOld)>0){
+    			logger.info(Sjadmin.getUsername()+"进行屏幕数量分配操作,"+yijiAdminOld.getUsername()+"的剩余屏幕数为:"+yijiAdminOld.getScreenRemain());
     			return "success";
     		}
     	}
@@ -351,10 +379,12 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("/insertAdminScreen")
     public String insertAdminScreen(Admin admin,HttpSession session){
+    	Admin genjiAdmin=(Admin) session.getAttribute("admin");
     	
     	List<Admin> adminList = adminService.selectAllAdmin(null);
     	for (Admin ad : adminList) {
 			if(ad.getUsername().equals(admin.getUsername())){
+				logger.info(genjiAdmin.getUsername()+"正在添加管理员,"+admin.getUsername()+"用户名已经存在!");
 				return "exist";
 			}
 		}
@@ -365,17 +395,19 @@ public class AdminController {
     		List<Admin> yijiAdminList=adminService.selectYijiAdmin(map);
         	Admin YijiAdmin = yijiAdminList.get(0);
         	if(YijiAdmin.getScreenRemain()<=admin.getScreenNum()){
+        		logger.info(genjiAdmin.getUsername()+"正在添加管理员,屏幕剩余数量不足!");
         		return "error";
         	}
         	YijiAdmin.setScreenRemain(YijiAdmin.getScreenRemain()-admin.getScreenNum());
         	adminService.updateByPrimaryKeySelective(YijiAdmin);
         	admin.setScreenRemain(admin.getScreenNum());
         	if(adminService.insertSelective(admin)>0){
+        		logger.info(genjiAdmin.getUsername()+"添加管理员:"+admin.getUsername());
         		return "success";
         	}
     	}else if(admin.getPower()==1){
-    		Admin genjiAdmin=(Admin) session.getAttribute("admin");
     		if(genjiAdmin.getScreenRemain()<=admin.getScreenNum()){
+    			logger.info(genjiAdmin.getUsername()+"正在添加管理员,屏幕剩余数量不足!");
     			return "error";
     		}
     		genjiAdmin.setScreenRemain(genjiAdmin.getScreenRemain()-admin.getScreenNum());
@@ -383,6 +415,7 @@ public class AdminController {
     		session.setAttribute("admin", genjiAdmin);
     		admin.setScreenRemain(admin.getScreenNum());
     		if(adminService.insertSelective(admin)>0){
+    			logger.info(genjiAdmin.getUsername()+"添加管理员:"+admin.getUsername());
         		return "success";
         	}
     	}

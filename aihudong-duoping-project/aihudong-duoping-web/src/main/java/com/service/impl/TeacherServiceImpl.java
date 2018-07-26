@@ -1,14 +1,13 @@
 package com.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dao.TeacherMapper;
-import com.model.Admin;
 import com.model.Teacher;
 import com.service.TeacherService;
 
@@ -35,6 +34,10 @@ public class TeacherServiceImpl implements TeacherService {
 
 	public int updateTeacherSelected(Teacher teacher) {
 		// TODO Auto-generated method stub
+		if(teacher.getPassword()!=null) {
+			Teacher selectByPrimaryKey = teacherMapper.selectByPrimaryKey(teacher.getId());
+			teacher.setPassword(new Md5Hash(teacher.getPassword(), selectByPrimaryKey.getUsername() ,2).toString());
+		}
 		return teacherMapper.updateByPrimaryKeySelective(teacher);
 	}
 
@@ -45,6 +48,10 @@ public class TeacherServiceImpl implements TeacherService {
 			if(teacher.getUsername().equals(tea.getUsername())&&teacher.getTruename().equals(tea.getTruename())){
 				return 0;
 			}
+		}
+		
+		if(teacher.getPassword()!=null) {
+			teacher.setPassword(new Md5Hash(teacher.getPassword(), teacher.getUsername() ,2).toString());
 		}
 		if(teacher.getUsername()==null||teacher.getPassword()==null||teacher.getTruename()==null){
 			return 0;

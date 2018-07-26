@@ -24,5 +24,10 @@ public class SubjectServiceImpl implements SubjectService {
 		// TODO Auto-generated method stub
 		return subjectMapper.updateByPrimaryKeySelective(subject);
 	}
+	@Override
+	public Subject selectByPrimaryKey(Integer id) {
+		// TODO Auto-generated method stub
+		return subjectMapper.selectByPrimaryKey(id);
+	}
 
 }

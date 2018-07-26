@@ -28,6 +28,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.model.Admin;
 import com.model.Building;
+import com.model.Logger;
 import com.model.Room;
 import com.model.Screen;
 import com.model.Zone;
@@ -50,6 +51,8 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/screen")
 public class ScreenController {
+	protected Logger logger = Logger.getLogger(this.getClass());
+	
 	@Autowired
 	private ScreenService screenService;
 	@Autowired
@@ -300,11 +303,13 @@ public class ScreenController {
     	Admin admin=(Admin) session.getAttribute("admin");
     	if(building!=null){
     		buildingService.insertSelective(building);
+    		logger.info(admin.getUsername()+"添加教学楼:"+building.getBuildingName());
     		session.removeAttribute("building");
     		
     		room.setId(UUID.randomUUID().toString());
     		room.setBuildingId(building.getId());
     		roomService.insertSelective(room);
+    		logger.info(admin.getUsername()+"添加教室:"+room.getNum());
     		session.removeAttribute("room");
     	}else if(room!=null){
     		/*if(roomScreen.getId().contains(",")) {
@@ -312,6 +317,7 @@ public class ScreenController {
     		}*/
     		room.setId(UUID.randomUUID().toString());
     		roomService.insertSelective(room);
+    		logger.info(admin.getUsername()+"添加教室:"+room.getNum());
     		session.removeAttribute("room");
     	}
     	List<Screen> screenList=roomScreen.getScreenList();
@@ -330,6 +336,7 @@ public class ScreenController {
     				}
     			}
     			if(screenService.updateByPrimaryKeySelective(screen)>0){
+    				logger.info(admin.getUsername()+"修改屏幕:"+screen.getId());
     				i++;
     			}
     		}else{
@@ -349,6 +356,7 @@ public class ScreenController {
         		}
         		
         		if(screenService.insertSelective(screen)>0){
+        			logger.info(admin.getUsername()+"添加屏幕:"+screen.getUsername());
         			i++;
         			insert++;
         		}
@@ -358,6 +366,7 @@ public class ScreenController {
     		session.removeAttribute("screenList");
     		admin.setScreenRemain(admin.getScreenRemain()-insert);
     		adminService.updateByPrimaryKeySelective(admin);
+    		logger.info(admin.getUsername()+"剩余屏幕数量:"+admin.getScreenRemain());
     		return "success";
     	}
     	return "";
@@ -369,20 +378,25 @@ public class ScreenController {
      */
     @ResponseBody
     @RequestMapping("/updateScreen")
-    public String updateScreen(Screen screen){
+    public String updateScreen(Screen screen,HttpSession session){
+    	Admin admin=(Admin) session.getAttribute("admin");
+    	
     	if(screen.getId()!=null){
     		List<Screen> screenList = screenService.selectAllScreen(null);
     		for (Screen sc : screenList) {
 //    			用户名相同且id不同，则认为用户名重复
 				if(sc.getUsername().equals(screen.getUsername()) && !sc.getId().equals(screen.getId())){
+					logger.info("屏幕用户名存在,修改失败!");
 					return "same";
 				}
 			}
     		if(screenService.updateByPrimaryKeySelective(screen)>0){
+    			logger.info(admin.getUsername()+"修改屏幕:"+screen.getId());
     			return "success";
     		}
     	}else{
     		if(screenService.insertSelective(screen)>0){
+    			logger.info(admin.getUsername()+"添加屏幕:"+screen.getUsername());
     			return "success";
     		}
     	}
@@ -407,6 +421,8 @@ public class ScreenController {
         		adminService.updateByPrimaryKeySelective(admin);
 //        		更新session
         		Admin adminLogin=(Admin) session.getAttribute("admin");
+        		
+        		logger.info(adminLogin.getUsername()+"删除了屏幕:"+screen.getId());
         		if(adminLogin.getId().equals(admin.getId())){
         			session.setAttribute("admin", admin);
         		}
@@ -490,7 +506,7 @@ public class ScreenController {
          }else{
          	result+="共"+resultList.size()+"条信息，成功导入"+i+"条信息，导入失败"+(resultList.size()-i)+"条信息";
          }
-         System.out.println(result);
+         logger.info(result);
     	return "redirect:showAllScreen";
     }
     
@@ -501,8 +517,9 @@ public class ScreenController {
      * @throws Exception
      */
     @RequestMapping("/exportExcel")
-    public void exportExcel(HttpServletResponse response) throws Exception {
-        
+    public void exportExcel(HttpServletResponse response,HttpSession session) throws Exception {
+    	Admin admin=(Admin) session.getAttribute("admin");
+    	
         // 定义表的标题
         String title = "屏幕信息";
         
@@ -539,7 +556,7 @@ public class ScreenController {
         
         // 创建ExportExcel对象
         ExportExcel ex = new ExportExcel(title, rowsName, dataList);
-
+        logger.info(admin.getUsername()+"导出屏幕excel表格");
         // 输出Excel文件
         try {
             OutputStream output = response.getOutputStream();

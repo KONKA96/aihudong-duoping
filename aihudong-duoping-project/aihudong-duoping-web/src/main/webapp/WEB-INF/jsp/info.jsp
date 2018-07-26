@@ -21,7 +21,6 @@
 </div>
 <div>
 	<a href="javascript:void(0)" onclick="WeiChatLogin()">微信扫码登录</a>
-	<a href="/aihudong-duoping-web/index/getAccessToken?code=001oa2Z42ewIzM0OfpZ42UQEY42oa2ZU" >登录了</a>
 </div>
 </body>
 <script type="text/javascript">

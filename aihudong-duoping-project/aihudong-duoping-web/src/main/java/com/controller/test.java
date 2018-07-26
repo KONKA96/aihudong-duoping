@@ -1,12 +1,13 @@
 package com.controller;
 
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,15 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.model.Admin;
+import com.model.Logger;
 import com.service.AdminService;
 import com.util.HttpUtil;
-import com.util.XMLUtil;
-import com.util.bbbApi;
 
 @Controller
 @RequestMapping("/login")
 public class test {
-	private static Logger log=LoggerFactory.getLogger(test.class);
+	protected Logger logger = Logger.getLogger(this.getClass()); 
 	
 	@Value("${httpUrl}")
 	private String httpUrl;
@@ -65,22 +65,21 @@ public class test {
 	@ResponseBody
 	@RequestMapping("/adminLogin")
 	public String adminLogin(Admin admin,HttpSession session){
-		admin = adminService.adminLogin(admin);
-		
-		if(admin!=null){
+		UsernamePasswordToken token = new UsernamePasswordToken(admin.getUsername(),
+				new Md5Hash(admin.getPassword(), admin.getUsername() ,2).toString());
+		Subject subject = SecurityUtils.getSubject();
+		try {
+			subject.login(token);
+			admin = adminService.adminLogin(admin);
+			
+			logger.info(admin.getUsername()+"登录系统");
 			session.setAttribute("admin", admin);
 			return "success";
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return "";
 	}
-
 	
-	@RequestMapping("/test")
-	public String test() throws Exception {
-		String meetingInfo = bbbApi.joinMeeting("784","2", salt);
-		String sendGET = HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/join",meetingInfo);
-		//Map doXMLParse = XMLUtil.doXMLParse(sendGET);
-		
-		return "redirect:"+httpUrl+"/bigbluebutton/api/join?"+meetingInfo;
-	}
 }

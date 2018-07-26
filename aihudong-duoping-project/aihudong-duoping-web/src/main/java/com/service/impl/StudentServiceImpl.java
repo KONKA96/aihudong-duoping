@@ -3,6 +3,7 @@ package com.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,9 @@ public class StudentServiceImpl implements StudentService {
 				return 0;
 			}
 		}
+		if(student.getPassword()!=null) {
+			student.setPassword(new Md5Hash(student.getPassword(), student.getUsername() ,2).toString());
+		}
 		if(student.getUsername()==null||student.getPassword()==null||student.getTruename()==null){
 			return 0;
 		}
@@ -55,6 +59,10 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public int updateByPrimaryKeySelective(Student student) {
 		// TODO Auto-generated method stub
+		if(student.getPassword()!=null) {
+			Student selectByPrimaryKey = studentMapper.selectByPrimaryKey(student.getId());
+			student.setPassword(new Md5Hash(student.getPassword(), selectByPrimaryKey.getUsername() ,2).toString());
+		}
 		return studentMapper.updateByPrimaryKeySelective(student);
 	}
 	@Override
