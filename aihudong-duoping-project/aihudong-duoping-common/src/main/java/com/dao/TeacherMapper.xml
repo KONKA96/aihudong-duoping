@@ -289,7 +289,12 @@
   		s.id s_id,s.subject_name,s.desc 
   	from teacher t,subject s
   	where t.subject_id=s.id
-  		and username=#{username} and password=#{password} 
+  		<if test="username!='' and username!=null">
+  			and username=#{username}
+  		</if>
+  		<if test="password!='' and password!=null">
+  			 and password=#{password} 
+  		</if>
   </select>
  
  <select id="selectAllId" resultType="java.lang.String">

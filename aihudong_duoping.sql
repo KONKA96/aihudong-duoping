@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 26/07/2018 17:26:55
+ Date: 27/07/2018 11:16:28
 */
 
 SET NAMES utf8mb4;
@@ -320,22 +320,22 @@ CREATE TABLE `screen`  (
 -- ----------------------------
 -- Records of screen
 -- ----------------------------
-INSERT INTO `screen` VALUES ('sc1', '0001', '123', '783595', 1, '00:00:00', 0, '2', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc10', '0010', '123', '1001407', 1, '00:00:00', 0, '2', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc11', '0011', '123', '1001407', 1, '00:00:00', 0, '2', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc12', '0012', '123', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc13', '0013', '123', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc14', '0014', '123', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc15', '0015', '123', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc16', '0016', '123', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc2', '0002', '123', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc3', '0003', '123', '783595', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc4', '0004', '123', '783595', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc5', '0005', '123', '783726', 1, '0:0:52', 2, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc6', '0006', '123', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc7', '0007', '123', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc8', '0008', '123', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc9', '0009', '123', '1001407', 1, '0:1:15', 1, '2', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc1', '0001', '6ccdbaf84ddba5eb72c3d1eb7bd4b8a8', '783595', 1, '00:00:00', 0, '2', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc10', '0010', 'e227981f565a7f3a97efd10126797113', '1001407', 1, '00:00:00', 0, '2', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc11', '0011', '79a3ef9588b1c859b8ddee341548497e', '1001407', 1, '00:00:00', 0, '2', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc12', '0012', '60c1e36c8561284a3bc379a8126663d4', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc13', '0013', 'fa58b54aa048d693977387bf258a1820', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc14', '0014', '548e55a10b7aef8496174c47b276c716', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc15', '0015', '7111fc53f7a8f8ca8fe48b870a13b91f', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc16', '0016', 'd7865a3cca903c133d19a9368fed8b93', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc2', '0002', '53108afc8c39528d758f782d4048b850', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc3', '0003', 'eb521c182bd4cbbd0418a8063ca3cb9a', '783595', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc4', '0004', '1a2e4da9f470489c725fd7a3672876b3', '783595', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc5', '0005', 'd99d69b9634e869a1bb63069162fa130', '783726', 1, '0:0:52', 2, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc6', '0006', 'ee335e659bb7a205c62584945e6db5a1', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc7', '0007', '1f15473510f235b3eebaa256793ba1de', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc8', '0008', 'f339352bc359111fab34eac7dc8133ab', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc9', '0009', '95100c74eb80ee48bd68eefe21f9eb73', '1001407', 1, '0:1:15', 1, '2', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for student

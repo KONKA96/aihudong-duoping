@@ -80,7 +80,7 @@ public class QianduanController {
 	@ResponseBody
 	@RequestMapping(value="/userLogin",produces = "text/json;charset=UTF-8")
 	public String UserLogin(@RequestParam(required=false) String username,@RequestParam(required=false) String password,@RequestParam(required=false) String sid,
-			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws IOException{
+			@RequestParam(required=false) String serverhost,HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws IOException{
 		response.setCharacterEncoding("utf-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		ServletContext servletContext = request.getServletContext();
@@ -98,18 +98,33 @@ public class QianduanController {
 			modelMap.put("username", username);
 			
 //			通过用户名密码在数据库中查，看该用户是教师、屏幕、学生这三者的其中一种
+			if(sid!=null) {
+				screen.setUsername(username);
+				//screen.setPassword(new Md5Hash(password, username ,2).toString());
+				selectAllScreen = screenService.selectAllScreen(screen);
+				if(selectAllScreen.size()==0) {
+					argMap.put("code", 1001);
+					argMap.put("message", "用户不存在");
+					return JsonUtils.objectToJson(argMap);
+				}
+				screen=selectAllScreen.get(0);
+				//第一次登录，将机器码添加到屏幕信息中
+				screen.setSid(sid);
+				screenService.updateByPrimaryKeySelective(screen);
+			}else {
+				teacher.setUsername(username);
+				//teacher.setPassword(new Md5Hash(password, username ,2).toString());
+				teacher = teacherService.teacherLogin(teacher);
+				
+				student.setUsername(username);
+				//student.setPassword(new Md5Hash(password, username ,2).toString());
+				student=studentService.studentLogin(student);
+				
+				screen.setUsername(username);
+				//screen.setPassword(new Md5Hash(password, username ,2).toString());
+				selectAllScreen = screenService.selectAllScreen(screen);
+			}
 			
-			teacher.setUsername(username);
-			teacher.setPassword(new Md5Hash(password, username ,2).toString());
-			teacher = teacherService.teacherLogin(teacher);
-			
-			student.setUsername(username);
-			student.setPassword(new Md5Hash(password, username ,2).toString());
-			student=studentService.studentLogin(student);
-			
-			screen.setUsername(username);
-			screen.setPassword(new Md5Hash(password, username ,2).toString());
-			selectAllScreen = screenService.selectAllScreen(screen);
 		}else {
 			//用户名为空
 			if(sid==null) {
@@ -138,7 +153,12 @@ public class QianduanController {
 			argMap.put("code", 1001);
 			argMap.put("message", "用户不存在");
 			return JsonUtils.objectToJson(argMap);
-		}else if(teacher!=null){
+		}else if(teacher!=null && teacher.getUsername()!=null){
+			if(!teacher.getPassword().equals(new Md5Hash(password, username ,2).toString())) {
+				argMap.put("code", 1002);
+				argMap.put("message", "密码错误");
+				return JsonUtils.objectToJson(argMap);
+			}
 			session.setAttribute("teacher", teacher);
 //			将session存放在application里面，其用户名username作为session的键
 			servletContext.setAttribute(teacher.getUsername(), session);
@@ -151,21 +171,21 @@ public class QianduanController {
 			
 			record.setUserId(teacher.getId());
 			record.setRole(1);
-			
+			argMap.put("url", serverhost+"/demo/demo_join.jsp");
 			argMap.put("role", 1);
 		}else if(selectAllScreen.size()!=0){
+			if(sid==null && !selectAllScreen.get(0).getPassword().equals(new Md5Hash(password, username ,2).toString())) {
+				argMap.put("code", 1002);
+				argMap.put("message", "密码错误");
+				return JsonUtils.objectToJson(argMap);
+			}
+			screen=selectAllScreen.get(0);
 			session.setAttribute("screen", screen);
 			String stringRandom=StringRandom.getStringRandom(3);
 			
 			servletContext.setAttribute(screen.getUsername(), stringRandom);
 			servletContext.setAttribute(stringRandom, session);
-			screen=selectAllScreen.get(0);
 			
-			//第一次登陆，未绑定机器码，需要绑定机器码
-			if(screen.getSid()==null) {
-				screen.setSid(sid);
-				screenService.updateByPrimaryKeySelective(screen);
-			}
 			
 			screen.setRole(4);
 			String sessionId = session.getId();
@@ -179,7 +199,13 @@ public class QianduanController {
 			Room room = roomService.selectScreenByRoom(screen.getRoom());
 			argMap.put("role", 4);
 			argMap.put("meetingName", room.getNum());
-		}else if(student!=null){
+		}else if(student!=null && student.getUsername()!=null){
+			if(!student.getPassword().equals(new Md5Hash(password, username ,2).toString())) {
+				argMap.put("code", 1002);
+				argMap.put("message", "密码错误");
+				return JsonUtils.objectToJson(argMap);
+			}
+			
 			session.setAttribute("student", student);
 			servletContext.setAttribute(student.getUsername(), session);
 			student.setRole(2);
@@ -188,7 +214,7 @@ public class QianduanController {
 			
 			record.setUserId(student.getId());
 			record.setRole(2);
-			
+			argMap.put("url", serverhost+"/demo/demo_join.jsp");
 			argMap.put("role", 2);
 		}
 		session.setMaxInactiveInterval(-1);
@@ -325,12 +351,11 @@ public class QianduanController {
 	 * @throws IOException
 	 */
 	@ResponseBody
-	@RequestMapping("/connectToScreen")
+	@RequestMapping(value="/connectToScreen",produces = "text/json;charset=UTF-8")
 	public String connectToScreen(@RequestParam String usernameUser,@RequestParam String usernameScreen,@RequestParam String role,
-			HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws Exception{
+			@RequestParam(required=false) String serverhost,HttpServletResponse response,HttpServletRequest request,ModelMap modelMap) throws Exception{
 		//存放参数的集合
 		Map<String,Object> argMap=new HashMap<>();
-		argMap.put("role", role);
 		
 		ServletContext servletContext = request.getServletContext();
 		HttpSession session=(HttpSession) servletContext.getAttribute(usernameUser);
@@ -368,7 +393,7 @@ public class QianduanController {
 				record.setScreenId(screen.getId());
 				recordService.updateByPrimaryKeySelective(record);
 				
-				argMap.put("username", usernameUser);
+				argMap.put("usernameUser", usernameUser);
 				if(session.getAttribute("screen")!=null) {
 					argMap.put("usernameScreen", usernameScreen);
 				}
@@ -376,6 +401,8 @@ public class QianduanController {
 				argMap.put("meetingName", room.getNum());
 			}
 		}
+		argMap.put("role", role);
+		argMap.put("serverhost", serverhost);
 		argMap.put("code", 200);
 		System.out.println(modelMap.toString());
 		return JsonUtils.objectToJson(argMap);

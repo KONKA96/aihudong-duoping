@@ -217,7 +217,12 @@
   	from student stu left join subject sub on stu.subject_id=sub.id
   	left join `group` g on stu.group_id=g.id
   	<where>
-  		and username=#{username} and password=#{password}
+  		<if test="username!='' and username!=null">
+  			and username=#{username}
+  		</if>
+  		<if test="password!='' and password!=null">
+  			 and password=#{password} 
+  		</if>
   	</where>
   </select>
   
