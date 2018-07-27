@@ -252,9 +252,6 @@
 	  	<if test="username!='' and username!=null">
 			and concat (t.username,t.truename,t.job,s.subject_name,f.faculty_name) like concat ('%',#{username},'%')  	
 	  	</if>
-	  	<if test="openId!=null and  openId!=''">
-	  		and t.open_id=#{openId}
-	  	</if>
   	</where>
   </select>
   

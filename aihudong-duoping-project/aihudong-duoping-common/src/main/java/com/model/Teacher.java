@@ -8,8 +8,6 @@ public class Teacher {
     private String password;
 
     private String truename;
-    
-    private String openId;
 
     private String nickname;
 
@@ -37,14 +35,6 @@ public class Teacher {
 	
 	private int role;
 	
-	public String getOpenId() {
-		return openId;
-	}
-
-	public void setOpenId(String openId) {
-		this.openId = openId;
-	}
-
 	public int getRole() {
 		return role;
 	}
