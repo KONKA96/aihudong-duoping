@@ -259,7 +259,9 @@
   		<if test="subjectId!=null">
   			stu.subject_id=#{subjectId}
   		</if>
-  		
+  		<if test="openId!='' and openId!=null">
+  			and stu.open_id=#{openId}
+  		</if>
   	</where>
  </select>
  
