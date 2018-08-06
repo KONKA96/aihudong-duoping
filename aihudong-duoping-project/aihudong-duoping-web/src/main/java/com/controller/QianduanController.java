@@ -211,8 +211,7 @@ public class QianduanController {
 	/**
 	 * 用户登出
 	 * 
-	 * @param string
-	 *            传回来的所有信息
+	 * @param string 传回来的所有信息
 	 * @param response
 	 * @param request
 	 * @throws IOException
@@ -331,7 +330,7 @@ public class QianduanController {
 			HttpServletRequest request, ModelMap modelMap) throws Exception {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 
-		Map<String, Object> argMap = new HashMap();
+		Map<String, Object> argMap = new HashMap<>();
 
 		ServletContext servletContext = request.getServletContext();
 		HttpSession session = (HttpSession) servletContext.getAttribute(usernameUser);

@@ -6,11 +6,11 @@
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<jsp:include page="common/include_css.jsp" />
-<jsp:include page="common/include_js.jsp" />
+<script src="<%=basePath%>resources/js/jquery.min.js"></script>
+<script src="<%=basePath%>resources/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>resources/js/postAjax.js"></script>
 <head>
-	<script type="text/javascript" src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
-    <base href="<%=basePath%>">
+	<!-- <script type="text/javascript" src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script> -->
 
     <title>微信扫码登录</title>
 

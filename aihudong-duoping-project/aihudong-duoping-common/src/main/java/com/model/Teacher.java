@@ -33,8 +33,18 @@ public class Teacher {
 	
 	private String sessionId;
 	
+	private String openId;
+	
 	private int role;
 	
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
 	public int getRole() {
 		return role;
 	}
