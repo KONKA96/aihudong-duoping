@@ -142,6 +142,7 @@ public class QianduanController {
 			argMap.put("role", Integer.valueOf(1));
 			if (openid != null) {
 				teacher.setOpenId(openid);
+				teacher.setPassword(null);
 				this.teacherService.updateTeacherSelected(teacher);
 			}
 		} else if (selectAllScreen.size() != 0) {
@@ -191,6 +192,7 @@ public class QianduanController {
 			record.setRole(Integer.valueOf(2));
 			if (openid != null) {
 				student.setOpenId(openid);
+				student.setPassword(null);
 				this.studentService.updateByPrimaryKeySelective(student);
 			}
 		}

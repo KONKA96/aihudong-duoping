@@ -366,6 +366,7 @@ public class ScreenController {
     	if(i==screenList.size()){
     		session.removeAttribute("screenList");
     		admin.setScreenRemain(admin.getScreenRemain()-insert);
+    		admin.setPassword(null);
     		adminService.updateByPrimaryKeySelective(admin);
     		logger.info(admin.getUsername()+"剩余屏幕数量:"+admin.getScreenRemain());
     		return "success";
@@ -440,6 +441,7 @@ public class ScreenController {
     		if(screenService.deleteByPrimaryKey(screen)>0){
 //        		将屏幕数量还给其分配的操作管理员
         		admin.setScreenRemain(admin.getScreenRemain()+1);
+        		admin.setPassword(null);
         		adminService.updateByPrimaryKeySelective(admin);
 //        		更新session
         		Admin adminLogin=(Admin) session.getAttribute("admin");
