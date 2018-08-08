@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.model.Logger;
 import com.model.Record;
 import com.model.Student;
 import com.model.Teacher;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping({ "/index" })
 public class WeChatLoginController {
+	Logger logger = Logger.getLogger(this.getClass());
+	
 	@Value("${appid}")
 	private String appid;
 	@Value("${redirect_uri}")
@@ -70,19 +73,19 @@ public class WeChatLoginController {
 		param = param.replace("CODE", code);
 		String sendGET = HttpUtil.sendGET(url, param);
 		JSONObject jsonObject = JSONObject.fromObject(sendGET);
-		String refresh_token = jsonObject.getString("refresh_token");
+		//String refresh_token = jsonObject.getString("refresh_token");
 		String openid = jsonObject.getString("openid");
-		String access_token = jsonObject.getString("access_token");
+		//String access_token = jsonObject.getString("access_token");
 
-		String testAccessTokenAuth = testAccessTokenAuth(access_token, openid);
-		System.out.println(testAccessTokenAuth);
+		/*String testAccessTokenAuth = testAccessTokenAuth(access_token, openid);
+		System.out.println(testAccessTokenAuth);*/
 
 		Teacher teacher = new Teacher();
 		Student student = new Student();
 		teacher.setOpenId(openid);
 		student.setOpenId(openid);
-		List<Teacher> teacherList = this.teacherService.selectAllTeacher(teacher);
-		List<Student> studentList = this.studentService.selectAllStudent(student);
+		List<Teacher> teacherList = teacherService.selectAllTeacher(teacher);
+		List<Student> studentList = studentService.selectAllStudent(student);
 		if ((teacherList.size() == 0) && (studentList.size() == 0)) {
 			modelMap.put("code", Integer.valueOf(200));
 			modelMap.put("serverhost", state);
@@ -96,12 +99,14 @@ public class WeChatLoginController {
 			record.setUserId(teacher.getId());
 			record.setRole(Integer.valueOf(1));
 			modelMap.put("role", Integer.valueOf(1));
+			modelMap.put("username", teacher.getUsername());
 		} else if (studentList.size() != 0) {
 			student = (Student) studentList.get(0);
 
 			record.setUserId(student.getId());
 			record.setRole(Integer.valueOf(2));
 			modelMap.put("role", Integer.valueOf(2));
+			modelMap.put("username", student.getUsername());
 		}
 		modelMap.put("code", Integer.valueOf(200));
 		modelMap.put("serverhost", state);

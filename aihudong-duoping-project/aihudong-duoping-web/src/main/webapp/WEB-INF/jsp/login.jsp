@@ -69,8 +69,12 @@
 					if(data=='success'){
 						alert("登录成功！");
 						window.location="/aihudong-duoping-web/admin/test";
-					}else{
-						alert("登录失败");
+					}else if(data=='none'){
+						alert("用户名不存在！");
+					}else if(data=='error'){
+						alert("密码错误！");
+					}else {
+						alert("登录失败！");
 					}
 				}
 			})

@@ -62,7 +62,7 @@ public class LoginRealm extends AuthorizingRealm{
      * 在这个方法中，进行身份验证
      *         login时调用
      */
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token){
         //用户名
         String username = (String) token.getPrincipal();
         //密码

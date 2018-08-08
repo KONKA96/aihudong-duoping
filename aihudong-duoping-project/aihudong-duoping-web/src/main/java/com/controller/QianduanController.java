@@ -91,6 +91,8 @@ public class QianduanController {
 
 		Map<String, Object> argMap = new HashMap<>();
 
+		argMap.put("username", username);
+		
 		Teacher teacher = new Teacher();
 		Screen screen = new Screen();
 		Student student = new Student();
@@ -108,12 +110,8 @@ public class QianduanController {
 
 			screen.setUsername(username);
 
-			selectAllScreen = this.screenService.selectAllScreen(screen);
-			if ((selectAllScreen.size() != 0) && (((Screen) selectAllScreen.get(0)).getSid() == null)) {
-				screen = (Screen) selectAllScreen.get(0);
-				screen.setSid(sid);
-				this.screenService.updateByPrimaryKeySelective(screen);
-			}
+			selectAllScreen = screenService.selectAllScreen(screen);
+			
 		} else {
 			argMap.put("code", Integer.valueOf(1002));
 			argMap.put("message", "用户名为空");
@@ -171,6 +169,12 @@ public class QianduanController {
 			Room room = this.roomService.selectScreenByRoom(screen.getRoom());
 			argMap.put("role", Integer.valueOf(4));
 			argMap.put("meetingName", room.getNum());
+			
+			if ((selectAllScreen.size() != 0) && (((Screen) selectAllScreen.get(0)).getSid() == null)) {
+				selectAllScreen.get(0).setSid(sid);
+				selectAllScreen.get(0).setPassword(null);
+				screenService.updateByPrimaryKeySelective(selectAllScreen.get(0));
+			}
 		} else if ((student != null) && (student.getUsername() != null)) {
 			if (!student.getPassword().equals(new Md5Hash(password, username, 2).toString())) {
 				argMap.put("code", Integer.valueOf(1002));

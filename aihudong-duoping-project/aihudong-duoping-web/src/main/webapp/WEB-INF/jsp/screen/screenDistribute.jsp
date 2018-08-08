@@ -109,7 +109,6 @@
 					<thead>
 						<tr>
 							<th>用户名</th>
-							<th>密码</th>
 							<th>真实姓名</th>
 							<th>性别</th>
 							<th>屏幕数</th>
@@ -120,7 +119,6 @@
 							<input id="powerInput" type="hidden" name="power" value="">
 							<input id="higherInput" type="hidden" name="higherId" value="">
 							<td><input type="text" class='form-control' name="username"></td>
-							<td><input type="text" class='form-control' name="password"></td>
 							<td><input type="text" class='form-control' name="truename"></td>
 							<td><input type="text" class='form-control' name="sex"></td>
 							<td><input type="text" class='form-control' name="screenNum"></td>

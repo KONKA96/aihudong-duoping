@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,10 @@ import com.util.ProduceId;
 @Controller
 @RequestMapping("/teacher")
 public class TeacherController {
+	
+	@Value("${defaultPwd}")
+	private String defaultPwd;
+	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
@@ -196,6 +201,9 @@ public class TeacherController {
 			}
 			if(newId!=null){
 				teacher.setId(newId);
+			}
+			if(teacher.getPassword()==null) {
+				teacher.setPassword(defaultPwd);
 			}
 			if(teacherService.insertTeacherSelected(teacher)>0){
 				logger.info(admin.getUsername()+"添加了教师:"+teacher.getUsername());

@@ -34,12 +34,6 @@
                                     <input name="username" value="${screen.username }" type="text" class="form-control" placeholder="屏幕登录名">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">屏幕登录密码</label>
-                                <div class="col-sm-10">
-                                    <input name="password" value="${screen.password }" type="text" class="form-control" placeholder="屏幕登录密码">
-                                </div>
-                            </div>
                         	
                         	<div class="form-group">
                                 <label class="col-sm-2 control-label">校区</label>
@@ -103,6 +97,7 @@
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-primary" type="button" onclick="updateInfo()">保存</button>
                                     <button class="btn btn-white" type="reset">取消</button>
+                                    <button class="btn btn-danger" type="button" onclick="resetPwd('${screen.id}')">重置密码</button>
                                 </div>
                             </div>
                         </form> 
@@ -156,6 +151,70 @@
 	        radioClass: 'iradio_square-green',
 	    });
 	});
+	
+	
+	/* 重置用户密码 */
+	function resetPwd(id){
+		swal({
+			title : "请输入新密码",
+			text : "",
+			type : "input",
+			showCancelButton : true,
+			closeOnConfirm : false,
+			closeOnCancel : true,
+			animation : "slide-from-top",
+			inputPlaceholder : "密码",
+			confirmButtonText : "确定",
+			cancelButtonText : "取消",
+		}, function(inputValue) {
+			$.ajax({
+				url : "/aihudong-duoping-web/screen/testScreenOldPwd",
+				data : "id="+id+"&password="+inputValue ,
+				type : "post",
+				success : function(data) {
+					if (data == 'success') {
+						repeat(id,inputValue);
+					} else if(data=='same'){
+						swal("密码与旧密码不能相同!", "请重试", "error");
+					}else{
+						swal("用户不存在!", "请重试", "error");
+					}
+				}
+			})
+		})
+	}
+	
+	function repeat(id,pwd){
+		swal({
+			title : "请再次输入新密码",
+			text : "",
+			type : "input",
+			showCancelButton : true,
+			closeOnConfirm : false,
+			closeOnCancel : true,
+			animation : "slide-from-top",
+			inputPlaceholder : "密码",
+			confirmButtonText : "确定",
+			cancelButtonText : "取消",
+		},function(inputValue){
+			if(inputValue!=pwd){
+				swal("两次输入的密码不一致!", "请重试", "error");
+			}else{
+				$.ajax({
+					url : "/aihudong-duoping-web/screen/updateScreen",
+					data : "id="+id+"&password="+inputValue ,
+					type : "post",
+					success : function(data) {
+						if (data == 'success') {
+							swal("重置成功!", "", "success");
+						}else{
+							swal("操作失败!", "请重试", "error");
+						}
+					}
+				})
+			}
+		})
+	}
 	
 	function updateInfo(){
 		$.ajax({

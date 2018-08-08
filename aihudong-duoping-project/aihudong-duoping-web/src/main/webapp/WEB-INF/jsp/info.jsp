@@ -6,6 +6,7 @@
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 <script src="<%=basePath%>resources/js/jquery.min.js"></script>
 <script src="<%=basePath%>resources/js/bootstrap.min.js"></script>
 <script src="<%=basePath%>resources/js/postAjax.js"></script>

@@ -102,7 +102,9 @@
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-primary" type="button" onclick="updateInfo()">保存</button>
                                     <button class="btn btn-white" type="reset">取消</button>
-                                    <button class="btn btn-danger" type="button" onclick="resetPwd('${teacher.id}')">重置密码</button>
+                                    <c:if test="${teacher.id!=null }">
+	                                    <button class="btn btn-danger" type="button" onclick="resetPwd('${teacher.id}')">重置密码</button>
+                                    </c:if>
                                 </div>
                             </div>
                         </form> 
@@ -148,9 +150,6 @@
 	function updateInfo(){
 		if($("#username")[0].value==""){
 			alert("用户名必填");
-			return false;
-		}else if($("#password")[0].value==""){
-			alert("密码必填");
 			return false;
 		}else if($("#truename")[0].value==""){
 			alert("姓名必填");

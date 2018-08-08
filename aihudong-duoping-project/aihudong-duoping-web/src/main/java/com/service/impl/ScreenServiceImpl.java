@@ -3,6 +3,7 @@ package com.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ public class ScreenServiceImpl implements ScreenService {
 				return 0;
 			}
 		}
+		if(screen.getPassword()!=null) {
+			screen.setPassword(new Md5Hash(screen.getPassword(), screen.getUsername() ,2).toString());
+		}
 		if(screen.getUsername()==null||screen.getPassword()==null||screen.getRoomId()==null){
 			return 0;
 		}
@@ -48,7 +52,11 @@ public class ScreenServiceImpl implements ScreenService {
 
 	@Override
 	public int updateByPrimaryKeySelective(Screen screen) {
+		List<Screen> screenList = selectAllScreen(screen);
 		// TODO Auto-generated method stub
+		if(screen.getPassword()!=null) {
+			screen.setPassword(new Md5Hash(screen.getPassword(), screenList.get(0).getUsername() ,2).toString());
+		}
 		return screenMapper.updateByPrimaryKeySelective(screen);
 	}
 

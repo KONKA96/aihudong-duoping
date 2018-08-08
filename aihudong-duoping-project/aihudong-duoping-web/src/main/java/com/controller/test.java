@@ -5,6 +5,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
@@ -75,11 +77,14 @@ public class test {
 			logger.info(admin.getUsername()+"登录系统");
 			session.setAttribute("admin", admin);
 			return "success";
-		} catch (AuthenticationException e) {
+		} catch (UnknownAccountException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "none";
+		} catch (IncorrectCredentialsException e) {
+			e.printStackTrace();
+			return "error";
 		}
-		return "";
 	}
 	
 }

@@ -372,6 +372,27 @@ public class ScreenController {
     	}
     	return "";
     }
+    
+    /**
+	 * 对比输入的密码和旧密码是否一致
+	 * @param password
+	 * @return
+	 */
+    @ResponseBody
+    @RequestMapping(value="/testScreenOldPwd")
+    public String testScreenOldPwd(Screen screen) {
+    	List<Screen> screenList = screenService.selectAllScreen(screen);
+    	if(screenList.size()==0) {
+    		return "error";
+    	}else {
+    		if(new Md5Hash(screen.getPassword(), screenList.get(0).getUsername(), 2).toString().equals(screenList.get(0).getPassword())) {
+				return "same";
+			}
+    	}
+    	
+    	return "success";
+    }
+    
     /**
      * 修改屏幕信息
      * @param screen

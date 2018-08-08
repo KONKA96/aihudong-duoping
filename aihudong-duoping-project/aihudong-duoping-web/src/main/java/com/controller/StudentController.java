@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,9 @@ import com.util.ProduceId;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+	
+	@Value("${defaultPwd}")
+	private String defaultPwd;
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 
@@ -203,6 +207,9 @@ public class StudentController {
 			}
 			if(newId!=null){
 				student.setId(newId);
+			}
+			if(student.getPassword()==null) {
+				student.setPassword(defaultPwd);
 			}
 			if(studentService.insertSelective(student)>0){
 				logger.info(SjAdmin.getUsername()+"添加学生:"+student.getUsername());
