@@ -43,12 +43,13 @@
 		<!-- 拦截器 -->  
 		<!-- 多个拦截器，顺序执行 -->  
 		<!-- 登录认证拦截器 -->  
-		<!-- <mvc:interceptors>  
+		<mvc:interceptors>  
 		    
 		    <mvc:interceptor>
 		        <mvc:mapping path="/**/*"/>
 		        <mvc:exclude-mapping path="/front/*"/>  
 		        <mvc:exclude-mapping path="/login/*"/>
+		        <mvc:exclude-mapping path="/index/*"/>
 		        <mvc:exclude-mapping path="/**/fonts/*"/>
 			    <mvc:exclude-mapping path="/**/*.css"/>
 			    <mvc:exclude-mapping path="/**/*.js"/>
@@ -58,7 +59,7 @@
 			    <mvc:exclude-mapping path="/**/*.jpeg"/>
 		        <bean class="com.Interceptor.HandlerInterceptor1"/>  
 		    </mvc:interceptor>  
-		</mvc:interceptors> -->
+		</mvc:interceptors>
 		
 		<!-- 配置任务扫描 -->
 		<!-- <task:annotation-driven /> -->

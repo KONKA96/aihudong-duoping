@@ -102,11 +102,11 @@ public class QianduanController {
 
 			teacher.setUsername(username);
 
-			teacher = this.teacherService.teacherLogin(teacher);
+			teacher = teacherService.teacherLogin(teacher);
 
 			student.setUsername(username);
 
-			student = this.studentService.studentLogin(student);
+			student = studentService.studentLogin(student);
 
 			screen.setUsername(username);
 

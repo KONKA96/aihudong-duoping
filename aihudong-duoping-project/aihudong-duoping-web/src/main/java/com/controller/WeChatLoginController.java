@@ -90,6 +90,7 @@ public class WeChatLoginController {
 			modelMap.put("code", Integer.valueOf(200));
 			modelMap.put("serverhost", state);
 			modelMap.put("openid", openid);
+			modelMap.put("message", "您未绑定账号，请先绑定！");
 			return "redirect:https://" + state + "/html5client/login";
 		}
 		Record record = new Record();

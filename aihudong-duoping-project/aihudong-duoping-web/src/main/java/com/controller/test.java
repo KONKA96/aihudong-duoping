@@ -4,7 +4,6 @@ package com.controller;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -20,8 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.model.Admin;
 import com.model.Logger;
+import com.model.Screen;
 import com.service.AdminService;
-import com.util.HttpUtil;
+import com.service.ScreenService;
 
 @Controller
 @RequestMapping("/login")
@@ -32,6 +32,8 @@ public class test {
 	private String httpUrl;
 	@Value("${salt}")
 	private String salt;
+	@Autowired
+	private ScreenService screenService;
 	
 	@Autowired AdminService adminService;
 	
@@ -87,4 +89,29 @@ public class test {
 		}
 	}
 	
+	
+	@RequestMapping("/insertScreen")
+	public String insertScreen() {
+		for (int i = 30; i < 100; i++) {
+			Screen screen =new Screen();
+			screen.setId("sc"+i);
+			screen.setUsername("00"+i);
+			screen.setPassword("123");
+			screen.setAdminId(1);
+			screen.setType("1");
+			screen.setRoomId("e4f76ac3-59eb-4437-a557-2c2f62d99714");
+			screenService.insertSelective(screen);
+		}
+		return "";
+	}
+	
+	@RequestMapping("/deleteScreen")
+	public String deleteScreen() {
+		for (int i = 30; i < 100; i++) {
+			Screen screen =new Screen();
+			screen.setId("sc"+i);
+			screenService.deleteByPrimaryKey(screen);
+		}
+		return "";
+	}
 }
