@@ -1,6 +1,10 @@
 package com.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -19,9 +23,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.model.Admin;
 import com.model.Logger;
+import com.model.Room;
 import com.model.Screen;
 import com.service.AdminService;
+import com.service.RoomService;
 import com.service.ScreenService;
+import com.util.ProduceId;
+import com.util.ProduceUsername4;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/login")
@@ -34,6 +44,8 @@ public class test {
 	private String salt;
 	@Autowired
 	private ScreenService screenService;
+	@Autowired
+	private RoomService roomService;
 	
 	@Autowired AdminService adminService;
 	
@@ -113,5 +125,71 @@ public class test {
 			screenService.deleteByPrimaryKey(screen);
 		}
 		return "";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/addScreenSelected")
+	public String addScreenSelected(@RequestParam String roomNum,@RequestParam String screenNum) {
+		List<Room> roomList=new ArrayList<>();
+		
+		List<String> usernameList = screenService.selectAllUsername();
+		for(int i=0;i<Integer.parseInt(roomNum);i++) {
+			List<String> selectAllId = roomService.selectAllId();
+			
+			Room room=new Room();
+			while(true) {
+				String roomName = getRandom(1000,9999);
+				if(!selectAllId.contains(roomName)) {
+					room.setId(roomName);
+					room.setNum(roomName);
+					room.setBuildingId(2);
+					
+					roomService.insertSelective(room);
+					
+					List<Screen> screenList=new ArrayList<>();
+					
+					
+			    	
+			    	List<String> usernameNewList=ProduceUsername4.produceScreenUsername(usernameList, Integer.parseInt(screenNum));
+			    	List<String> screenIdList = screenService.selectAllId();
+					for (String usernameScreen : usernameNewList) {
+						Screen screen=new Screen();
+						String newId=ProduceId.produceUserId(screenIdList);
+						screenIdList.add(newId);
+						screen.setId(newId);
+						screen.setUsername(usernameScreen);
+						usernameList.add(usernameScreen);
+						screen.setPassword("123");
+						
+						screen.setRoomId(roomName);
+						screen.setAdminId(1);
+						screen.setType("1");
+						
+						screenList.add(screen);
+						
+						screenService.insertSelective(screen);
+					}
+					
+					room.setScreenList(screenList);
+			    	
+					roomList.add(room);
+					
+			    	break;
+				}
+			}
+			
+		}
+		
+		JSONObject jsonObject=new JSONObject();
+		jsonObject.put("roomList", roomList);
+		
+		return jsonObject.toString();
+	}
+	
+	public static String getRandom(int min, int max){
+	    Random random = new Random();
+	    int s = random.nextInt(max) % (max - min + 1) + min;
+	    return String.valueOf(s);
+
 	}
 }

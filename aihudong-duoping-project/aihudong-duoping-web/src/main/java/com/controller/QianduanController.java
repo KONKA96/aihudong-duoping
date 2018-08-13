@@ -140,7 +140,7 @@ public class QianduanController {
 			record.setUserId(teacher.getId());
 			record.setRole(Integer.valueOf(1));
 			argMap.put("role", Integer.valueOf(1));
-			if (openid != null) {
+			if (openid != null && openid != "") {
 				teacher.setOpenId(openid);
 				teacher.setPassword(null);
 				this.teacherService.updateTeacherSelected(teacher);
@@ -190,7 +190,7 @@ public class QianduanController {
 
 			record.setUserId(student.getId());
 			record.setRole(Integer.valueOf(2));
-			if (openid != null) {
+			if (openid != null && openid != "") {
 				student.setOpenId(openid);
 				student.setPassword(null);
 				this.studentService.updateByPrimaryKeySelective(student);
