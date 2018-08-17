@@ -101,8 +101,12 @@ public class test {
 		}
 	}
 	
+	@RequestMapping("/testLunbo")
+	public String testLunbo() {
+		return "/lunbomessage";
+	}
 	
-	@RequestMapping("/insertScreen")
+	/*@RequestMapping("/insertScreen")
 	public String insertScreen() {
 		for (int i = 30; i < 100; i++) {
 			Screen screen =new Screen();
@@ -125,8 +129,14 @@ public class test {
 			screenService.deleteByPrimaryKey(screen);
 		}
 		return "";
-	}
+	}*/
 	
+	/**
+	 * 新增房间、屏幕（接口）
+	 * @param roomNum 需要生成的房间数量
+	 * @param screenNum 需要生成的屏幕数量
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/addScreenSelected")
 	public String addScreenSelected(@RequestParam String roomNum,@RequestParam String screenNum) {
@@ -186,6 +196,12 @@ public class test {
 		return jsonObject.toString();
 	}
 	
+	/**
+	 * 获取一定范围内的随机数
+	 * @param min 最小值
+	 * @param max 最大值
+	 * @return
+	 */
 	public static String getRandom(int min, int max){
 	    Random random = new Random();
 	    int s = random.nextInt(max) % (max - min + 1) + min;

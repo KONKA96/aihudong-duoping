@@ -188,6 +188,7 @@ public class QianduanController {
 			String sessionId = session.getId();
 			student.setSessionId(sessionId);
 
+			argMap.put("role", Integer.valueOf(2));
 			record.setUserId(student.getId());
 			record.setRole(Integer.valueOf(2));
 			if (openid != null && openid != "") {

@@ -250,6 +250,7 @@ public class AdminController {
     	Admin shangji=new Admin();
     	shangji.setId(admin.getHigherId());
     	shangji=adminService.selectByPrimaryKey(shangji);
+    	shangji.setPassword(null);
     	shangji.setScreenRemain(shangji.getScreenRemain()+admin.getScreenRemain());
     	adminService.updateByPrimaryKeySelective(shangji);
 //    	进行删除
@@ -335,9 +336,11 @@ public class AdminController {
         		return "error2";
         	}
         	YijiAdmin.setScreenRemain(YijiAdmin.getScreenRemain()-changeNum);
+        	YijiAdmin.setPassword(null);
         	adminService.updateByPrimaryKeySelective(YijiAdmin);
         	erjiAdminOld.setScreenNum(admin.getScreenNum());
         	erjiAdminOld.setScreenRemain(erjiAdminOld.getScreenRemain()+changeNum);
+        	erjiAdminOld.setPassword(null);
         	if(admin.getId()!=null){
         		if(adminService.updateByPrimaryKeySelective(erjiAdminOld)>0){
         			logger.info(Sjadmin.getUsername()+"进行屏幕数量分配操作,"+erjiAdminOld.getUsername()+"的剩余屏幕数为:"+erjiAdminOld.getScreenRemain());
@@ -364,6 +367,7 @@ public class AdminController {
     		}
     		genjiAdmin.setScreenRemain(genjiAdmin.getScreenRemain()-changeNum);
     		session.setAttribute("admin", genjiAdmin);
+    		genjiAdmin.setPassword(null);
     		adminService.updateByPrimaryKeySelective(genjiAdmin);
     		
     		yijiAdminOld.setScreenNum(admin.getScreenNum());
@@ -399,6 +403,7 @@ public class AdminController {
         		return "error";
         	}
         	YijiAdmin.setScreenRemain(YijiAdmin.getScreenRemain()-admin.getScreenNum());
+        	YijiAdmin.setPassword(null);
         	adminService.updateByPrimaryKeySelective(YijiAdmin);
         	admin.setScreenRemain(admin.getScreenNum());
         	if(adminService.insertSelective(admin)>0){
@@ -411,6 +416,7 @@ public class AdminController {
     			return "error";
     		}
     		genjiAdmin.setScreenRemain(genjiAdmin.getScreenRemain()-admin.getScreenNum());
+    		genjiAdmin.setPassword(null);
     		adminService.updateByPrimaryKeySelective(genjiAdmin);
     		session.setAttribute("admin", genjiAdmin);
     		admin.setScreenRemain(admin.getScreenNum());

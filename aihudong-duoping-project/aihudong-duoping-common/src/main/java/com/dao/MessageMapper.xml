@@ -196,6 +196,9 @@
     	<if test="messageName!='' and messageName!=null">
     		and m.message_name like concat('%',#{messageName},'%')
     	</if>
+    	<if test="roomId!=null">
+    		and m.room_id like concat ('%',#{roomId},'%')
+    	</if>
     </where>
   </select>
 </mapper>

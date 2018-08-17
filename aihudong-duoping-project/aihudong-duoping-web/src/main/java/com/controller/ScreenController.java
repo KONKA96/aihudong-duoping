@@ -548,7 +548,7 @@ public class ScreenController {
         String title = "屏幕信息";
         
         //定义表的列名
-        String[] rowsName = new String[] { "校区", "教学楼", "教室", "ID号", "屏幕登录名", "屏幕登录密码" ,"屏幕类型"};
+        String[] rowsName = new String[] { "校区", "教学楼", "教室", "ID号", "屏幕登录名" ,"屏幕类型"};
         
         //定义表的内容
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -563,7 +563,6 @@ public class ScreenController {
             objs[2] = sc.getRoom().getNum();
             objs[3] = sc.getId();
             objs[4] = sc.getUsername();
-            objs[5] = sc.getPassword();
             if(sc.getType().equals("1")) {
             	objs[6]="触摸屏";
             }else if(sc.getType().equals("2")){

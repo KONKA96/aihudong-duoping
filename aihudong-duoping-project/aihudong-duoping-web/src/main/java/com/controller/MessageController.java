@@ -52,6 +52,39 @@ public class MessageController {
 	private PageUtil pageUtil;
 	
 	/**
+	 * 消息推送对接接口
+	 * @param roomId 房间id
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping("/showMessages")
+	public String showMessages(@RequestParam String roomId,ModelMap modelMap) {
+		Room room=new Room();
+		room.setId(roomId);
+		room=roomService.selectScreenByRoom(room);
+		//房间不存在
+		if(room==null) {
+			return "";
+		}
+		
+		Map<String,Object> map=new HashMap<>();
+		
+		map.put("roomId", room.getId());
+		
+		List<Message> messageList = messageService.selectAllMessage(map);
+		String picString = messageList.get(0).getMessagePic();
+		String[] pic = picString.split(",");
+		
+		List<String> picList=new ArrayList<>();
+		for (String string : pic) {
+			picList.add(string);
+		}
+		
+		modelMap.addAttribute("picList", picList);
+		return "/lunbomessage";
+	}
+	
+	/**
 	 * 查询所有消息
 	 * @param message
 	 * @param modelMap
