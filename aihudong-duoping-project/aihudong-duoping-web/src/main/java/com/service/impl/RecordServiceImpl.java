@@ -117,4 +117,22 @@ public class RecordServiceImpl implements RecordService {
 		return recordMapper.selectByPrimaryKey(record.getId());
 	}
 
+	@Override
+	public List<Record> selectTeacherRecord(Record record) {
+		// TODO Auto-generated method stub
+		return recordMapper.selectTeacherRecord(record);
+	}
+
+	@Override
+	public List<Record> selectStudentRecord(Record record) {
+		// TODO Auto-generated method stub
+		return recordMapper.selectStudentRecord(record);
+	}
+
+	@Override
+	public List<Record> selectScreenRecord(Record record) {
+		// TODO Auto-generated method stub
+		return recordMapper.selectScreenRecord(record);
+	}
+
 }

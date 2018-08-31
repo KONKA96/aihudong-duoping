@@ -172,4 +172,61 @@
   		id, user_id, screen_id, role, system_id, start_time, end_time
   	from record where role=4
   </select>
+  
+  <select id="selectTeacherRecord" resultType="Record" parameterType="java.util.Map">
+  	select
+  		r.id r_id, r.user_id, r.screen_id, r.role, r.system_id, r.start_time, r.end_time,
+  		t.id t_id, t.username, t.truename
+  	from record r left join teacher t on t.id=r.user_id
+  	<where>
+  		<if test="role!=null">
+  			and r.role=#{role}
+  		</if>
+  		<if test="userId!=null">
+  			and r.user_id=#{userId}
+  		</if>
+  		<if test="username!='' and username!=null">
+  			and t.username like concat ('%',#{username},'%')
+  		</if>
+  	</where>
+  	ORDER BY r.id DESC
+  </select>
+  
+  <select id="selectStudentRecord" resultType="Record" parameterType="java.util.Map">
+  	select
+  		r.id r_id, r.user_id, r.screen_id, r.role, r.system_id, r.start_time, r.end_time,
+  		s.id s_id, s.username, s.truename
+  	from record r left join student s on s.id=r.user_id
+  	<where>
+  		<if test="role!=null">
+  			and r.role=#{role}
+  		</if>
+  		<if test="userId!=null">
+  			and r.user_id=#{userId}
+  		</if>
+  		<if test="username!='' and username!=null">
+  			and s.username like concat ('%',#{username},'%')
+  		</if>
+  	</where>
+  	ORDER BY r.id DESC
+  </select>
+  
+  <select id="selectScreenRecord" resultType="Record" parameterType="java.util.Map">
+  	select
+  		r.id r_id, r.user_id, r.screen_id, r.role, r.system_id, r.start_time, r.end_time,
+  		s.id s_id, s.username
+  	from record r left join screen s on s.id=r.user_id
+  	<where>
+  		<if test="role!=null">
+  			and r.role=#{role}
+  		</if>
+  		<if test="userId!=null">
+  			and r.user_id=#{userId}
+  		</if>
+  		<if test="username!='' and username!=null">
+  			and s.username like concat ('%',#{username},'%')
+  		</if>
+  	</where>
+  	ORDER BY r.id DESC
+  </select>
 </mapper>

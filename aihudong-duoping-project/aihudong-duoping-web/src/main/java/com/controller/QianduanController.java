@@ -145,6 +145,14 @@ public class QianduanController {
 				teacher.setPassword(null);
 				this.teacherService.updateTeacherSelected(teacher);
 			}
+			
+			//统计在线人数
+			Object tcount = servletContext.getAttribute("tcount");
+			if(tcount==null) {
+				servletContext.setAttribute("tcount", 1);
+			}else {
+				servletContext.setAttribute("tcount", tcount.toString()+1);
+			}
 		} else if (selectAllScreen.size() != 0) {
 			if (!((Screen) selectAllScreen.get(0)).getPassword()
 					.equals(new Md5Hash(password, username, 2).toString())) {
@@ -195,6 +203,13 @@ public class QianduanController {
 				student.setOpenId(openid);
 				student.setPassword(null);
 				this.studentService.updateByPrimaryKeySelective(student);
+			}
+			//统计在线人数
+			Object scount = servletContext.getAttribute("scount");
+			if(scount==null) {
+				servletContext.setAttribute("scount", 1);
+			}else {
+				servletContext.setAttribute("scount", scount.toString()+1);
 			}
 		}
 		session.setMaxInactiveInterval(-1);
@@ -259,9 +274,9 @@ public class QianduanController {
 		int role = (int) session.getAttribute("role");
 		String userId = (String) session.getAttribute("userId");
 		if (role == 1) {
-			teaLogout(userId, hour, minute, sec);
+			teaLogout(userId, hour, minute, sec, servletContext);
 		} else if (role == 2) {
-			stuLogout(userId, hour, minute, sec);
+			stuLogout(userId, hour, minute, sec, servletContext);
 
 		} else if (role == 4) {
 			screenLogout(userId, hour, minute, sec);
@@ -287,7 +302,7 @@ public class QianduanController {
 		 */
 	}
 
-	public void teaLogout(String userId, int hour, int minute, int sec) {
+	public void teaLogout(String userId, int hour, int minute, int sec, ServletContext servletContext) {
 		Teacher teacher = new Teacher();
 		teacher.setId(userId);
 		teacher = teacherService.selectTeacherById(teacher);
@@ -296,10 +311,13 @@ public class QianduanController {
 
 		teacher.setTimes(teacher.getTimes() + 1);
 		teacher.setDuration(countTime(duration, hour, minute, sec));
+		//统计在线人数
+		String tcount = (String) servletContext.getAttribute("tcount");
+		servletContext.setAttribute("tcount", Integer.parseInt(tcount)-1);
 		teacherService.updateTeacherSelected(teacher);
 	}
 
-	public void stuLogout(String userId, int hour, int minute, int sec) {
+	public void stuLogout(String userId, int hour, int minute, int sec, ServletContext servletContext) {
 		Student student = new Student();
 		student.setId(userId);
 		student = studentService.selectByPrimaryKey(student);
@@ -307,6 +325,9 @@ public class QianduanController {
 
 		student.setTime(student.getTime() + 1);
 		student.setDuration(countTime(duration, hour, minute, sec));
+		//统计在线人数
+		String scount = (String) servletContext.getAttribute("scount");
+		servletContext.setAttribute("scount", Integer.parseInt(scount)-1);
 		studentService.updateByPrimaryKeySelective(student);
 	}
 

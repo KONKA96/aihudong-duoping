@@ -6,6 +6,12 @@ import java.util.Map;
 import com.model.Record;
 
 public interface RecordService {
+	List<Record> selectTeacherRecord(Record record);
+	
+	List<Record> selectStudentRecord(Record record);
+	
+	List<Record> selectScreenRecord(Record record);
+	
 	List<Record> selectAllScreenRecord(Record record);
 	
 	Map<String,Integer> selectRecord(Map<String,Object> map);

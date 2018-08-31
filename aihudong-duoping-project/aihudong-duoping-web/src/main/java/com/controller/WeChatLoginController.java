@@ -12,6 +12,8 @@ import com.util.JsonUtils;
 import java.io.PrintStream;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.sf.json.JSONObject;
@@ -66,6 +68,8 @@ public class WeChatLoginController {
 	@RequestMapping({ "/getAccessToken" })
 	public String getAccessToken(@RequestParam String code, @RequestParam String state, HttpSession session,
 			ModelMap modelMap) {
+		ServletContext servletContext = session.getServletContext();
+		
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token";
 		String param = "appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 		param = param.replace("APPID", this.appid);
@@ -101,6 +105,14 @@ public class WeChatLoginController {
 			record.setRole(Integer.valueOf(1));
 			modelMap.put("role", Integer.valueOf(1));
 			modelMap.put("username", teacher.getUsername());
+			
+			//统计在线人数
+			Object tcount = servletContext.getAttribute("tcount");
+			if(tcount==null) {
+				servletContext.setAttribute("tcount", 1);
+			}else {
+				servletContext.setAttribute("tcount", tcount.toString()+1);
+			}
 		} else if (studentList.size() != 0) {
 			student = (Student) studentList.get(0);
 
@@ -108,6 +120,14 @@ public class WeChatLoginController {
 			record.setRole(Integer.valueOf(2));
 			modelMap.put("role", Integer.valueOf(2));
 			modelMap.put("username", student.getUsername());
+			
+			//统计在线人数
+			Object scount = servletContext.getAttribute("scount");
+			if(scount==null) {
+				servletContext.setAttribute("scount", 1);
+			}else {
+				servletContext.setAttribute("scount", scount.toString()+1);
+			}
 		}
 		modelMap.put("code", Integer.valueOf(200));
 		modelMap.put("serverhost", state);
@@ -123,6 +143,8 @@ public class WeChatLoginController {
 		session.setAttribute("startTime", record.getStartTime());
 		session.setAttribute("role", record.getRole());
 		session.setAttribute("userId", record.getUserId());
+		
+		
 
 		return "redirect:https://" + state + "/html5client/login";
 	}

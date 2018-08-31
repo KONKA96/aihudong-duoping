@@ -16,8 +16,18 @@ public class Record {
     private Date startTime;
 
     private Date endTime;
+    
+    private String username;
 
-    public Integer getId() {
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -72,4 +82,11 @@ public class Record {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+
+	@Override
+	public String toString() {
+		return "Record [id=" + id + ", userId=" + userId + ", screenId=" + screenId + ", role=" + role + ", systemId="
+				+ systemId + ", startTime=" + startTime + ", endTime=" + endTime + ", username=" + username + "]";
+	}
+    
 }
