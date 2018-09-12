@@ -18,6 +18,11 @@ import com.service.RecordService;
 
 import net.sf.json.JSONObject;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/record")
 public class RecordController {

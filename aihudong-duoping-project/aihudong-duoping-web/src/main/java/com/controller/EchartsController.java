@@ -31,6 +31,11 @@ import com.service.TeacherService;
 
 import net.sf.json.JSONObject;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/echarts")
 public class EchartsController {
@@ -57,7 +62,8 @@ public class EchartsController {
 	 */
 	@RequestMapping(value="/getEchartsData",produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String getEchartsData(@RequestParam(required=true,defaultValue="1") Integer category,@RequestParam(required=false)String subjectId,
+	public String getEchartsData(@RequestParam(required=true,defaultValue="1") Integer category,
+			@RequestParam(required=false)String subjectId,
 			@RequestParam(required=true,defaultValue="7") String interval,String time,String bingfa,
 			@RequestParam(required=false,defaultValue="1")String facultyId,HttpSession session){
 //		不知道为啥，传过来的参数有的时候居然会带逗号，不信就把下面的if去掉

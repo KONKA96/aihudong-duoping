@@ -33,6 +33,11 @@ import com.util.ProduceUsername4;
 
 import net.sf.json.JSONObject;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/login")
 public class test {

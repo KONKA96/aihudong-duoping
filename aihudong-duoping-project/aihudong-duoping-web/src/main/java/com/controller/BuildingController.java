@@ -14,6 +14,11 @@ import com.model.Building;
 import com.model.Logger;
 import com.service.BuildingService;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/building")
 public class BuildingController {

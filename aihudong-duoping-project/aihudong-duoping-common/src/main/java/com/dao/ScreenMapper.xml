@@ -203,7 +203,7 @@
 				and sc.sid=#{sid}
 			</if>
 		</where> 
-		order by zo.id,bu.id,ro.id 
+		order by zo.id,bu.id,ro.id,sc.id 
   </select>
   
   <select id="selectScreenByZoneOrBuilding" parameterType="java.util.Map" resultMap="screenMap">

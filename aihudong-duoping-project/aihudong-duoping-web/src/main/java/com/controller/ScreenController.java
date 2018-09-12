@@ -49,6 +49,11 @@ import com.util.StringRandom;
 
 import net.sf.json.JSONObject;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/screen")
 public class ScreenController {

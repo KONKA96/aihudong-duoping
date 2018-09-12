@@ -32,6 +32,11 @@ import com.service.impl.AdminServiceImpl;
 import com.util.JsonUtils;
 import com.util.PageUtil;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {

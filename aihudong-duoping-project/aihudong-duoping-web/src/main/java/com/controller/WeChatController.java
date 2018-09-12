@@ -39,6 +39,11 @@ import net.sf.json.JSONObject;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/WeChat")
 public class WeChatController {

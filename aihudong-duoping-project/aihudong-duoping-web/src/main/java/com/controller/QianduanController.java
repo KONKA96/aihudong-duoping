@@ -40,6 +40,11 @@ import com.util.StringRandom;
 import com.util.XMLUtil;
 import com.util.bbbApi;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/front")
 public class QianduanController {
@@ -93,17 +98,19 @@ public class QianduanController {
 
 		argMap.put("username", username);
 		
-		Teacher teacher = new Teacher();
+		Teacher teacher = null;
 		Screen screen = new Screen();
-		Student student = new Student();
+		Student student 
+		= null;
 		List<Screen> selectAllScreen = new ArrayList<>();
 		if (username != null) {
 			modelMap.put("username", username);
-
+			teacher = new Teacher();
 			teacher.setUsername(username);
 
 			teacher = teacherService.teacherLogin(teacher);
 
+			student = new Student();
 			student.setUsername(username);
 
 			student = studentService.studentLogin(student);
@@ -112,7 +119,17 @@ public class QianduanController {
 
 			selectAllScreen = screenService.selectAllScreen(screen);
 			
-		} else {
+		}else if (sid != null) {
+			screen.setSid(sid);
+			selectAllScreen = screenService.selectAllScreen(screen);
+			if(selectAllScreen.size()>1) {
+				argMap.put("code", Integer.valueOf(1004));
+				argMap.put("message", "该机器绑定多个屏幕，请联系管理员!");
+				return JsonUtils.objectToJson(argMap);
+			}
+		}
+		
+		else {
 			argMap.put("code", Integer.valueOf(1002));
 			argMap.put("message", "用户名为空");
 			return JsonUtils.objectToJson(argMap);
@@ -120,7 +137,7 @@ public class QianduanController {
 		Record record = new Record();
 		if ((teacher == null) && (selectAllScreen.size() == 0) && (student == null)) {
 			argMap.put("code", Integer.valueOf(1001));
-			argMap.put("message", "用户名不存在");
+			argMap.put("message", "用户不存在");
 			return JsonUtils.objectToJson(argMap);
 		}
 		if ((teacher != null) && (teacher.getUsername() != null)) {
@@ -154,12 +171,16 @@ public class QianduanController {
 				servletContext.setAttribute("tcount", tcount.toString()+1);
 			}
 		} else if (selectAllScreen.size() != 0) {
-			if (!((Screen) selectAllScreen.get(0)).getPassword()
+			if (password != null && !((Screen) selectAllScreen.get(0)).getPassword()
 					.equals(new Md5Hash(password, username, 2).toString())) {
 				argMap.put("code", Integer.valueOf(1002));
 				argMap.put("message", "密码错误");
 				return JsonUtils.objectToJson(argMap);
 			}
+			
+
+			argMap.put("username", selectAllScreen.get(0).getUsername());
+			
 			screen = (Screen) selectAllScreen.get(0);
 			session.setAttribute("screen", screen);
 			String stringRandom = StringRandom.getStringRandom(3);
@@ -175,11 +196,11 @@ public class QianduanController {
 			record.setUserId(screen.getId());
 			record.setRole(Integer.valueOf(4));
 			screen = (Screen) selectAllScreen.get(0);
-			Room room = this.roomService.selectScreenByRoom(screen.getRoom());
+			Room room = roomService.selectScreenByRoom(screen.getRoom());
 			argMap.put("role", Integer.valueOf(4));
 			argMap.put("meetingName", room.getNum());
 			
-			if ((selectAllScreen.size() != 0) && (((Screen) selectAllScreen.get(0)).getSid() == null)) {
+			if ((selectAllScreen.size() != 0) && (((Screen) selectAllScreen.get(0)).getSid() == null) && (sid != null)) {
 				selectAllScreen.get(0).setSid(sid);
 				selectAllScreen.get(0).setPassword(null);
 				screenService.updateByPrimaryKeySelective(selectAllScreen.get(0));

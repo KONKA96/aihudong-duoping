@@ -36,6 +36,11 @@ import com.util.ImportExcelUtil;
 import com.util.PageUtil;
 import com.util.ProduceId;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/student")
 public class StudentController {
@@ -185,7 +190,12 @@ public class StudentController {
 				}
 			}
 			if(studentService.updateByPrimaryKeySelective(student)>0){
-				logger.info(SjAdmin.getUsername()+"修改了学生:"+student.getId()+"的信息");
+				try {
+					logger.info(SjAdmin.getUsername()+"修改了学生:"+student.getId()+"的信息");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return "success";
 			}
 		}else{
@@ -212,7 +222,12 @@ public class StudentController {
 				student.setPassword(defaultPwd);
 			}
 			if(studentService.insertSelective(student)>0){
-				logger.info(SjAdmin.getUsername()+"添加学生:"+student.getUsername());
+				try {
+					logger.info(SjAdmin.getUsername()+"添加学生:"+student.getUsername());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return "success";
 			}
 		}
@@ -230,7 +245,12 @@ public class StudentController {
 	public String deleteStudent(Student student,HttpSession session){
 		Admin SjAdmin=(Admin) session.getAttribute("admin");
 		if(studentService.deleteByPrimaryKey(student)>0){
-			logger.info(SjAdmin.getUsername()+"删除学生:"+student.getId());
+			try {
+				logger.info(SjAdmin.getUsername()+"删除学生:"+student.getId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return "success";
 		}
 		return "error";

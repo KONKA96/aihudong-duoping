@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -38,6 +39,11 @@ import com.util.JsonUtils;
 import com.util.PageUtil;
 import com.util.ProduceId;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/teacher")
 public class TeacherController {
@@ -171,6 +177,7 @@ public class TeacherController {
 	public String updateInfo(Teacher teacher,HttpSession session){
 		List<Teacher> teacherList = teacherService.selectAllTeacher(null);
 		Admin admin=(Admin) session.getAttribute("admin");
+		logger.info("admin:"+admin);
 		for (Teacher tea : teacherList) {
 			if(tea.getUsername().equals(teacher.getUsername())&& !tea.getId().equals(teacher.getId())){
 				logger.info(admin.getUsername()+"修改失败，用户名重复");
@@ -187,7 +194,12 @@ public class TeacherController {
 		if(teacher.getId()!=null && teacher.getId()!=""){
 			
 			if(teacherService.updateTeacherSelected(teacher)>0){
-				logger.info(admin.getUsername()+"修改了"+teacher.getId()+"的信息");
+				try {
+					logger.info(admin.getUsername()+"修改了"+teacher.getId()+"的信息");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return "success";
 			}
 		}else{
@@ -206,7 +218,12 @@ public class TeacherController {
 				teacher.setPassword(defaultPwd);
 			}
 			if(teacherService.insertTeacherSelected(teacher)>0){
-				logger.info(admin.getUsername()+"添加了教师:"+teacher.getUsername());
+				try {
+					logger.info(admin.getUsername()+"添加了教师:"+teacher.getUsername());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return "success";
 			}
 		}
@@ -220,10 +237,17 @@ public class TeacherController {
 	 */
 	@ResponseBody
 	@RequestMapping("/deleteTeacher")
-	public String deleteTeacher(Teacher teacher,HttpSession session){
+	public String deleteTeacher(Teacher teacher,HttpServletResponse response,HttpSession session){
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Admin admin=(Admin) session.getAttribute("admin");
 		if(teacherService.deleteTeacherById(teacher)>0){
-			logger.info(admin.getUsername()+"删除了教师:"+teacher.getId());
+			try {
+				logger.info(admin.getUsername()+"删除了教师:"+teacher.getId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return "success";
 		}
 		return "error";

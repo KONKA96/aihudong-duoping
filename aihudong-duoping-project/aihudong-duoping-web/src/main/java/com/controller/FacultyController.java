@@ -15,6 +15,11 @@ import com.model.Logger;
 import com.service.FacultyService;
 import com.util.JsonUtils;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/faculty")
 public class FacultyController {

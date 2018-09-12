@@ -36,6 +36,11 @@ import com.service.ZoneService;
 import com.util.JsonUtils;
 import com.util.PageUtil;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/message")
 public class MessageController {

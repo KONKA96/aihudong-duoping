@@ -14,6 +14,11 @@ import com.model.Logger;
 import com.model.Subject;
 import com.service.SubjectService;
 
+/**
+ * 
+ * @author KONKA
+ *
+ */
 @Controller
 @RequestMapping("/subject")
 public class SubjectController {
