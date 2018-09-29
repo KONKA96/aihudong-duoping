@@ -7,11 +7,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +30,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.model.Admin;
+import com.model.Faculty;
 import com.model.Logger;
 import com.model.Record;
 import com.model.Screen;
 import com.model.Student;
+import com.model.Subject;
 import com.model.Teacher;
 import com.service.AdminService;
 import com.service.RecordService;
@@ -80,6 +89,233 @@ public class AiviewsController {
 		session.setAttribute("admin", admin);
 		logger.info("爱视界管理员"+admin.getUsername()+"远程登录系统");
 	}
+	
+	/**
+	 * 远程接口查询图表数据
+	 * @author KONKA
+	 * @param category
+	 * @param subjectId
+	 * @param interval
+	 * @param time
+	 * @param bingfa
+	 * @param facultyId
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getEcharts")
+	public String getEcharts(@RequestParam(required=false,defaultValue="1") Integer category,
+			@RequestParam(required=false)String subjectId,
+			@RequestParam(required=false,defaultValue="7") String interval,String time,String bingfa,
+			@RequestParam(required=false,defaultValue="1")String facultyId,HttpSession session,
+			HttpServletResponse response) {
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
+//		不知道为啥，传过来的参数有的时候居然会带逗号，不信就把下面的if去掉
+		if(interval.contains(",")){
+			interval = interval.substring(0,interval.length() - 1);
+		}
+//		存放符合条件对象的id集合
+		List<String> idList=new ArrayList<>();
+//		区分不同的角色
+//		1 ---》教师
+//		4 ---》屏幕
+//		2 ---》学生
+//		获取使用时长的集合
+		Map<String,Object> map=new HashMap<>();
+		Admin admin = new Admin();
+		admin.setPower(0);
+		List<Teacher> teacherList=new ArrayList<>();
+		if(1==category){
+			Teacher teacher=new Teacher();
+			
+			teacherList = teacherService.selectAllTeacher(teacher);
+			for (Teacher t : teacherList) {
+				idList.add(t.getId());
+			}
+			map.put("interval", Integer.parseInt(interval));
+		}else if(4==category){
+			List<Screen> screenList = screenService.selectAllScreen(null);
+			for (Screen screen : screenList) {
+				idList.add(screen.getId());
+			}
+			map.put("interval", 1);
+		}else if(2==category){
+			map.put("interval", Integer.parseInt(interval));
+			Map<String,Object> adminMap=new HashMap<>();
+			
+			List<Student> studentList = studentService.selectAllStudent(null);
+				
+			for (Student student : studentList) {
+				idList.add(student.getId());
+			}
+		}
+		
+
+		map.put("role", category);
+		map.put("userId", idList);
+		
+		if(time!=null&&time!=""){
+			map.put("time", time);
+		}
+		Map<String, Integer> recordMap=new LinkedHashMap<>();
+		
+		
+//		向图表中设置字段和值的集合
+		List<String> xAxisData = new ArrayList<String>();  
+        List< JSONObject> seriesList = new ArrayList< JSONObject>(); 
+        
+//      表格中字段的单位
+        String type="";
+		if("2".equals(bingfa)){
+			map.put("bingfa", bingfa);
+			recordMap=recordService.selectBingfa(map);
+			Set<Entry<String, Integer>> set = recordMap.entrySet();
+			for (Entry<String, Integer> entry : set) {
+				xAxisData.add(entry.getKey());
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("hour", entry.getValue());
+				seriesList.add(jsonObject);
+			}
+			type="次";
+		}else{
+			recordMap = recordService.selectRecord(map);
+			Set<Entry<String, Integer>> set = recordMap.entrySet();
+			for (Entry<String, Integer> entry : set) {
+				Integer hour = entry.getValue();
+				if(hour!=null){
+					String hourString = hour.toString();
+					if(hourString.length()>4){
+						String substring = hourString.substring(0, hourString.length()-4);
+						hour=Integer.parseInt(substring);
+					}else{
+						hour=1;
+					}
+				}else{
+					hour=0;
+				}
+				entry.setValue(hour);
+				xAxisData.add(entry.getKey());
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("hour", entry.getValue());
+				seriesList.add(jsonObject);
+			}
+			type="h";
+		}
+		Collections.reverse(seriesList);
+		Collections.reverse(xAxisData);
+		//xAxisData和seriesList转为json 
+		JSONObject jsonObject1 = new JSONObject();  
+		   
+		jsonObject1.put("xAxisData", xAxisData);  
+		   
+		jsonObject1.put("seriesList", seriesList);
+		jsonObject1.put("type", type);
+		return jsonObject1.toString();
+	}
+	
+	/**
+	 * 查询用产品时长最多的前几位教师
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getTeacherOrderByTime",produces = "text/json;charset=UTF-8")
+	public String getTeacherOrderByTime(HttpSession session,HttpServletResponse response){
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
+		Record record=new Record();
+		record.setRole(1);
+		Map<String,Object> adminMap=new HashMap<>();
+		adminMap.put("role", record.getRole());
+		List<Map<String,Object>> teacherRecordList = recordService.selectTeacherOrderByTime(adminMap);
+		for (int i = 0; i < teacherRecordList.size(); i++) {
+			Map<String, Object> map = teacherRecordList.get(0);
+			teacherRecordList.remove(0);
+			Object object = map.get("time");
+			String time = "";
+			if(object==null) {
+				time="1";
+			}else {
+				time=object.toString(); 
+//				截字符串 00:00:00 只获取小时，不足一小时的按一小时算，没有用过的记0
+				if(Integer.parseInt(time)>Integer.valueOf(3600)){
+					Integer hourTime = Integer.parseInt(time)/3600;
+					time=hourTime.toString();
+				}else if(time.length()>0){
+					time="1";
+				}else{
+					time="0";
+				}
+			}
+			map.put("time", time);
+			teacherRecordList.add(map);
+		}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("teacherRecordList", teacherRecordList);
+		return jsonObject.toString();
+	}
+	
+	/**
+	 * 查询用产品时长最多的前几名学生
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getStudentOrderByTime",produces = "text/json;charset=UTF-8")
+	public String getStudentOrderByTime(HttpSession session,HttpServletResponse response){
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
+		Record record=new Record();
+		record.setRole(3);
+		Map<String,Object> adminMap=new HashMap<>();
+		adminMap.put("role", record.getRole());
+		List<Map<String,Object>> studentRecordList = recordService.selectStudentOrderByTime(adminMap);
+		for (int i = 0; i < studentRecordList.size(); i++) {
+			Map<String, Object> map = studentRecordList.get(0);
+			studentRecordList.remove(0);
+			Object object = map.get("time");
+			String time=object.toString(); 
+			if(time.length()>=4){
+				time=time.substring(0, time.length()-4);
+			}else if(time.length()>0){
+				time="1";
+			}else{
+				time="0";
+			}
+			map.put("time", time);
+			studentRecordList.add(map);
+		}
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("studentRecordList", studentRecordList);
+		return jsonObject.toString();
+	}
+	
+	/**
+	 * 获取学生、教师、屏幕数量
+	 * @author KONKA
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getUserNum",produces="text/json;charset=UTF-8")
+	public String getUserNum(HttpServletResponse response) {
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		List<String> teaIdList = teacherService.selectAllId();
+		List<String> stuIdList = studentService.selectAllId();
+		List<String> scrIdList = screenService.selectAllId();
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("teacherNum", teaIdList.size());
+		jsonObject.put("studentNum", stuIdList.size());
+		jsonObject.put("screenNum", scrIdList.size());
+		return jsonObject.toString();
+	}
+	
 	/**
 	 * 远程接口查询教师信息
 	 * @param teacher
@@ -326,7 +562,10 @@ public class AiviewsController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/getOnlineNum",produces="text/json;charset=UTF-8")
-	public String getOnlineNum(String role,HttpServletRequest request) {
+	public String getOnlineNum(String role,HttpServletRequest request,HttpServletResponse response) {
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
 		ServletContext servletContext = request.getServletContext();
 		Object count=null;
 		if("1".equals(role)) {

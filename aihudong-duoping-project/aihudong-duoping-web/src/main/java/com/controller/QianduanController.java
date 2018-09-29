@@ -72,11 +72,9 @@ public class QianduanController {
 
 	/**
 	 * 用户登录
-	 * 
-	 * @param username
-	 *            用户名
-	 * @param password
-	 *            密码
+	 * @author KONKA
+	 * @param username 用户名
+	 * @param password 密码
 	 * @param response
 	 * @param request
 	 * @param modelMap
@@ -100,8 +98,7 @@ public class QianduanController {
 		
 		Teacher teacher = null;
 		Screen screen = new Screen();
-		Student student 
-		= null;
+		Student student = null;
 		List<Screen> selectAllScreen = new ArrayList<>();
 		if (username != null) {
 			modelMap.put("username", username);
@@ -168,7 +165,7 @@ public class QianduanController {
 			if(tcount==null) {
 				servletContext.setAttribute("tcount", 1);
 			}else {
-				servletContext.setAttribute("tcount", tcount.toString()+1);
+				servletContext.setAttribute("tcount", Integer.parseInt(tcount.toString())+1);
 			}
 		} else if (selectAllScreen.size() != 0) {
 			if (password != null && !((Screen) selectAllScreen.get(0)).getPassword()
@@ -230,7 +227,7 @@ public class QianduanController {
 			if(scount==null) {
 				servletContext.setAttribute("scount", 1);
 			}else {
-				servletContext.setAttribute("scount", scount.toString()+1);
+				servletContext.setAttribute("scount", Integer.parseInt(scount.toString())+1);
 			}
 		}
 		session.setMaxInactiveInterval(-1);
@@ -253,7 +250,7 @@ public class QianduanController {
 
 	/**
 	 * 用户登出
-	 * 
+	 * @author KONKA
 	 * @param string 传回来的所有信息
 	 * @param response
 	 * @param request
@@ -261,10 +258,13 @@ public class QianduanController {
 	 */
 	@ResponseBody
 	@RequestMapping("/userLogout")
-	public void userLogout(@RequestParam String username, HttpServletResponse response, HttpServletRequest request)
+	public String userLogout(@RequestParam String username, HttpServletResponse response, HttpServletRequest request)
 			throws Exception {
 		ServletContext servletContext = request.getServletContext();
-
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
+		Map<String, Object> argMap = new HashMap<>();
 		/*
 		 * Screen screen=new Screen(); screen.setUsername(username); List<Screen>
 		 * selectAllScreen = screenService.selectAllScreen(screen);
@@ -303,24 +303,12 @@ public class QianduanController {
 			screenLogout(userId, hour, minute, sec);
 		}
 		recordService.updateByPrimaryKeySelective(record);
-		// 清除session
-		session.invalidate();
+		
 		servletContext.removeAttribute(username);
-
-		Screen screen = new Screen();
-		screen.setId(record.getScreenId());
-		List<Screen> selectAllScreen = screenService.selectAllScreen(screen);
-		String meetingInfo = bbbApi.isMeetingRunning(selectAllScreen.get(0).getRoom().getNum(), salt);
-		String sendGET = HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/isMeetingRunning", meetingInfo);
-		Map doXMLParse = XMLUtil.doXMLParse(sendGET);
-		String returnCode = (String) doXMLParse.get("running");
-		if ("false".equals(returnCode)) {
-			String endMeeting = bbbApi.endMeeting(selectAllScreen.get(0).getRoom().getNum(), salt);
-			HttpUtil.sendGET(httpUrl + "/bigbluebutton/api/end", endMeeting);
-		}
-		/*
-		 * if(randomname!=null) { servletContext.removeAttribute(randomname); }
-		 */
+		// 清除session
+		argMap.put("code", Integer.valueOf(200));
+		
+		return JsonUtils.objectToJson(argMap);
 	}
 
 	public void teaLogout(String userId, int hour, int minute, int sec, ServletContext servletContext) {
@@ -333,8 +321,9 @@ public class QianduanController {
 		teacher.setTimes(teacher.getTimes() + 1);
 		teacher.setDuration(countTime(duration, hour, minute, sec));
 		//统计在线人数
-		String tcount = (String) servletContext.getAttribute("tcount");
-		servletContext.setAttribute("tcount", Integer.parseInt(tcount)-1);
+		Integer tcount = (Integer) servletContext.getAttribute("tcount");
+		servletContext.setAttribute("tcount", tcount-1);
+		teacher.setPassword(null);
 		teacherService.updateTeacherSelected(teacher);
 	}
 
@@ -347,8 +336,9 @@ public class QianduanController {
 		student.setTime(student.getTime() + 1);
 		student.setDuration(countTime(duration, hour, minute, sec));
 		//统计在线人数
-		String scount = (String) servletContext.getAttribute("scount");
-		servletContext.setAttribute("scount", Integer.parseInt(scount)-1);
+		Integer scount = (Integer) servletContext.getAttribute("scount");
+		servletContext.setAttribute("scount",scount-1);
+		student.setPassword(null);
 		studentService.updateByPrimaryKeySelective(student);
 	}
 
@@ -366,7 +356,7 @@ public class QianduanController {
 
 	/**
 	 * 用户与屏幕连接
-	 * 
+	 * @author KONKA
 	 * @param string
 	 * @param response
 	 * @param request
@@ -414,12 +404,12 @@ public class QianduanController {
 		if (session.getAttribute("screen") != null) {
 			argMap.put("usernameScreen", usernameScreen);
 		}
+		argMap.put("meetingId", room.getId());
 		argMap.put("meetingName", room.getNum());
 
 		argMap.put("role", role);
 		argMap.put("serverhost", serverhost);
 		argMap.put("code", Integer.valueOf(200));
-		System.out.println(modelMap.toString());
 		return JsonUtils.objectToJson(argMap);
 	}
 

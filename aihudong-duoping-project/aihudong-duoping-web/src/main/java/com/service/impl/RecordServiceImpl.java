@@ -47,7 +47,7 @@ public class RecordServiceImpl implements RecordService {
         	map.put("endTime", sdf.format(endTime));
         	
         	SimpleDateFormat sdf1 = new SimpleDateFormat("MM.dd");  
-        	record.put(sdf1.format(endTime)+"至"+sdf1.format(startTime), recordMapper.selectRecord(map));
+        	record.put(sdf1.format(endTime)+"-"+sdf1.format(startTime), recordMapper.selectRecord(map));
 		}
 		return record;
 	}

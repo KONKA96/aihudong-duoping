@@ -34,7 +34,7 @@ public class WeChatXiaoChengXuController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/code2accessToken")
+	@RequestMapping(value="/code2accessToken", produces = { "text/json;charset=UTF-8" })
 	public String code2accessToken(String js_code) {
 		
 		String url = "https://api.weixin.qq.com/sns/jscode2session";
@@ -50,8 +50,16 @@ public class WeChatXiaoChengXuController {
 		return sendGET;
 	}
 	
+	/**
+	 * 获取用户信息（unionid）
+	 * @author KONKA
+	 * @param encryptedData
+	 * @param session_key
+	 * @param iv
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/getUserInfo")
+	@RequestMapping(value="/getUserInfo", produces = { "text/json;charset=UTF-8" })
 	public String getUserInfo(String encryptedData,String session_key,String iv) {
 		
 		String decrypt = "";

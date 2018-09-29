@@ -84,8 +84,10 @@ public class WeChatLoginController {
 		JSONObject jsonObject = JSONObject.fromObject(sendGET);
 		//String refresh_token = jsonObject.getString("refresh_token");
 		String openid = jsonObject.getString("openid");
-		//String access_token = jsonObject.getString("access_token");
+		String access_token = jsonObject.getString("access_token");
 
+		String userInfo = getUserInfo(access_token, openid);
+		logger.info("用户信息"+userInfo);
 		/*String testAccessTokenAuth = testAccessTokenAuth(access_token, openid);
 		System.out.println(testAccessTokenAuth);*/
 
@@ -148,8 +150,6 @@ public class WeChatLoginController {
 		session.setAttribute("startTime", record.getStartTime());
 		session.setAttribute("role", record.getRole());
 		session.setAttribute("userId", record.getUserId());
-		
-		
 
 		return "redirect:https://" + state + "/html5client/login";
 	}
