@@ -6,6 +6,8 @@ import java.util.Map;
 import com.model.Room;
 
 public interface RoomMapper {
+	List<Room> selectVirtualRoom(Map<String,Object> map);
+	
 	Room selectRoomBuildZone(Map<String,Object> map);
 	
 	List<String> selectAllId();

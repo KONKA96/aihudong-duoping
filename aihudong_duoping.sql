@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 27/07/2018 11:16:28
+ Date: 12/10/2018 18:20:02
 */
 
 SET NAMES utf8mb4;
@@ -39,10 +39,10 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES (1, 'genji', '401ea2143ce0170af80e62520139d184', '杰克', 0, '13525846234', '123@qq.com', 0, NULL, 1000, 1147);
+INSERT INTO `admin` VALUES (1, 'genji', '401ea2143ce0170af80e62520139d184', '杰克', 0, '13525846234', '123@qq.com', 0, NULL, 1000, 1145);
 INSERT INTO `admin` VALUES (2, 'caozuo', '32e08f99348005a43701f1af05b81e6c', '李四', 0, '17654784752', '789@qq.com', 2, 3, 500, 488);
-INSERT INTO `admin` VALUES (3, 'yiji', '7261cde44dbc2fb8c85a5992495ab0f7', '明月', 1, '18846287456', '456@qq.com', 1, 1, 1000, 500);
-INSERT INTO `admin` VALUES (4, 'jin', '3a927395a8e1d81874be46211023d680', '金金', 0, '15784562123', '152@163.com', 1, 1, 600, 499);
+INSERT INTO `admin` VALUES (3, 'yiji', '7261cde44dbc2fb8c85a5992495ab0f7', '明月', 1, '18846287456', '456@qq.com', 1, 1, 1000, 488);
+INSERT INTO `admin` VALUES (4, 'jin', 'f3563833f9611d7043fe8af7f0032382', '金金', 0, '15784562123', '152@163.com', 1, 1, 600, 499);
 INSERT INTO `admin` VALUES (13, '111', '2bca8546eca4b86893c313f6f6da9825', '111', 0, '111', '111', 1, 1, 0, 0);
 INSERT INTO `admin` VALUES (14, 'fff', '585625336500c412f2a6bd81a510678b', 'ff', 0, 'ff', 'ff', 1, 1, 0, 0);
 
@@ -182,7 +182,7 @@ CREATE TABLE `record`  (
   `start_time` datetime(0) NULL DEFAULT NULL,
   `end_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 159 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of record
@@ -274,6 +274,43 @@ INSERT INTO `record` VALUES (118, 'sc10', NULL, 4, NULL, '2018-07-02 15:27:17', 
 INSERT INTO `record` VALUES (119, 'te18', 'sc10', 1, NULL, '2018-07-02 15:27:38', NULL);
 INSERT INTO `record` VALUES (120, 'sc10', 'sc10', 4, NULL, '2018-07-02 15:28:22', NULL);
 INSERT INTO `record` VALUES (121, 'te18', NULL, 1, NULL, '2018-07-26 16:30:21', NULL);
+INSERT INTO `record` VALUES (122, 'sc10', NULL, 4, NULL, '2018-07-27 11:35:10', NULL);
+INSERT INTO `record` VALUES (123, 'sc10', NULL, 4, NULL, '2018-07-27 11:40:07', NULL);
+INSERT INTO `record` VALUES (124, 'sc10', NULL, 4, NULL, '2018-07-27 11:46:57', NULL);
+INSERT INTO `record` VALUES (125, 'sc10', NULL, 4, NULL, '2018-07-27 11:47:35', NULL);
+INSERT INTO `record` VALUES (126, 'te18', NULL, 1, NULL, '2018-07-27 11:47:52', NULL);
+INSERT INTO `record` VALUES (127, 'te18', NULL, 1, NULL, '2018-07-30 10:48:09', NULL);
+INSERT INTO `record` VALUES (128, 'sc2', NULL, 4, NULL, '2018-07-30 10:48:49', NULL);
+INSERT INTO `record` VALUES (129, 'sc2', NULL, 4, NULL, '2018-07-30 10:53:31', NULL);
+INSERT INTO `record` VALUES (130, 'te18', NULL, 1, NULL, '2018-07-30 10:54:20', NULL);
+INSERT INTO `record` VALUES (131, 'st5', NULL, 2, NULL, '2018-07-30 10:54:29', NULL);
+INSERT INTO `record` VALUES (132, 'te18', NULL, 1, NULL, '2018-08-06 09:24:43', NULL);
+INSERT INTO `record` VALUES (133, 'te18', NULL, 1, NULL, '2018-08-06 09:53:54', NULL);
+INSERT INTO `record` VALUES (134, 'sc9', NULL, 4, NULL, '2018-08-08 18:26:26', NULL);
+INSERT INTO `record` VALUES (135, 'sc9', NULL, 4, NULL, '2018-08-09 18:38:41', NULL);
+INSERT INTO `record` VALUES (136, 'sc9', NULL, 4, NULL, '2018-08-09 19:06:59', NULL);
+INSERT INTO `record` VALUES (137, 'sc9', NULL, 4, NULL, '2018-08-09 19:23:08', NULL);
+INSERT INTO `record` VALUES (138, 'sc9', NULL, 4, NULL, '2018-08-09 19:31:48', NULL);
+INSERT INTO `record` VALUES (139, 'te18', NULL, 1, NULL, '2018-08-09 19:43:11', NULL);
+INSERT INTO `record` VALUES (140, 'st5', NULL, 2, NULL, '2018-08-13 09:20:04', NULL);
+INSERT INTO `record` VALUES (141, 'st5', NULL, 2, NULL, '2018-08-23 17:07:36', NULL);
+INSERT INTO `record` VALUES (142, 'st5', NULL, 2, NULL, '2018-08-23 17:10:37', NULL);
+INSERT INTO `record` VALUES (143, 'st5', NULL, 2, NULL, '2018-08-23 17:11:11', NULL);
+INSERT INTO `record` VALUES (144, 'st5', NULL, 2, NULL, '2018-08-23 17:13:37', NULL);
+INSERT INTO `record` VALUES (145, NULL, NULL, NULL, NULL, '2018-09-12 09:33:00', NULL);
+INSERT INTO `record` VALUES (146, 'sc9', NULL, 4, NULL, '2018-09-12 09:39:12', NULL);
+INSERT INTO `record` VALUES (147, 'sc9', NULL, 4, NULL, '2018-09-12 09:40:56', NULL);
+INSERT INTO `record` VALUES (148, 'sc9', NULL, 4, NULL, '2018-09-12 09:42:24', NULL);
+INSERT INTO `record` VALUES (149, 'sc8', NULL, 4, NULL, '2018-09-12 09:42:46', NULL);
+INSERT INTO `record` VALUES (150, NULL, NULL, NULL, NULL, '2018-09-12 09:46:14', NULL);
+INSERT INTO `record` VALUES (151, 'sc9', NULL, 4, NULL, '2018-09-12 09:49:58', NULL);
+INSERT INTO `record` VALUES (152, 'st5', NULL, 2, NULL, '2018-09-20 15:57:10', NULL);
+INSERT INTO `record` VALUES (153, 'st5', NULL, 2, NULL, '2018-09-20 15:58:10', '2018-09-20 15:58:49');
+INSERT INTO `record` VALUES (154, 'te20', NULL, 1, NULL, '2018-09-20 16:04:55', '2018-09-20 16:05:17');
+INSERT INTO `record` VALUES (155, 'te18', NULL, 1, NULL, '2018-09-20 16:08:42', '2018-09-20 16:08:59');
+INSERT INTO `record` VALUES (156, 'te20', NULL, 1, NULL, '2018-09-20 16:14:25', '2018-09-20 16:14:40');
+INSERT INTO `record` VALUES (157, 'te20', NULL, 1, NULL, '2018-09-20 16:17:39', '2018-09-20 16:17:47');
+INSERT INTO `record` VALUES (158, 'te20', NULL, 1, NULL, '2018-09-20 16:19:21', '2018-09-20 16:19:35');
 
 -- ----------------------------
 -- Table structure for room
@@ -284,20 +321,29 @@ CREATE TABLE `room`  (
   `num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `building_id` int(11) NULL DEFAULT NULL,
   `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of room
 -- ----------------------------
-INSERT INTO `room` VALUES ('1001407', 'abc', 7, NULL);
-INSERT INTO `room` VALUES ('783595', '784', 2, NULL);
-INSERT INTO `room` VALUES ('783618', '155', 2, NULL);
-INSERT INTO `room` VALUES ('783726', '456', 3, NULL);
-INSERT INTO `room` VALUES ('783762', '78412', 3, NULL);
-INSERT INTO `room` VALUES ('790650', '444', 7, NULL);
-INSERT INTO `room` VALUES ('840001', '7777', 6, NULL);
-INSERT INTO `room` VALUES ('840032', '777', 8, NULL);
+INSERT INTO `room` VALUES ('1001407', 'kkk', 3, NULL, NULL);
+INSERT INTO `room` VALUES ('1014400', 'abc', 7, NULL, NULL);
+INSERT INTO `room` VALUES ('1793', '1793', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('4065', '4065', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('4733', '4733', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('7635', '7635', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('783595', '1', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('783618', '155', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('783726', '456', 3, NULL, NULL);
+INSERT INTO `room` VALUES ('783762', '78412', 3, NULL, NULL);
+INSERT INTO `room` VALUES ('790650', '444', 7, NULL, NULL);
+INSERT INTO `room` VALUES ('8233', '8233', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('840001', '7777', 6, NULL, NULL);
+INSERT INTO `room` VALUES ('840032', '777', 8, NULL, NULL);
+INSERT INTO `room` VALUES ('9387', '9387', 2, NULL, NULL);
+INSERT INTO `room` VALUES ('aaa123', 'xuni2', NULL, '呵呵', 'te20');
 
 -- ----------------------------
 -- Table structure for screen
@@ -321,21 +367,27 @@ CREATE TABLE `screen`  (
 -- Records of screen
 -- ----------------------------
 INSERT INTO `screen` VALUES ('sc1', '0001', '6ccdbaf84ddba5eb72c3d1eb7bd4b8a8', '783595', 1, '00:00:00', 0, '2', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc10', '0010', 'e227981f565a7f3a97efd10126797113', '1001407', 1, '00:00:00', 0, '2', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc10', '0010', 'e227981f565a7f3a97efd10126797113', '1001407', 1, '00:00:00', 0, '2', NULL, 'S-1-5-21-2392787687-971683131-3325951360-1001');
 INSERT INTO `screen` VALUES ('sc11', '0011', '79a3ef9588b1c859b8ddee341548497e', '1001407', 1, '00:00:00', 0, '2', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc12', '0012', '60c1e36c8561284a3bc379a8126663d4', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc13', '0013', 'fa58b54aa048d693977387bf258a1820', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc14', '0014', '548e55a10b7aef8496174c47b276c716', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc15', '0015', '7111fc53f7a8f8ca8fe48b870a13b91f', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc16', '0016', 'd7865a3cca903c133d19a9368fed8b93', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc2', '0002', '53108afc8c39528d758f782d4048b850', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc17', '0017', 'ea86bb6ddec9c18cd45e762d1d3495e9', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc18', '0018', '78ade81873d9f00df31ba1b5159457ce', '840032', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc19', '0019', '6558e2db77ca065b0aff417fe510e688', '4733', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc2', '0002', '53108afc8c39528d758f782d4048b850', '783726', 1, '00:00:00', 0, '1', NULL, 'asdf45841xxx');
+INSERT INTO `screen` VALUES ('sc20', '0020', 'a36b4ebcff0c775b745ea9d51a7b9e8b', '4733', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc21', '0021', 'fca8389204eb8adb0f966d6d9665a41c', '7635', 1, '00:00:00', 0, '1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc22', '0022', '7d0de9b7fce039c13ec2302572dd74cb', '7635', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc3', '0003', 'eb521c182bd4cbbd0418a8063ca3cb9a', '783595', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc4', '0004', '1a2e4da9f470489c725fd7a3672876b3', '783595', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc5', '0005', 'd99d69b9634e869a1bb63069162fa130', '783726', 1, '0:0:52', 2, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc6', '0006', 'ee335e659bb7a205c62584945e6db5a1', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
 INSERT INTO `screen` VALUES ('sc7', '0007', '1f15473510f235b3eebaa256793ba1de', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc8', '0008', 'f339352bc359111fab34eac7dc8133ab', '783726', 1, '00:00:00', 0, '1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc9', '0009', '95100c74eb80ee48bd68eefe21f9eb73', '1001407', 1, '0:1:15', 1, '2', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc8', '0008', 'f339352bc359111fab34eac7dc8133ab', '783726', 1, '00:00:00', 0, '1', NULL, '123');
+INSERT INTO `screen` VALUES ('sc9', '0009', '95100c74eb80ee48bd68eefe21f9eb73', '1001407', 1, '0:1:15', 1, '2', NULL, '123');
 
 -- ----------------------------
 -- Table structure for student
@@ -366,7 +418,8 @@ INSERT INTO `student` VALUES ('st1', '111', '2bca8546eca4b86893c313f6f6da9825', 
 INSERT INTO `student` VALUES ('st2', 'username1', 'd9c6e732a439d6d3f2ebed17ed41f376', NULL, 'truename', NULL, 1, 'telephone', 'email', 1, '00:00:00', 0, 'remake', NULL);
 INSERT INTO `student` VALUES ('st3', 'username2', '8f3c4bbccbcf6c448173e115c7936481', NULL, 'truename', NULL, 1, 'telephone', 'email', 1, '00:00:00', 0, 'remake', NULL);
 INSERT INTO `student` VALUES ('st4', 'username3', 'a4dfdbd3e2514c9da254b1f7101c939b', NULL, 'truename', NULL, 1, 'telephone', 'email', 1, '00:00:00', 0, 'remake', NULL);
-INSERT INTO `student` VALUES ('st5', 'konka', '1ea396074f96ac0ea98226ba8ec39bc7', NULL, 'konka', NULL, 0, '157', '111', 1, '00:00:00', 0, NULL, NULL);
+INSERT INTO `student` VALUES ('st5', 'konka4', '8c8f6f7423696a084ee8a5bd434af1d5', 'asdfqwe123456', 'konka', NULL, 0, '157', '111', 1, '0:0:38', 1, NULL, NULL);
+INSERT INTO `student` VALUES ('st6', 'konka2', '3d5c27a722be0506a7fdc2bd36220674', NULL, 'konka2', NULL, 0, 'konka111', 'itheima14@163.com', 4, '00:00:00', 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for subject
@@ -436,13 +489,14 @@ INSERT INTO `teacher` VALUES ('te1', '1', '44b65e5a7437d9b51839107ad0fe3dfe', NU
 INSERT INTO `teacher` VALUES ('te10', '1234', 'aa73cc3646cd55ad0686d6fe414b9dc2', NULL, '王守忠', NULL, 0, '13845721684', '123@qq.com', '教授', 1, 100, '0:8:43', 3, NULL);
 INSERT INTO `teacher` VALUES ('te11', '3', '7ac9afa28454aeaabc4b02f648c4bfcd', NULL, '3', NULL, 0, '3', '3', '3', 4, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te12', 'username', 'adfd33030eee28ebc7ec4ce1d8f50063', NULL, 'truename', NULL, 1, 'telephone', 'email', 'job', 1, 0, '00:00:00', 0, 'remake');
+INSERT INTO `teacher` VALUES ('te13', 'konka22212', '1b76bb04198ada27ff4c022f14e4d567', NULL, 'konka2', NULL, 0, '123', 'itheima14@163.com', '11111', 3, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te14', '1234123123', 'b0cd8f51263b2d5d6863347f28043584', NULL, '123213', NULL, 0, '123213', '1321321', '123213', 1, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te15', '2132321', '6c0abaf7dab83c4940c451a99b71062a', NULL, '213213', NULL, 0, '1321', '132', '132', 1, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te16', '31232', 'f7094b43574fd456f3da862aab370027', NULL, '213', NULL, 0, '123', '123', '132', 1, 0, '2:5:12', 0, NULL);
 INSERT INTO `teacher` VALUES ('te17', '555666', '1b8cc63a125b21ff4dc067205d89725b', NULL, '123', NULL, 0, '123', '123', '222', 7, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te18', 'zyl', '5dc26c829bd092d3ec5d38a3800394a8', NULL, '张勇良', NULL, 0, NULL, NULL, NULL, 1, 100, '2:15:37', 38, NULL);
+INSERT INTO `teacher` VALUES ('te18', 'zyl', 'e7156506e33be1093a3b7296604e35a4', NULL, '张勇良', NULL, 0, NULL, NULL, NULL, 1, 100, '2:15:53', 39, NULL);
 INSERT INTO `teacher` VALUES ('te2', '5678', '558eb0b0bdedf0f17dc0c48eaf39e6ab', NULL, '孙素华', NULL, 1, '15675458478', '123@qq.com', '助教', 1, 100, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te20', 'konka', '1ea396074f96ac0ea98226ba8ec39bc7', 'oVa9T0dts63dkRlfIZ3QPXsECt6g', '康佳', '庚仁仕', 0, '157', NULL, NULL, NULL, 0, '00:00:00', 0, NULL);
+INSERT INTO `teacher` VALUES ('te20', 'konka', '1ea396074f96ac0ea98226ba8ec39bc7', 'oVa9T0dts63dkRlfIZ3QPXsECt6g', '康佳', '庚仁仕', 0, '157', '123@qq.com', '22', 1, 0, '0:0:55', 4, NULL);
 INSERT INTO `teacher` VALUES ('te3', 'a123', '0f95e45f635966f39908e8f7c70fd0a3', NULL, '杨金山', NULL, 0, '18254568741', '456@qq.com', '讲师', 2, 100, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te4', 'f123', 'fcb797686dac375961ee235dee5a782f', NULL, '冯俊丽', NULL, 1, '18354796547', '789652@qq.com', '讲师', 6, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te5', 'i789', '7dc01034ca5d73b4e65e69feb8a3b96e', NULL, '李亚辉', NULL, 1, '15587462541', '451@qq.com', '讲师', 8, 0, '00:00:00', 0, NULL);
@@ -450,6 +504,29 @@ INSERT INTO `teacher` VALUES ('te6', 's123', 'df86f9a593a465a421010ffd68e9701d',
 INSERT INTO `teacher` VALUES ('te7', 'l456', '9f80c8768c92658b2792bae52c5c3662', NULL, '李启超', NULL, 1, '18465475412', '789@qq.com', '副教授', 3, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te8', 'ff789', 'ddc26ec8139cbfa92fa696bd9b2e7b81', NULL, '冯娜', NULL, 1, '15865475412', '157@163.com', '导员', 6, 0, '00:00:00', 0, NULL);
 INSERT INTO `teacher` VALUES ('te9', '2', '5b5d01609b34664aafefc4bde5f0892f', NULL, '2', NULL, 0, '2', '2', '2', 3, 0, '00:00:00', 0, NULL);
+
+-- ----------------------------
+-- Table structure for virtual_room_record
+-- ----------------------------
+DROP TABLE IF EXISTS `virtual_room_record`;
+CREATE TABLE `virtual_room_record`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `room_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `role` int(255) NULL DEFAULT NULL,
+  `start_time` datetime(0) NULL DEFAULT NULL,
+  `end_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of virtual_room_record
+-- ----------------------------
+INSERT INTO `virtual_room_record` VALUES (1, 'te20', 'aaa123', 1, '2018-10-12 14:25:54', '2018-10-12 15:25:57');
+INSERT INTO `virtual_room_record` VALUES (2, 'te20', 'aaa123', 1, '2018-10-12 17:37:38', NULL);
+INSERT INTO `virtual_room_record` VALUES (3, 'te20', 'aaa123', 1, '2018-10-12 17:41:31', NULL);
+INSERT INTO `virtual_room_record` VALUES (4, 'te20', 'aaa123', 1, '2018-10-12 17:43:28', NULL);
+INSERT INTO `virtual_room_record` VALUES (5, 'te20', 'aaa123', 1, '2018-10-12 18:17:58', '2018-10-12 18:18:37');
 
 -- ----------------------------
 -- Table structure for zone

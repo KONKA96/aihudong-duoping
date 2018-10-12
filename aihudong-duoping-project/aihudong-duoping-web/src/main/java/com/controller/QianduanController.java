@@ -28,12 +28,14 @@ import com.model.Room;
 import com.model.Screen;
 import com.model.Student;
 import com.model.Teacher;
+import com.model.VirtualRoomRecord;
 import com.service.FileRecordService;
 import com.service.RecordService;
 import com.service.RoomService;
 import com.service.ScreenService;
 import com.service.StudentService;
 import com.service.TeacherService;
+import com.service.VirtualRoomRecordService;
 import com.util.HttpUtil;
 import com.util.JsonUtils;
 import com.util.StringRandom;
@@ -60,6 +62,8 @@ public class QianduanController {
 	private RecordService recordService;
 	@Autowired
 	private FileRecordService fileRecordService;
+	@Autowired
+	private VirtualRoomRecordService virtualRoomRecordService;
 
 	@Value("${httpUrl}")
 	private String httpUrl;
@@ -411,6 +415,228 @@ public class QianduanController {
 		argMap.put("role", role);
 		argMap.put("serverhost", serverhost);
 		argMap.put("code", Integer.valueOf(200));
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 查询用户历史虚拟教室记录接口
+	 * @author KONKA
+	 * @param username
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectHistoryRoomRecord", produces = { "text/json;charset=UTF-8" })
+	public String selectHistoryRoomRecord(@RequestParam(required = false) String username) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(username==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "用户名为空");
+			return JsonUtils.objectToJson(argMap);
+		}
+		
+		
+		Map<String,Object> map = new HashMap<>();
+		
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+		
+		Student student = new Student();
+		student.setUsername(username);
+		
+		teacher = teacherService.teacherLogin(teacher);
+		student = studentService.studentLogin(student);
+		
+		
+		List<Room> roomList = new ArrayList<>();
+		if(teacher==null && student==null) {
+			argMap.put("code", "1002");
+			argMap.put("message", "用户不存在！");
+			return JsonUtils.objectToJson(argMap);
+		}else if(teacher!=null) {
+			map.put("userId", teacher.getId());
+			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
+			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
+				roomList.add(virtualRoomRecord.getRoom());
+			}
+			
+			argMap.put("code", "200");
+			argMap.put("roomList", roomList);
+		}else if(student!=null) {
+			map.put("userId", student.getId());
+			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
+			
+			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
+				roomList.add(virtualRoomRecord.getRoom());
+			}
+			
+			argMap.put("code", "200");
+			argMap.put("roomList", roomList);
+		}
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 用户加入虚拟教室接口
+	 * @author KONKA
+	 * @param username
+	 * @param roomId
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/joinVirtualRoom", produces = { "text/json;charset=UTF-8" })
+	public String joinVirtualRoom(@RequestParam(required = false) String username,
+			@RequestParam(required = false) String roomId,HttpSession session) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(username==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "用户名为空");
+			return JsonUtils.objectToJson(argMap);
+		}
+		if(roomId==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "房间id为空");
+			return JsonUtils.objectToJson(argMap);
+		}
+		
+		Map<String,Object> map = new HashMap<>();
+		
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+		
+		Student student = new Student();
+		student.setUsername(username);
+		
+		teacher = teacherService.teacherLogin(teacher);
+		student = studentService.studentLogin(student);
+		
+		Room room = new Room();
+		room.setId(roomId);
+		room = roomService.selectByPrimaryKey(room);
+		VirtualRoomRecord virtualRoomRecord = new VirtualRoomRecord();
+		virtualRoomRecord.setRoomId(roomId);
+		virtualRoomRecord.setStartTime(new Date());
+		if(teacher==null && student==null) {
+			argMap.put("code", "1002");
+			argMap.put("message", "用户不存在！");
+			return JsonUtils.objectToJson(argMap);
+		}else if(room==null) {
+			argMap.put("code", "1002");
+			argMap.put("message", "房间不存在！");
+			return JsonUtils.objectToJson(argMap);
+		}else if(teacher!=null) {
+			virtualRoomRecord.setUserId(teacher.getId());
+			virtualRoomRecord.setRole(1);
+		}else if(student!=null) {
+			virtualRoomRecord.setUserId(student.getId());
+			virtualRoomRecord.setRole(2);
+		}
+		session.setMaxInactiveInterval(0);
+		virtualRoomRecordService.insertSelective(virtualRoomRecord);
+		ServletContext servletContext = session.getServletContext();
+		session.setAttribute("virtualRoomRecord", virtualRoomRecord.getId());
+		servletContext.setAttribute(username, session);
+		argMap.put("code", "200");
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 查询房间接口
+	 * @author KONKA
+	 * @param roomNum
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectVirtualRoom", produces = { "text/json;charset=UTF-8" })
+	public String selectVirtualRoom(@RequestParam(required = false) String roomNum) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(roomNum==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "房间号为空！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("roomNum", roomNum);
+		List<Room> roomList = roomService.selectVirtualRoom(map);
+		if(roomList.size()==0) {
+			argMap.put("code", "1002");
+			argMap.put("message", "房间不存在！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		argMap.put("code", "200");
+		argMap.put("roomList", roomList);
+		
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 编辑虚拟教室接口
+	 * @author KONKA
+	 * @param roomId
+	 * @param roomNum
+	 * @param userId
+	 * @param desc
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/updateVirtualRoom", produces = { "text/json;charset=UTF-8" })
+	public String updateVirtualRoom(@RequestParam(required = false) String roomId,
+			@RequestParam(required = false) String roomNum,@RequestParam(required = false) String userId,
+			@RequestParam(required = false) String desc) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(roomId==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "房间为空！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		Room room = new Room();
+		room.setId(roomId);
+		if(roomNum!=null) {
+			room.setNum(roomNum);
+		}
+		if(userId!=null) {
+			room.setUserId(userId);
+		}
+		if(desc!=null) {
+			room.setDesc(desc);
+		}
+		roomService.updateByPrimaryKeySelective(room);
+		argMap.put("code", "200");
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 退出虚拟教室接口
+	 * @author KONKA
+	 * @param username
+	 * @param roomId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/userLogoutVirtualRoom", produces = { "text/json;charset=UTF-8" })
+	public String userLogoutVirtualRoom(@RequestParam(required = false) String username,
+			@RequestParam(required = false) String roomId,HttpSession session) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(username==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "用户名为空！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		if(roomId==null) {
+			argMap.put("code", "1001");
+			argMap.put("message", "房间为空！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		
+		ServletContext servletContext = session.getServletContext();
+		session = (HttpSession) servletContext.getAttribute(username);
+		int vrrId = (int) session.getAttribute("virtualRoomRecord");
+		VirtualRoomRecord virtualRoomRecord = new VirtualRoomRecord();
+		virtualRoomRecord.setId(vrrId);
+		virtualRoomRecord = virtualRoomRecordService.selectByPrimaryKey(virtualRoomRecord);
+		virtualRoomRecord.setEndTime(new Date());
+		virtualRoomRecordService.updateByPrimaryKeySelective(virtualRoomRecord);
+		argMap.put("code", "200");
 		return JsonUtils.objectToJson(argMap);
 	}
 

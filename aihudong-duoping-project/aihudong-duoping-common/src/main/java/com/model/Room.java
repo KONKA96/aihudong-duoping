@@ -15,6 +15,8 @@ public class Room {
 	
 	private Building building;
 	
+	private String userId;
+	
 	public Building getBuilding() {
 		return building;
 	}
@@ -63,10 +65,18 @@ public class Room {
         this.desc = desc == null ? null : desc.trim();
     }
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	@Override
 	public String toString() {
 		return "Room [id=" + id + ", num=" + num + ", buildingId=" + buildingId + ", desc=" + desc + ", screenList="
-				+ screenList + ", building=" + building + "]";
+				+ screenList + ", building=" + building + ", userId=" + userId + "]";
 	}
-    
+
 }

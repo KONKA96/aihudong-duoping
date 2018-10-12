@@ -45,5 +45,10 @@ public class RoomServiceImpl implements RoomService {
 		// TODO Auto-generated method stub
 		return roomMapper.selectRoomBuildZone(map);
 	}
+	@Override
+	public List<Room> selectVirtualRoom(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return roomMapper.selectVirtualRoom(map);
+	}
 
 }
