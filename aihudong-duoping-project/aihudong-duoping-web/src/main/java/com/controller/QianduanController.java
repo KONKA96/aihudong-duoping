@@ -196,6 +196,7 @@ public class QianduanController {
 			Room room = roomService.selectScreenByRoom(screen.getRoom());
 			argMap.put("role", Integer.valueOf(4));
 			argMap.put("meetingName", room.getNum());
+			argMap.put("meetingId", room.getId());
 			
 			if ((selectAllScreen.size() != 0) && (((Screen) selectAllScreen.get(0)).getSid() == null) && (sid != null)) {
 				selectAllScreen.get(0).setSid(sid);
