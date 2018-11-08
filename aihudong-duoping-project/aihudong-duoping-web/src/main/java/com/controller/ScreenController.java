@@ -371,8 +371,7 @@ public class ScreenController {
     	if(i==screenList.size()){
     		session.removeAttribute("screenList");
     		admin.setScreenRemain(admin.getScreenRemain()-insert);
-    		admin.setPassword(null);
-    		adminService.updateByPrimaryKeySelective(admin);
+    		session.setAttribute("admin", admin);
     		logger.info(admin.getUsername()+"剩余屏幕数量:"+admin.getScreenRemain());
     		return "success";
     	}
@@ -446,8 +445,6 @@ public class ScreenController {
     		if(screenService.deleteByPrimaryKey(screen)>0){
 //        		将屏幕数量还给其分配的操作管理员
         		admin.setScreenRemain(admin.getScreenRemain()+1);
-        		admin.setPassword(null);
-        		adminService.updateByPrimaryKeySelective(admin);
 //        		更新session
         		Admin adminLogin=(Admin) session.getAttribute("admin");
         		
@@ -473,15 +470,31 @@ public class ScreenController {
     @RequestMapping("/screenDistribute")
     public String screenDistribute(HttpSession session,ModelMap modelMap){
     	Admin admin=(Admin) session.getAttribute("admin");
+    	Map<String,Object> map = new HashMap<>();
     	List<Admin> adminYijiList=null;
     	if(admin.getPower()==0){
     		adminYijiList = adminService.selectYijiAdmin(null);
+    		for (Admin ad1 : adminYijiList) {
+    			map.put("adminId", ad1.getId());
+				ad1.setScreenRemain(ad1.getScreenNum()-screenService.selectScreenCount(map));
+				List<Admin> adminList = ad1.getAdminList();
+				for (Admin ad2 : adminList) {
+					map.put("adminId", ad2.getId());
+					ad2.setScreenRemain(ad2.getScreenNum()-screenService.selectScreenCount(map));
+				}
+			}
     		modelMap.put("adminYijiList", adminYijiList);
     	}else if(admin.getPower()==1){
-    		Map<String,Object> map=new HashMap<>();
     		map.put("adminId1", admin.getId());
     		adminYijiList = adminService.selectYijiAdmin(map);
     		admin=adminYijiList.get(0);
+    		map.put("adminId", admin.getId());
+    		admin.setScreenRemain(admin.getScreenNum()-screenService.selectScreenCount(map));
+    		List<Admin> adminList = admin.getAdminList();
+			for (Admin ad2 : adminList) {
+				map.put("adminId", ad2.getId());
+				ad2.setScreenRemain(ad2.getScreenNum()-screenService.selectScreenCount(map));
+			}
     	}
     	modelMap.put("admin", admin);
     	return "/screen/screenDistribute";

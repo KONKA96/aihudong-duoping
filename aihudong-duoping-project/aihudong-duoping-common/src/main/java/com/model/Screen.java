@@ -33,6 +33,10 @@ public class Screen {
 	
 	private String sid;
 	
+	private String ipAddr;
+
+    private String macAddr;
+	
 	public String getSid() {
 		return sid;
 	}
@@ -170,6 +174,22 @@ public class Screen {
         this.divice = divice == null ? null : divice.trim();
     }
 
+	public String getIpAddr() {
+		return ipAddr;
+	}
+
+	public void setIpAddr(String ipAddr) {
+		this.ipAddr = ipAddr;
+	}
+
+	public String getMacAddr() {
+		return macAddr;
+	}
+
+	public void setMacAddr(String macAddr) {
+		this.macAddr = macAddr;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -212,7 +232,8 @@ public class Screen {
 		return "Screen [id=" + id + ", username=" + username + ", password=" + password + ", roomId=" + roomId
 				+ ", adminId=" + adminId + ", duration=" + duration + ", number=" + number + ", divice=" + divice
 				+ ", room=" + room + ", role=" + role + ", sessionId=" + sessionId + ", type=" + type + ", resolution="
-				+ resolution + ", admin=" + admin + ", randomname=" + randomname + ", sid=" + sid + "]";
+				+ resolution + ", admin=" + admin + ", randomname=" + randomname + ", sid=" + sid + ", ipAddr=" + ipAddr
+				+ ", macAddr=" + macAddr + "]";
 	}
 
 }

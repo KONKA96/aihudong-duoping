@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.model.Room" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="num" property="num" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, num, building_id, `desc`, user_id
+    id, num, password, building_id, `desc`, user_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -22,10 +23,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.model.Room" >
-    insert into room (id, num, building_id, 
-      desc, user_id)
-    values (#{id,jdbcType=VARCHAR}, #{num,jdbcType=VARCHAR}, #{buildingId,jdbcType=INTEGER}, 
-      #{desc,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+    insert into room (id, num, password, 
+      building_id, `desc`, user_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{num,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{buildingId,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.model.Room" >
     insert into room
@@ -36,11 +39,14 @@
       <if test="num != null" >
         num,
       </if>
+      <if test="password != null" >
+        password,
+      </if>
       <if test="buildingId != null" >
         building_id,
       </if>
       <if test="desc != null" >
-        desc,
+        `desc`,
       </if>
       <if test="userId != null" >
         user_id,
@@ -52,6 +58,9 @@
       </if>
       <if test="num != null" >
         #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
       </if>
       <if test="buildingId != null" >
         #{buildingId,jdbcType=INTEGER},
@@ -70,6 +79,9 @@
       <if test="num != null" >
         num = #{num,jdbcType=VARCHAR},
       </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
       <if test="buildingId != null" >
         building_id = #{buildingId,jdbcType=INTEGER},
       </if>
@@ -85,6 +97,7 @@
   <update id="updateByPrimaryKey" parameterType="com.model.Room" >
     update room
     set num = #{num,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
       building_id = #{buildingId,jdbcType=INTEGER},
       desc = #{desc,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR}
@@ -141,12 +154,15 @@
  
  <select id="selectVirtualRoom" parameterType="java.util.Map" resultType="Room">
  	select
- 		r.id, r.num, r.building_id, r.`desc`, r.user_id
+ 		r.id, r.num, r.password, r.building_id, r.`desc`, r.user_id
  	from room r
  	<where>
  		r.user_id is not null
- 		<if test="roomNum!='' and roomNum!=null">
- 			and concat ('%',r.num,'%') like concat ('%',#{roomNum},'%')
+ 		<if test="roomId!='' and roomId!=null">
+ 			and concat ('%',r.id,'%') like concat ('%',#{roomId},'%')
+ 		</if>
+ 		<if test="userId!=null">
+ 			and r.user_id=#{userId}
  		</if>
  	</where>
  </select>

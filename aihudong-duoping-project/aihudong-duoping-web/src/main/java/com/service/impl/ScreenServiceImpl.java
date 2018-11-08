@@ -90,4 +90,10 @@ public class ScreenServiceImpl implements ScreenService {
 		return screenMapper.selectScreenByZoneOrBuilding(map);
 	}
 
+	@Override
+	public Integer selectScreenCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return screenMapper.selectScreenCount(map);
+	}
+
 }

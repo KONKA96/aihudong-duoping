@@ -2,8 +2,10 @@ package com.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +14,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dao.RecordMapper;
+import com.model.Admin;
+import com.model.Faculty;
 import com.model.Record;
+import com.model.Subject;
+import com.model.Teacher;
 import com.service.RecordService;
+import com.service.TeacherService;
 
 @Service
 public class RecordServiceImpl implements RecordService {
 
 	@Autowired
 	private RecordMapper recordMapper;
+	@Autowired
+	private TeacherService teacherService;
+	
+	/**
+	 * 通过不同的条件查询教师集合
+	 */
+	public List<Teacher> produceTeaList(Teacher teacher,Admin admin){
+		List<Teacher> selectAllTeacher=null;
+//		不同级别的管理员查询不同范围的对象
+		if(admin.getPower()==0){
+			selectAllTeacher = teacherService.selectAllTeacher(teacher);
+		}else if(admin.getPower()==1){
+			Map<String,Integer> adminMap=new HashMap<>();
+			adminMap.put("adminId1", admin.getId());
+			selectAllTeacher = teacherService.selectTeacherByAdmin(adminMap);
+		}else if(admin.getPower()==2){
+			Map<String,Integer> adminMap=new HashMap<>();
+			adminMap.put("adminId2", admin.getId());
+			selectAllTeacher = teacherService.selectTeacherByAdmin(adminMap);
+		}
+			
+		return selectAllTeacher;
+	}
+	
 	public Map<String,Integer> selectRecord(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		

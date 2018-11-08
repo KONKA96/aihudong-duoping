@@ -94,36 +94,13 @@ public class EchartsController {
 					Teacher teacher=new Teacher();
 					teacher.setSubjectId(sub.getId());
 					List<Teacher> selectAllTeacher=null;
-//					不同级别的管理员查询不同范围的对象
-					if(admin.getPower()==0){
-						selectAllTeacher = teacherService.selectAllTeacher(teacher);
-					}else if(admin.getPower()==1){
-						Map<String,Integer> adminMap=new HashMap<>();
-						adminMap.put("adminId1", admin.getId());
-						selectAllTeacher = teacherService.selectTeacherByAdmin(adminMap);
-					}else if(admin.getPower()==2){
-						Map<String,Integer> adminMap=new HashMap<>();
-						adminMap.put("adminId2", admin.getId());
-						selectAllTeacher = teacherService.selectTeacherByAdmin(adminMap);
-					}
+					selectAllTeacher = recordService.produceTeaList(teacher,admin);
 					teacherList.addAll(selectAllTeacher);
 				}
 			}else{
 				Teacher teacher=new Teacher();
 				teacher.setSubjectId(Integer.parseInt(subjectId));
-				
-//				不同级别的管理员查询不同范围的对象
-				if(admin.getPower()==0){
-					teacherList = teacherService.selectAllTeacher(teacher);
-				}else if(admin.getPower()==1){
-					Map<String,Integer> adminMap=new HashMap<>();
-					adminMap.put("adminId1", admin.getId());
-					teacherList = teacherService.selectTeacherByAdmin(adminMap);
-				}else if(admin.getPower()==2){
-					Map<String,Integer> adminMap=new HashMap<>();
-					adminMap.put("adminId2", admin.getId());
-					teacherList = teacherService.selectTeacherByAdmin(adminMap);
-				}
+				teacherList = recordService.produceTeaList(teacher,admin);
 			}
 			for (Teacher t : teacherList) {
 				idList.add(t.getId());

@@ -12,11 +12,9 @@
     <result column="power" property="power" jdbcType="INTEGER" />
     <result column="higher_id" property="higherId" jdbcType="INTEGER" />
     <result column="screen_num" property="screenNum" jdbcType="INTEGER" />
-    <result column="screen_remain" property="screenRemain" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num, 
-    screen_remain
+    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -36,7 +34,7 @@
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{truename,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{power,jdbcType=INTEGER}, #{higherId,jdbcType=INTEGER}, 
-      #{screenNum,jdbcType=INTEGER}, #{screenRemain,jdbcType=INTEGER})
+      #{screenNum,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.model.Admin" >
     insert into admin
@@ -71,9 +69,6 @@
       <if test="screenNum != null" >
         screen_num,
       </if>
-      <if test="screenRemain != null" >
-        screen_remain,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -105,9 +100,6 @@
       </if>
       <if test="screenNum != null" >
         #{screenNum,jdbcType=INTEGER},
-      </if>
-      <if test="screenRemain != null" >
-        #{screenRemain,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -141,9 +133,6 @@
       <if test="screenNum != null" >
         screen_num = #{screenNum,jdbcType=INTEGER},
       </if>
-      <if test="screenRemain != null" >
-        screen_remain = #{screenRemain,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -158,7 +147,6 @@
       power = #{power,jdbcType=INTEGER},
       higher_id = #{higherId,jdbcType=INTEGER},
       screen_num = #{screenNum,jdbcType=INTEGER},
-      screen_remain = #{screenRemain,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -199,7 +187,6 @@
   		<result column="ad2_power" property="power"/>
   		<result column="ad2_higher_id" property="higherId"/>
   		<result column="ad2_screen_num" property="screenNum"/>
-  		<result column="ad2_screen_remain" property="screenRemain"/>
   	</collection>
   </resultMap>
   
@@ -212,10 +199,10 @@
   <sql id="YijiAdmin">
 	  select
 	  		ad1.id ad1_id,ad1.truename,ad1.sex,ad1.telephone,ad1.email,ad1.power,ad1.screen_num,
-	  		ad1.higher_id,ad1.screen_remain,
+	  		ad1.higher_id,
 	  		ad2.id ad2_id,ad2.truename ad2_truename,ad2.sex ad2_sex,ad2.telephone ad2_telephone,
 	  		ad2.email ad2_email,ad2.power ad2_power,ad2.screen_num ad2_screen_num,
-	  		ad2.higher_id ad2_higher_id,ad2.screen_remain ad2_screen_remain
+	  		ad2.higher_id ad2_higher_id
 	  	from admin ad1 left join admin ad2 
 	  	on ad1.id=ad2.higher_id 
 	  	where ad1.power=1

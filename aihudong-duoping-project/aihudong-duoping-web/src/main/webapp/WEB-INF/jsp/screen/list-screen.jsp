@@ -125,6 +125,7 @@
 										<th>使用总时长</th>
 										<th>使用总人次</th>
 										<th>屏幕类型</th>
+										<th>屏幕ip</th>
 										<c:if test="${admin.power==0 || admin.power==2}">
 											<th>操作</th>
 										</c:if>
@@ -147,6 +148,7 @@
 												<c:if test="${screen.type=='4' }">电视</c:if>
 												<c:if test="${screen.type=='5' }">临时屏幕</c:if>
 											</td>
+											<td>${screen.ipAddr }</td>
 											<c:if test="${admin.power==0 || admin.power==2}">
 												<td><a
 													href="/aihudong-duoping-web/screen/toUpdateScreen?id=${screen.id }"><i

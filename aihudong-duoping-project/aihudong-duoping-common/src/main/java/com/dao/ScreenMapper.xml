@@ -12,9 +12,12 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="resolution" property="resolution" jdbcType="VARCHAR" />
     <result column="sid" property="sid" jdbcType="VARCHAR" />
+    <result column="ip_addr" property="ipAddr" jdbcType="VARCHAR" />
+    <result column="mac_addr" property="macAddr" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, room_id, admin_id, duration, number, type, resolution, sid
+    id, username, password, room_id, admin_id, duration, number, type, resolution, sid, 
+    ip_addr, mac_addr
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -30,11 +33,13 @@
     insert into screen (id, username, password, 
       room_id, admin_id, duration, 
       number, type, resolution, 
-      sid)
+      sid, ip_addr, mac_addr
+      )
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{roomId,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
       #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, 
-      #{sid,jdbcType=VARCHAR})
+      #{sid,jdbcType=VARCHAR}, #{ipAddr,jdbcType=VARCHAR}, #{macAddr,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.model.Screen" >
     insert into screen
@@ -69,6 +74,12 @@
       <if test="sid != null" >
         sid,
       </if>
+      <if test="ipAddr != null" >
+        ip_addr,
+      </if>
+      <if test="macAddr != null" >
+        mac_addr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -100,6 +111,12 @@
       </if>
       <if test="sid != null" >
         #{sid,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddr != null" >
+        #{ipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddr != null" >
+        #{macAddr,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -133,6 +150,12 @@
       <if test="sid != null" >
         sid = #{sid,jdbcType=VARCHAR},
       </if>
+      <if test="ipAddr != null" >
+        ip_addr = #{ipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddr != null" >
+        mac_addr = #{macAddr,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -146,7 +169,9 @@
       number = #{number,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       resolution = #{resolution,jdbcType=VARCHAR},
-      sid = #{sid,jdbcType=VARCHAR}
+      sid = #{sid,jdbcType=VARCHAR},
+      ip_addr = #{ipAddr,jdbcType=VARCHAR},
+      mac_addr = #{macAddr,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
@@ -169,7 +194,7 @@
   
   <sql id="allScreen">
   	select 
-  		sc.id sc_id,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.admin_id,sc.type,
+  		sc.id sc_id,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.admin_id,sc.type,sc.ip_addr, sc.mac_addr,
   		ad.id ad_id,ad.truename,
   		ro.id ro_id,ro.num,ro.building_id,
   		bu.id bu_id,bu.building_name,bu.admin_id bu_admin_id,
@@ -234,5 +259,14 @@
  
  <select id="selectAllUsername" resultType="java.lang.String">
  	select username from screen
+ </select>
+ 
+ <select id="selectScreenCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+ 	select count(id) as num from screen
+ 	<where>
+ 		<if test="adminId!=null">
+ 			admin_id=#{adminId}
+ 		</if>
+ 	</where>
  </select>
 </mapper>

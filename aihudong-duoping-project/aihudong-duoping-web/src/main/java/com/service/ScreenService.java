@@ -7,6 +7,8 @@ import com.model.Admin;
 import com.model.Screen;
 
 public interface ScreenService {
+	Integer selectScreenCount(Map<String,Object> map);
+	
 	List<String> selectAllUsername();
 	
 	List<String> selectAllId();

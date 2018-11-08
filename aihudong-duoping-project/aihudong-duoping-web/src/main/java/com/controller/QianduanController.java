@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +39,8 @@ import com.service.ScreenService;
 import com.service.StudentService;
 import com.service.TeacherService;
 import com.service.VirtualRoomRecordService;
-import com.util.HttpUtil;
 import com.util.JsonUtils;
 import com.util.StringRandom;
-import com.util.XMLUtil;
-import com.util.bbbApi;
 
 /**
  * 
@@ -158,6 +158,7 @@ public class QianduanController {
 			record.setUserId(teacher.getId());
 			record.setRole(Integer.valueOf(1));
 			argMap.put("role", Integer.valueOf(1));
+			argMap.put("truename", teacher.getTruename());
 			if (openid != null && openid != "") {
 				teacher.setOpenId(openid);
 				teacher.setPassword(null);
@@ -201,6 +202,16 @@ public class QianduanController {
 			argMap.put("role", Integer.valueOf(4));
 			argMap.put("meetingName", room.getNum());
 			argMap.put("meetingId", room.getId());
+			argMap.put("meetingType", 1);
+			
+			String ip = getIp(request);
+			//设置ip
+			if(ip!=null && !ip.equals(selectAllScreen.get(0).getIpAddr())) {
+				screen = new Screen();
+				screen.setId(selectAllScreen.get(0).getId());
+				screen.setIpAddr(ip);
+				screenService.updateByPrimaryKeySelective(screen);
+			}
 			
 			if ((selectAllScreen.size() != 0) && (((Screen) selectAllScreen.get(0)).getSid() == null) && (sid != null)) {
 				selectAllScreen.get(0).setSid(sid);
@@ -220,6 +231,7 @@ public class QianduanController {
 			student.setSessionId(sessionId);
 
 			argMap.put("role", Integer.valueOf(2));
+			argMap.put("truename", student.getTruename());
 			record.setUserId(student.getId());
 			record.setRole(Integer.valueOf(2));
 			if (openid != null && openid != "") {
@@ -411,6 +423,7 @@ public class QianduanController {
 		}
 		argMap.put("meetingId", room.getId());
 		argMap.put("meetingName", room.getNum());
+		argMap.put("meetingType", 1);
 
 		argMap.put("role", role);
 		argMap.put("serverhost", serverhost);
@@ -426,7 +439,8 @@ public class QianduanController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/selectHistoryRoomRecord", produces = { "text/json;charset=UTF-8" })
-	public String selectHistoryRoomRecord(@RequestParam(required = false) String username) {
+	public String selectHistoryRoomRecord(@RequestParam(required = false) String username, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> argMap = new HashMap<>();
 		if(username==null) {
 			argMap.put("code", "1001");
@@ -446,8 +460,7 @@ public class QianduanController {
 		teacher = teacherService.teacherLogin(teacher);
 		student = studentService.studentLogin(student);
 		
-		
-		List<Room> roomList = new ArrayList<>();
+		Set<Room> roomSet = new HashSet<>();
 		if(teacher==null && student==null) {
 			argMap.put("code", "1002");
 			argMap.put("message", "用户不存在！");
@@ -456,21 +469,49 @@ public class QianduanController {
 			map.put("userId", teacher.getId());
 			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
 			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
-				roomList.add(virtualRoomRecord.getRoom());
+				Room room = virtualRoomRecord.getRoom();
+				room.setKey(room.getId());
+				if(room.getUserId().equals(teacher.getId())) {
+					room.setRole(1);
+				}else {
+					room.setRole(2);
+				}
+				roomSet.add(room);
 			}
 			
+			List<Room> selectVirtualRoom = roomService.selectVirtualRoom(map);
+			if(selectVirtualRoom!=null && selectVirtualRoom.size()!=0) {
+				Room room = selectVirtualRoom.get(0);
+				room.setRole(1);
+				room.setKey(room.getId());
+				roomSet.add(room);
+			}
 			argMap.put("code", "200");
-			argMap.put("roomList", roomList);
+			argMap.put("roomList", roomSet);
 		}else if(student!=null) {
 			map.put("userId", student.getId());
 			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
 			
 			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
-				roomList.add(virtualRoomRecord.getRoom());
+				Room room = virtualRoomRecord.getRoom();
+				room.setKey(room.getId());
+				if(room.getUserId().equals(student.getId())) {
+					room.setRole(1);
+				}else {
+					room.setRole(2);
+				}
+				roomSet.add(room);
 			}
 			
+			List<Room> selectVirtualRoom = roomService.selectVirtualRoom(map);
+			if(selectVirtualRoom!=null && selectVirtualRoom.size()!=0) {
+				Room room = selectVirtualRoom.get(0);
+				room.setRole(1);
+				room.setKey(room.getId());
+				roomSet.add(room);
+			}
 			argMap.put("code", "200");
-			argMap.put("roomList", roomList);
+			argMap.put("roomList", roomSet);
 		}
 		return JsonUtils.objectToJson(argMap);
 	}
@@ -486,7 +527,9 @@ public class QianduanController {
 	@ResponseBody
 	@RequestMapping(value="/joinVirtualRoom", produces = { "text/json;charset=UTF-8" })
 	public String joinVirtualRoom(@RequestParam(required = false) String username,
-			@RequestParam(required = false) String roomId,HttpSession session) {
+			@RequestParam(required = false) String roomId,@RequestParam(required = false) String password,
+			HttpSession session, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> argMap = new HashMap<>();
 		if(username==null) {
 			argMap.put("code", "1001");
@@ -524,6 +567,10 @@ public class QianduanController {
 			argMap.put("code", "1002");
 			argMap.put("message", "房间不存在！");
 			return JsonUtils.objectToJson(argMap);
+		}else if(room.getPassword()!=null && !room.getPassword().equals(password)) {
+			argMap.put("code", "1003");
+			argMap.put("message", "密码不正确！");
+			return JsonUtils.objectToJson(argMap);
 		}else if(teacher!=null) {
 			virtualRoomRecord.setUserId(teacher.getId());
 			virtualRoomRecord.setRole(1);
@@ -531,12 +578,21 @@ public class QianduanController {
 			virtualRoomRecord.setUserId(student.getId());
 			virtualRoomRecord.setRole(2);
 		}
+		
+		if(room.getUserId().equals(teacher.getId()) || room.getUserId().equals(student.getId())) {
+			argMap.put("role", "1");
+		}else {
+			argMap.put("role", "2");
+		}
+		
 		session.setMaxInactiveInterval(0);
 		virtualRoomRecordService.insertSelective(virtualRoomRecord);
 		ServletContext servletContext = session.getServletContext();
 		session.setAttribute("virtualRoomRecord", virtualRoomRecord.getId());
 		servletContext.setAttribute(username, session);
+		argMap.put("room", room);
 		argMap.put("code", "200");
+		argMap.put("meetingType", 0);
 		return JsonUtils.objectToJson(argMap);
 	}
 	
@@ -548,20 +604,40 @@ public class QianduanController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/selectVirtualRoom", produces = { "text/json;charset=UTF-8" })
-	public String selectVirtualRoom(@RequestParam(required = false) String roomNum) {
+	public String selectVirtualRoom(@RequestParam(required = false) String roomId,
+			@RequestParam(required = false) String username, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> argMap = new HashMap<>();
-		if(roomNum==null) {
+		if(roomId==null||"".equals(roomId)) {
 			argMap.put("code", "1001");
-			argMap.put("message", "房间号为空！");
+			argMap.put("message", "房间ID为空！");
 			return JsonUtils.objectToJson(argMap);
 		}
 		Map<String,Object> map = new HashMap<>();
-		map.put("roomNum", roomNum);
+		map.put("username", username);
+		
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+		
+		Student student = new Student();
+		student.setUsername(username);
+		
+		teacher = teacherService.teacherLogin(teacher);
+		student = studentService.studentLogin(student);
+		map.put("roomId", roomId);
 		List<Room> roomList = roomService.selectVirtualRoom(map);
 		if(roomList.size()==0) {
 			argMap.put("code", "1002");
 			argMap.put("message", "房间不存在！");
 			return JsonUtils.objectToJson(argMap);
+		}
+		for (Room room : roomList) {
+			room.setKey(room.getId());
+			if(room.getUserId().equals(teacher.getId()) || room.getUserId().equals(student.getId())) {
+				room.setRole(1);
+			}else {
+				room.setRole(2);
+			}
 		}
 		argMap.put("code", "200");
 		argMap.put("roomList", roomList);
@@ -582,9 +658,11 @@ public class QianduanController {
 	@RequestMapping(value="/updateVirtualRoom", produces = { "text/json;charset=UTF-8" })
 	public String updateVirtualRoom(@RequestParam(required = false) String roomId,
 			@RequestParam(required = false) String roomNum,@RequestParam(required = false) String userId,
-			@RequestParam(required = false) String desc) {
+			@RequestParam(required = false) String desc,@RequestParam(required = false) String password,
+			HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> argMap = new HashMap<>();
-		if(roomId==null) {
+		if(roomId==null||"".equals(roomId)) {
 			argMap.put("code", "1001");
 			argMap.put("message", "房间为空！");
 			return JsonUtils.objectToJson(argMap);
@@ -597,8 +675,11 @@ public class QianduanController {
 		if(userId!=null) {
 			room.setUserId(userId);
 		}
-		if(desc!=null) {
+		if(desc!="" || desc!=null) {
 			room.setDesc(desc);
+		}
+		if(password!="" || password!=null) {
+			room.setPassword(password);
 		}
 		roomService.updateByPrimaryKeySelective(room);
 		argMap.put("code", "200");
@@ -615,7 +696,8 @@ public class QianduanController {
 	@ResponseBody
 	@RequestMapping(value="/userLogoutVirtualRoom", produces = { "text/json;charset=UTF-8" })
 	public String userLogoutVirtualRoom(@RequestParam(required = false) String username,
-			@RequestParam(required = false) String roomId,HttpSession session) {
+			@RequestParam(required = false) String roomId,HttpServletRequest request, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> argMap = new HashMap<>();
 		if(username==null) {
 			argMap.put("code", "1001");
@@ -628,8 +710,8 @@ public class QianduanController {
 			return JsonUtils.objectToJson(argMap);
 		}
 		
-		ServletContext servletContext = session.getServletContext();
-		session = (HttpSession) servletContext.getAttribute(username);
+		ServletContext servletContext = request.getServletContext();
+		HttpSession session = (HttpSession) servletContext.getAttribute(username);
 		int vrrId = (int) session.getAttribute("virtualRoomRecord");
 		VirtualRoomRecord virtualRoomRecord = new VirtualRoomRecord();
 		virtualRoomRecord.setId(vrrId);
@@ -719,4 +801,28 @@ public class QianduanController {
 		hour += Integer.parseInt(split[0]);
 		return hour + ":" + minute + ":" + sec;
 	}
+	
+	/**
+	 * 从reqeust中获取ip
+	 * @author KONKA
+	 * @param request
+	 * @return
+	 */
+	public static String getIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = ip.indexOf(",");
+            if(index != -1){
+                return ip.substring(0,index);
+            }else{
+                return ip;
+            }
+        }
+        ip = request.getHeader("X-Real-IP");
+        if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
+            return ip;
+        }
+        return request.getRemoteAddr();
+    }
 }

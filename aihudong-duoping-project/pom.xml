@@ -360,6 +360,15 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.jasig.cas.client/cas-client-core -->
+		<dependency>
+		    <groupId>org.jasig.cas.client</groupId>
+		    <artifactId>cas-client-core</artifactId>
+		    <version>3.2.1</version>
+		</dependency>
+
+		
 
 
 	</dependencies>

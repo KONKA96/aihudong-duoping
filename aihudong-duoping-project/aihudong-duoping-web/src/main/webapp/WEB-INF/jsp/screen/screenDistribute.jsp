@@ -13,7 +13,7 @@
 	<c:if test="${admin.power==0 }">
 	<div style="display:inline-block;">
 	<div class=" alert alert-info" 
-		style="width: 450px; height: 35px; padding-top: 0px; padding-left: 0; margin-bottom: 0; margin-top: 10px">
+		style="width: 500px; height: 35px; padding-top: 0px; padding-left: 0; margin-bottom: 0; margin-top: 10px">
 		<button type="button" class=" btn btn-link" data-toggle="collapse"
 			data-target="#demo1">
 			<span class=" glyphicon glyphicon-plus"></span>
@@ -25,7 +25,7 @@
 		style="margin-left: 40px; margin-bottom: 10px; margin-top: 0px">
 		<c:forEach items="${adminYijiList }" var="admin1">
 			<div class=" alert alert-info" 
-				style="margin-top: 20px; width: 410px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
+				style="margin-top: 20px; width: 460px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
 				<button type="button" class=" btn btn-link" data-toggle="collapse"
 					data-target="#demo${admin1.id }">
 					<span class=" glyphicon glyphicon-plus"></span>
@@ -38,7 +38,7 @@
 				<c:forEach items="${admin1.adminList }" var="admin2">
 					<c:if test="${admin2.id!=null }">
 						<div class=" alert alert-info" 
-							style="margin-top: 10px; width: 330px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
+							style="margin-top: 10px; width: 380px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
 							<span onclick="showAdminInfo(${admin2.id})">${admin2.truename }&nbsp;&nbsp;屏幕数：${admin2.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin2.screenRemain }</span>
 						</div>
 					</c:if>

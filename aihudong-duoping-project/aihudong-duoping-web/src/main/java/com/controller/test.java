@@ -1,10 +1,17 @@
 package com.controller;
 
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -13,6 +20,9 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.util.AssertionHolder;
+import org.jasig.cas.client.validation.Assertion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -72,10 +82,22 @@ public class test {
 	/**
 	 * 跳转到登录界面
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping("/toLogin")
-	public String toLogin(){
+	public String toLogin(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		/*Admin admin = new Admin();
+		
+		String uid = request.getRemoteUser();// 获取登录用户id
+		admin.setUsername(uid);
+		
+		admin = adminService.adminLogin(admin);
+		if(admin!=null) {
+			session.setAttribute("admin", admin);
+			return "redirect:/admin/test";
+		}*/
 		return "login";
+		//return "redirect:/admin/test";
 	}
 	/**
 	 * 管理员登录
@@ -86,12 +108,15 @@ public class test {
 	@ResponseBody
 	@RequestMapping("/adminLogin")
 	public String adminLogin(Admin admin,HttpSession session){
+		Map<String,Object> map = new HashMap<>();
 		UsernamePasswordToken token = new UsernamePasswordToken(admin.getUsername(),
 				new Md5Hash(admin.getPassword(), admin.getUsername() ,2).toString());
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);
 			admin = adminService.adminLogin(admin);
+			map.put("adminId", admin.getId());
+			admin.setScreenRemain(admin.getScreenNum()-screenService.selectScreenCount(map));
 			
 			logger.info(admin.getUsername()+"登录系统");
 			session.setAttribute("admin", admin);
