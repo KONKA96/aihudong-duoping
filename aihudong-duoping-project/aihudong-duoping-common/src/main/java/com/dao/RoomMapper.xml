@@ -159,7 +159,7 @@
  	<where>
  		r.user_id is not null
  		<if test="roomId!='' and roomId!=null">
- 			and concat ('%',r.id,'%') like concat ('%',#{roomId},'%')
+ 			and concat (r.id,r.num) like concat ('%',#{roomId},'%')
  		</if>
  		<if test="userId!=null">
  			and r.user_id=#{userId}

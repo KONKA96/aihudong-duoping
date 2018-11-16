@@ -142,7 +142,7 @@ public class QianduanController {
 			return JsonUtils.objectToJson(argMap);
 		}
 		if ((teacher != null) && (teacher.getUsername() != null)) {
-			if (!teacher.getPassword().equals(new Md5Hash(password, username, 2).toString())) {
+			if (!teacher.getPassword().equals(password)) {
 				argMap.put("code", Integer.valueOf(1002));
 				argMap.put("message", "密码错误");
 				return JsonUtils.objectToJson(argMap);
@@ -174,7 +174,7 @@ public class QianduanController {
 			}
 		} else if (selectAllScreen.size() != 0) {
 			if (password != null && !((Screen) selectAllScreen.get(0)).getPassword()
-					.equals(new Md5Hash(password, username, 2).toString())) {
+					.equals(password)) {
 				argMap.put("code", Integer.valueOf(1002));
 				argMap.put("message", "密码错误");
 				return JsonUtils.objectToJson(argMap);
@@ -219,7 +219,7 @@ public class QianduanController {
 				screenService.updateByPrimaryKeySelective(selectAllScreen.get(0));
 			}
 		} else if ((student != null) && (student.getUsername() != null)) {
-			if (!student.getPassword().equals(new Md5Hash(password, username, 2).toString())) {
+			if (!student.getPassword().equals(password)) {
 				argMap.put("code", Integer.valueOf(1002));
 				argMap.put("message", "密码错误");
 				return JsonUtils.objectToJson(argMap);
@@ -482,7 +482,11 @@ public class QianduanController {
 			List<Room> selectVirtualRoom = roomService.selectVirtualRoom(map);
 			if(selectVirtualRoom!=null && selectVirtualRoom.size()!=0) {
 				Room room = selectVirtualRoom.get(0);
-				room.setRole(1);
+				if(room.getUserId().equals(teacher.getId())) {
+					room.setRole(1);
+				}else {
+					room.setRole(2);
+				}
 				room.setKey(room.getId());
 				roomSet.add(room);
 			}
@@ -579,7 +583,7 @@ public class QianduanController {
 			virtualRoomRecord.setRole(2);
 		}
 		
-		if(room.getUserId().equals(teacher.getId()) || room.getUserId().equals(student.getId())) {
+		if((teacher!=null && room.getUserId().equals(teacher.getId())) || (student!=null && room.getUserId().equals(student.getId()))) {
 			argMap.put("role", "1");
 		}else {
 			argMap.put("role", "2");
@@ -633,7 +637,7 @@ public class QianduanController {
 		}
 		for (Room room : roomList) {
 			room.setKey(room.getId());
-			if(room.getUserId().equals(teacher.getId()) || room.getUserId().equals(student.getId())) {
+			if((teacher!=null && room.getUserId().equals(teacher.getId())) || (student!=null && room.getUserId().equals(student.getId()))) {
 				room.setRole(1);
 			}else {
 				room.setRole(2);

@@ -32,6 +32,8 @@ import com.service.impl.AdminServiceImpl;
 import com.util.JsonUtils;
 import com.util.PageUtil;
 
+import sun.misc.BASE64Encoder;
+
 /**
  * 
  * @author KONKA
@@ -99,12 +101,13 @@ public class AdminController {
 	 */
 	@ResponseBody
 	@RequestMapping("/testOldPwd")
-	public String testOldPwd(String password) {
-		Subject subject = SecurityUtils.getSubject();
-		Admin admin=new Admin();
-		admin.setUsername((String) subject.getPrincipal());
-		admin=adminService.adminLogin(admin);
-		if (new Md5Hash(password, admin.getUsername(), 2).toString().equals(admin.getPassword())) {
+	public String testOldPwd(String password,HttpSession session) {
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
+		Admin admin = (Admin) session.getAttribute("admin");
+		password = new String(encoder.encode(password.getBytes()));
+		password = new String(encoder.encode(password.getBytes()));
+		if (password.equals(admin.getPassword())) {
 			return "success";
 		}
 		return "";

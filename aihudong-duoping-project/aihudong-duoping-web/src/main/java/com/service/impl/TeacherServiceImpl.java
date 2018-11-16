@@ -11,6 +11,8 @@ import com.dao.TeacherMapper;
 import com.model.Teacher;
 import com.service.TeacherService;
 
+import sun.misc.BASE64Encoder;
+
 @Service
 public class TeacherServiceImpl implements TeacherService {
 	
@@ -34,15 +36,20 @@ public class TeacherServiceImpl implements TeacherService {
 
 	public int updateTeacherSelected(Teacher teacher) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		if(teacher.getPassword()!=null) {
-			Teacher selectByPrimaryKey = teacherMapper.selectByPrimaryKey(teacher.getId());
-			teacher.setPassword(new Md5Hash(teacher.getPassword(), selectByPrimaryKey.getUsername() ,2).toString());
+			String password = new String(encoder.encode(teacher.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			teacher.setPassword(password);
 		}
 		return teacherMapper.updateByPrimaryKeySelective(teacher);
 	}
 
 	public int insertTeacherSelected(Teacher teacher) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Teacher> teacherList = teacherMapper.selectAll(null);
 		for (Teacher tea : teacherList) {
 			if(teacher.getUsername().equals(tea.getUsername())&&teacher.getTruename().equals(tea.getTruename())){
@@ -51,7 +58,9 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 		
 		if(teacher.getPassword()!=null) {
-			teacher.setPassword(new Md5Hash(teacher.getPassword(), teacher.getUsername() ,2).toString());
+			String password = new String(encoder.encode(teacher.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			teacher.setPassword(password);
 		}
 		if(teacher.getUsername()==null||teacher.getPassword()==null||teacher.getTruename()==null){
 			return 0;

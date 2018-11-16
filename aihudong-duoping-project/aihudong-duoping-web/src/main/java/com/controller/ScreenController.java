@@ -48,6 +48,7 @@ import com.util.ProduceUsername4;
 import com.util.StringRandom;
 
 import net.sf.json.JSONObject;
+import sun.misc.BASE64Encoder;
 
 /**
  * 
@@ -253,7 +254,7 @@ public class ScreenController {
     	}
     	List<String> usernameList = screenService.selectAllUsername();
     	
-    	List<String> usernameNewList=ProduceUsername4.produceScreenUsername(usernameList, Integer.parseInt(number)-start);
+    	List<String> usernameNewList=ProduceUsername4.produceScreenUsername(usernameList, Integer.parseInt(number));
     	/*A:while(true) {
     		String usn=StringRandom.getStringRandom(3);
     		int c=0;
@@ -275,10 +276,10 @@ public class ScreenController {
     	}*/
     	/*List<String> idList = screenService.selectAllId();
     	List<String> idNewList = ProduceUsername4.produceScreenUsername(idList, Integer.parseInt(number)-start);*/
-		for(int i=start;i<Integer.parseInt(number);i++){
+		for(int i=0;i<Integer.parseInt(number);i++){
 			Screen screen=new Screen();
-			screen.setId("sc"+Integer.parseInt(usernameNewList.get(i-start)));
-			screen.setUsername(usernameNewList.get(i-start));
+			screen.setId("sc"+Integer.parseInt(usernameNewList.get(i)));
+			screen.setUsername(usernameNewList.get(i));
 			screen.setPassword("123");
 			screen.setRoomId(room.getId());
 			screenListNew.add(screen);
@@ -386,11 +387,15 @@ public class ScreenController {
     @ResponseBody
     @RequestMapping(value="/testScreenOldPwd")
     public String testScreenOldPwd(Screen screen) {
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
     	List<Screen> screenList = screenService.selectAllScreen(screen);
+    	String password = new String(encoder.encode(screen.getPassword().getBytes()));
+		password = new String(encoder.encode(password.getBytes()));
     	if(screenList.size()==0) {
     		return "error";
     	}else {
-    		if(new Md5Hash(screen.getPassword(), screenList.get(0).getUsername(), 2).toString().equals(screenList.get(0).getPassword())) {
+    		if(password.equals(screenList.get(0).getPassword())) {
 				return "same";
 			}
     	}

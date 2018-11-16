@@ -11,6 +11,8 @@ import com.dao.StudentMapper;
 import com.model.Student;
 import com.service.StudentService;
 
+import sun.misc.BASE64Encoder;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -34,6 +36,8 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public int insertSelective(Student student) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Student> studentList = studentMapper.selectAllStudent(null);
 		for (Student stu : studentList) {
 			if(stu.getUsername().equals(student.getUsername())&&stu.getTruename().equals(student.getTruename())){
@@ -41,7 +45,9 @@ public class StudentServiceImpl implements StudentService {
 			}
 		}
 		if(student.getPassword()!=null) {
-			student.setPassword(new Md5Hash(student.getPassword(), student.getUsername() ,2).toString());
+			String password = new String(encoder.encode(student.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			student.setPassword(password);
 		}
 		if(student.getUsername()==null||student.getPassword()==null||student.getTruename()==null){
 			return 0;
@@ -59,9 +65,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public int updateByPrimaryKeySelective(Student student) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		if(student.getPassword()!=null) {
-			Student selectByPrimaryKey = studentMapper.selectByPrimaryKey(student.getId());
-			student.setPassword(new Md5Hash(student.getPassword(), selectByPrimaryKey.getUsername() ,2).toString());
+			String password = new String(encoder.encode(student.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			student.setPassword(password);
 		}
 		return studentMapper.updateByPrimaryKeySelective(student);
 	}

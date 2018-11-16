@@ -31,7 +31,16 @@
                         <div class="dropdown profile-element">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">${admin.truename }</strong></span>
+                               <span class="block m-t-xs"><strong class="font-bold">
+                               <c:choose>
+                               	<c:when test="${sessionScope.admin.truename==null}">
+                               		${sessionScope.admin.username}
+                               	</c:when>
+                               	<c:otherwise>
+                               		${sessionScope.admin.truename}
+                               	</c:otherwise>
+                               </c:choose>
+                               </strong></span>
                                 <span class="text-muted text-xs block"><c:if test="${admin.power==0 }">根级管理员</c:if><c:if test="${admin.power==1 }">一级管理员</c:if><c:if test="${admin.power==2 }">操作管理员</c:if><b class="caret"></b></span>
                                 </span>
                             </a>

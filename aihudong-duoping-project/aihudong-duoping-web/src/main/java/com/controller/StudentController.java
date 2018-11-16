@@ -36,6 +36,8 @@ import com.util.ImportExcelUtil;
 import com.util.PageUtil;
 import com.util.ProduceId;
 
+import sun.misc.BASE64Encoder;
+
 /**
  * 
  * @author KONKA
@@ -151,12 +153,15 @@ public class StudentController {
 	@ResponseBody
 	@RequestMapping("/testStudentOldPwd")
 	public String testStudentOldPwd(Student student) {
-		
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Student> selectAllStudent = studentService.selectAllStudent(student);
+		String password = new String(encoder.encode(student.getPassword().getBytes()));
+		password = new String(encoder.encode(password.getBytes()));
 		if(selectAllStudent.size()==0) {
 			return "error";
 		}else {
-			if(new Md5Hash(student.getPassword(), selectAllStudent.get(0).getUsername(), 2).toString().equals(selectAllStudent.get(0).getPassword())) {
+			if(password.equals(selectAllStudent.get(0).getPassword())) {
 				return "same";
 			}
 		}

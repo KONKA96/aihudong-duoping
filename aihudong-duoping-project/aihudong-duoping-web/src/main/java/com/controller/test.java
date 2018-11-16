@@ -2,6 +2,7 @@ package com.controller;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ import com.util.ProduceId;
 import com.util.ProduceUsername4;
 
 import net.sf.json.JSONObject;
+import sun.misc.BASE64Decoder;
 
 /**
  * 
@@ -104,19 +106,25 @@ public class test {
 	 * @param admin
 	 * @param session
 	 * @return
+	 * @throws IOException 
+	 * @throws UnsupportedEncodingException 
 	 */
 	@ResponseBody
 	@RequestMapping("/adminLogin")
-	public String adminLogin(Admin admin,HttpSession session){
-		Map<String,Object> map = new HashMap<>();
+	public String adminLogin(Admin admin,HttpSession session) throws UnsupportedEncodingException, IOException{
+		/*Map<String,Object> map = new HashMap<>();
 		UsernamePasswordToken token = new UsernamePasswordToken(admin.getUsername(),
 				new Md5Hash(admin.getPassword(), admin.getUsername() ,2).toString());
 		Subject subject = SecurityUtils.getSubject();
+		subject.login(token);
+		*/
+//		base64解码
+		BASE64Decoder decoder = new BASE64Decoder();
+		String pwd=new String(decoder.decodeBuffer(admin.getPassword()), "UTF-8");
+		pwd=new String(decoder.decodeBuffer(pwd), "UTF-8");
 		try {
-			subject.login(token);
+			admin.setPassword(pwd);
 			admin = adminService.adminLogin(admin);
-			map.put("adminId", admin.getId());
-			admin.setScreenRemain(admin.getScreenNum()-screenService.selectScreenCount(map));
 			
 			logger.info(admin.getUsername()+"登录系统");
 			session.setAttribute("admin", admin);

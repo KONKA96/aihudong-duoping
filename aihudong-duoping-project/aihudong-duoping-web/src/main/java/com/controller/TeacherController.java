@@ -39,6 +39,8 @@ import com.util.JsonUtils;
 import com.util.PageUtil;
 import com.util.ProduceId;
 
+import sun.misc.BASE64Encoder;
+
 /**
  * 
  * @author KONKA
@@ -50,6 +52,8 @@ public class TeacherController {
 	
 	@Value("${defaultPwd}")
 	private String defaultPwd;
+	@Value("${virtualRoomSwitch}")
+	private String virtualRoomSwitch;
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
@@ -156,11 +160,15 @@ public class TeacherController {
 	@ResponseBody
 	@RequestMapping("/testTeacherOldPwd")
 	public String testTeacherOldPwd(Teacher teacher) {
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Teacher> selectAllTeacher = teacherService.selectAllTeacher(teacher);
+		String password = new String(encoder.encode(selectAllTeacher.get(0).getPassword().getBytes()));
+		password = new String(encoder.encode(password.getBytes()));
 		if(selectAllTeacher.size()==0) {
 			return "error";
 		}else {
-			if(new Md5Hash(teacher.getPassword(), selectAllTeacher.get(0).getUsername(), 2).toString().equals(selectAllTeacher.get(0).getPassword())) {
+			if(password.equals(selectAllTeacher.get(0).getPassword())) {
 				return "same";
 			}
 		}

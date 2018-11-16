@@ -12,6 +12,8 @@ import com.model.Admin;
 import com.model.Screen;
 import com.service.ScreenService;
 
+import sun.misc.BASE64Encoder;
+
 @Service
 public class ScreenServiceImpl implements ScreenService {
 	@Autowired
@@ -26,6 +28,8 @@ public class ScreenServiceImpl implements ScreenService {
 	@Override
 	public int insertSelective(Screen screen) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Screen> screenList = screenMapper.selectAllScreen(null);
 		for (Screen scr : screenList) {
 			if(scr.getUsername().equals(screen.getUsername())){
@@ -33,7 +37,9 @@ public class ScreenServiceImpl implements ScreenService {
 			}
 		}
 		if(screen.getPassword()!=null) {
-			screen.setPassword(new Md5Hash(screen.getPassword(), screen.getUsername() ,2).toString());
+			String password = new String(encoder.encode(screen.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			screen.setPassword(password);
 		}
 		if(screen.getUsername()==null||screen.getPassword()==null||screen.getRoomId()==null){
 			return 0;
@@ -52,10 +58,14 @@ public class ScreenServiceImpl implements ScreenService {
 
 	@Override
 	public int updateByPrimaryKeySelective(Screen screen) {
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Screen> screenList = selectAllScreen(screen);
 		// TODO Auto-generated method stub
 		if(screen.getPassword()!=null) {
-			screen.setPassword(new Md5Hash(screen.getPassword(), screenList.get(0).getUsername() ,2).toString());
+			String password = new String(encoder.encode(screen.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			screen.setPassword(password);
 		}
 		return screenMapper.updateByPrimaryKeySelective(screen);
 	}

@@ -19,4 +19,6 @@ public interface RoomService {
 	int insertSelective(Room room);
 
 	int updateByPrimaryKeySelective(Room room);
+	
+	int insertVirtualRoom(Room room);
 }

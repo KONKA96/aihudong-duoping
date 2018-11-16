@@ -11,6 +11,8 @@ import com.dao.AdminMapper;
 import com.model.Admin;
 import com.service.AdminService;
 
+import sun.misc.BASE64Encoder;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 	@Autowired
@@ -25,6 +27,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertSelective(Admin admin) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		List<Admin> adminList = adminMapper.selectAllAdmin(null);
 		for (Admin ad : adminList) {
 			if(ad.getUsername().equals(admin)){
@@ -33,7 +37,9 @@ public class AdminServiceImpl implements AdminService {
 		}
 		
 		if(admin.getPassword()!=null) {
-			admin.setPassword(new Md5Hash(admin.getPassword(), admin.getUsername() ,2).toString());
+			String password = new String(encoder.encode(admin.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			admin.setPassword(password);
 		}
 		if(admin.getScreenNum()==null){
 			admin.setScreenNum(0);
@@ -54,9 +60,12 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateByPrimaryKeySelective(Admin admin) {
 		// TODO Auto-generated method stub
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
 		if(admin.getPassword()!=null) {
-			Admin oldAdmin = adminMapper.selectByPrimaryKey(admin.getId());
-			admin.setPassword(new Md5Hash(admin.getPassword(), oldAdmin.getUsername() ,2).toString());
+			String password = new String(encoder.encode(admin.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			admin.setPassword(password);
 		}
 		return adminMapper.updateByPrimaryKeySelective(admin);
 	}
