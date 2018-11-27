@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.dao.StudentMapper;
 import com.model.Student;
+import com.service.RoomService;
 import com.service.StudentService;
 
 import sun.misc.BASE64Encoder;
@@ -16,6 +18,14 @@ import sun.misc.BASE64Encoder;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+	@Value("${defaultPwd}")
+	private String defaultPwd;
+	@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;
+	
+	@Autowired
+	private RoomService roomService;
+	
 	@Autowired
 	private StudentMapper studentMapper;
 	@Override
@@ -44,6 +54,14 @@ public class StudentServiceImpl implements StudentService {
 				return 0;
 			}
 		}
+		
+		//通过开关控制，新增教师新开一间虚拟教室
+		if(virtualRoomSwitch) {
+			List<String> roomIdList = roomService.selectAllId();
+			
+			roomService.insertVirtualRoom(roomIdList, student.getUsername()+"'s Virtual Room", defaultPwd, student.getId());
+		}
+		
 		if(student.getPassword()!=null) {
 			String password = new String(encoder.encode(student.getPassword().getBytes()));
 			password = new String(encoder.encode(password.getBytes()));

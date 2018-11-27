@@ -1,8 +1,14 @@
 package com.controller;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,9 +47,11 @@ import com.service.RoomService;
 import com.service.ScreenService;
 import com.util.ProduceId;
 import com.util.ProduceUsername4;
+import com.util.TestSha1;
 
 import net.sf.json.JSONObject;
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 /**
  * 
@@ -85,9 +93,33 @@ public class test {
 	 * 跳转到登录界面
 	 * @return
 	 * @throws IOException 
+	 * @throws NoSuchAlgorithmException 
 	 */
 	@RequestMapping("/toLogin")
-	public String toLogin(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+	public String toLogin(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@RequestParam(required = false) String token,@RequestParam(required = false) String tenant,
+			@RequestParam(required = false) String user,@RequestParam(required = false) String sign) throws IOException, NoSuchAlgorithmException {
+		
+		//化大成教对接单点
+		if(token!=null && tenant!=null && user!=null) {
+			String testSha1 = TestSha1.testSha1(token,tenant,user);
+			if(sign!=null && sign.equals(testSha1)) {
+				String url = "http://celjwmanager.buct.edu.cn/openapi/ssoservice";
+				Map<String,Object> params = new HashMap<>();
+				params.put("tenant", tenant);
+				params.put("method", "checkToken");
+				HashMap<String, String> data = new HashMap<>();
+				data.put("token", token);
+				data.put("tenant", tenant);
+				data.put("sign", sign);
+				data.put("appId", "hgdx90001");
+				
+				params.put("data", data);
+				String sendPost = sendPost(url, params);
+				System.out.println(sendPost);
+			}
+		}
+		
 		/*Admin admin = new Admin();
 		
 		String uid = request.getRemoteUser();// 获取登录用户id
@@ -118,25 +150,22 @@ public class test {
 		Subject subject = SecurityUtils.getSubject();
 		subject.login(token);
 		*/
-//		base64解码
-		BASE64Decoder decoder = new BASE64Decoder();
-		String pwd=new String(decoder.decodeBuffer(admin.getPassword()), "UTF-8");
-		pwd=new String(decoder.decodeBuffer(pwd), "UTF-8");
-		try {
-			admin.setPassword(pwd);
-			admin = adminService.adminLogin(admin);
-			
-			logger.info(admin.getUsername()+"登录系统");
-			session.setAttribute("admin", admin);
-			return "success";
-		} catch (UnknownAccountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
+		String password = new String(encoder.encode(admin.getPassword().getBytes()));
+		password = new String(encoder.encode(password.getBytes()));
+		admin = adminService.adminLogin(admin);
+		if(admin==null || admin.getId()==null) {
+			logger.info("登录失败！");
 			return "none";
-		} catch (IncorrectCredentialsException e) {
-			e.printStackTrace();
+		}
+		if(!admin.getPassword().equals(password)) {
+			logger.info("登录失败！");
 			return "error";
 		}
+		logger.info(admin.getUsername()+"登录系统");
+		session.setAttribute("admin", admin);
+		return "success";
 	}
 	
 	@RequestMapping("/testLunbo")
@@ -246,4 +275,69 @@ public class test {
 	    return String.valueOf(s);
 
 	}
+	
+	public String sendPost(String url, Map<String, Object> params) {
+        OutputStreamWriter out = null;
+        BufferedReader in = null;
+        StringBuilder result = new StringBuilder();
+        try {
+            URL realUrl = new URL(url);
+            HttpURLConnection conn =(HttpURLConnection) realUrl.openConnection();
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            // POST方法
+            conn.setRequestMethod("POST");
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.connect();
+            // 获取URLConnection对象对应的输出流
+            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            // 发送请求参数
+            if (params != null) {
+                StringBuilder param = new StringBuilder();
+                for (Map.Entry<String, Object> entry : params.entrySet()) {
+                    if(param.length()>0){
+                        param.append("&");
+                    }
+                    param.append(entry.getKey());
+                    param.append("=");
+                    param.append(entry.getValue());
+                    //System.out.println(entry.getKey()+":"+entry.getValue());
+                }
+                //System.out.println("param:"+param.toString());
+                out.write(param.toString());
+            }
+            // flush输出流的缓冲
+            out.flush();
+            // 定义BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //使用finally块来关闭输出流、输入流
+        finally{
+            try{
+                if(out!=null){
+                    out.close();
+                }
+                if(in!=null){
+                    in.close();
+                }
+            }
+            catch(IOException ex){
+                ex.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
 }

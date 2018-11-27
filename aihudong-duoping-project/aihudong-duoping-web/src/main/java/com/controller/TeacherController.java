@@ -31,6 +31,7 @@ import com.model.Student;
 import com.model.Subject;
 import com.model.Teacher;
 import com.service.FacultyService;
+import com.service.RoomService;
 import com.service.StudentService;
 import com.service.SubjectService;
 import com.service.TeacherService;
@@ -52,8 +53,6 @@ public class TeacherController {
 	
 	@Value("${defaultPwd}")
 	private String defaultPwd;
-	@Value("${virtualRoomSwitch}")
-	private String virtualRoomSwitch;
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
@@ -226,6 +225,7 @@ public class TeacherController {
 				teacher.setPassword(defaultPwd);
 			}
 			if(teacherService.insertTeacherSelected(teacher)>0){
+				
 				try {
 					logger.info(admin.getUsername()+"添加了教师:"+teacher.getUsername());
 				} catch (Exception e) {

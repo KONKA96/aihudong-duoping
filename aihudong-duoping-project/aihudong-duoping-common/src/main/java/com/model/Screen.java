@@ -29,28 +29,38 @@ public class Screen {
 	
 	private Admin admin;
 	
-	private String randomname;
-	
 	private String sid;
 	
 	private String ipAddr;
 
     private String macAddr;
+    
+    private String randomCode1;
+    
+    private String randomCode2;
 	
+	public String getRandomCode1() {
+		return randomCode1;
+	}
+
+	public void setRandomCode1(String randomCode1) {
+		this.randomCode1 = randomCode1;
+	}
+
+	public String getRandomCode2() {
+		return randomCode2;
+	}
+
+	public void setRandomCode2(String randomCode2) {
+		this.randomCode2 = randomCode2;
+	}
+
 	public String getSid() {
 		return sid;
 	}
 
 	public void setSid(String sid) {
 		this.sid = sid;
-	}
-
-	public String getRandomname() {
-		return randomname;
-	}
-
-	public void setRandomname(String randomname) {
-		this.randomname = randomname;
 	}
 
 	public Admin getAdmin() {
@@ -232,8 +242,8 @@ public class Screen {
 		return "Screen [id=" + id + ", username=" + username + ", password=" + password + ", roomId=" + roomId
 				+ ", adminId=" + adminId + ", duration=" + duration + ", number=" + number + ", divice=" + divice
 				+ ", room=" + room + ", role=" + role + ", sessionId=" + sessionId + ", type=" + type + ", resolution="
-				+ resolution + ", admin=" + admin + ", randomname=" + randomname + ", sid=" + sid + ", ipAddr=" + ipAddr
-				+ ", macAddr=" + macAddr + "]";
+				+ resolution + ", admin=" + admin + ", sid=" + sid + ", ipAddr=" + ipAddr + ", macAddr=" + macAddr
+				+ ", randomCode1=" + randomCode1 + ", randomCode2=" + randomCode2 + "]";
 	}
 
 }

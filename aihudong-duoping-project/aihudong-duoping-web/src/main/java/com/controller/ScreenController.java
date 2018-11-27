@@ -587,15 +587,15 @@ public class ScreenController {
             objs[3] = sc.getId();
             objs[4] = sc.getUsername();
             if(sc.getType().equals("1")) {
-            	objs[6]="触摸屏";
+            	objs[5]="触摸屏";
             }else if(sc.getType().equals("2")){
-            	objs[6]="文档屏";
+            	objs[5]="文档屏";
             }else if(sc.getType().equals("3")){
-            	objs[6]="投影";
+            	objs[5]="投影";
             }else if(sc.getType().equals("4")){
-            	objs[6]="电视";
+            	objs[5]="电视";
             }else if(sc.getType().equals("5")){
-            	objs[6]="临时屏幕";
+            	objs[5]="临时屏幕";
             }
             dataList.add(objs);
         }

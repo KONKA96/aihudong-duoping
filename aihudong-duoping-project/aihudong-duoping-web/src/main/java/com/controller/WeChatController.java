@@ -149,15 +149,10 @@ public class WeChatController {
 			 
 			
 			session.setAttribute("screen", screen);
-			String stringRandom=StringRandom.getStringRandom(3);
-			
-			servletContext.setAttribute(screen.getUsername(), stringRandom);
-			servletContext.setAttribute(stringRandom, session);
 			screen=selectAllScreen.get(0);
 			screen.setRole(4);
 			String sessionId = session.getId();
 			screen.setSessionId(sessionId);
-			screen.setRandomname(stringRandom);
 			String jsonScreen = JsonUtils.objectToJson(screen);
 			encode = encoder.encode(jsonScreen.getBytes());
 			
@@ -355,7 +350,6 @@ public class WeChatController {
 					if (scr.getUsername().equals(usernameScreen)) {
 						continue;
 					}
-					scr.setRandomname(StringRandom.getStringRandom(3));
 				}
 				if (room != null) {
 					String jsonRoom = JsonUtils.objectToJson(room);

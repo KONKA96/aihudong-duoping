@@ -14,10 +14,12 @@
     <result column="sid" property="sid" jdbcType="VARCHAR" />
     <result column="ip_addr" property="ipAddr" jdbcType="VARCHAR" />
     <result column="mac_addr" property="macAddr" jdbcType="VARCHAR" />
+    <result column="random_code1" property="randomCode1" jdbcType="VARCHAR" />
+    <result column="random_code2" property="randomCode2" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, username, password, room_id, admin_id, duration, number, type, resolution, sid, 
-    ip_addr, mac_addr
+    ip_addr, mac_addr, random_code1, random_code2
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -33,13 +35,13 @@
     insert into screen (id, username, password, 
       room_id, admin_id, duration, 
       number, type, resolution, 
-      sid, ip_addr, mac_addr
-      )
+      sid, ip_addr, mac_addr, 
+      random_code1, random_code2)
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{roomId,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
       #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, 
-      #{sid,jdbcType=VARCHAR}, #{ipAddr,jdbcType=VARCHAR}, #{macAddr,jdbcType=VARCHAR}
-      )
+      #{sid,jdbcType=VARCHAR}, #{ipAddr,jdbcType=VARCHAR}, #{macAddr,jdbcType=VARCHAR}, 
+      #{randomCode1,jdbcType=VARCHAR}, #{randomCode2,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.model.Screen" >
     insert into screen
@@ -80,6 +82,12 @@
       <if test="macAddr != null" >
         mac_addr,
       </if>
+      <if test="randomCode1 != null" >
+        random_code1,
+      </if>
+      <if test="randomCode2 != null" >
+        random_code2,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -117,6 +125,12 @@
       </if>
       <if test="macAddr != null" >
         #{macAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="randomCode1 != null" >
+        #{randomCode1,jdbcType=VARCHAR},
+      </if>
+      <if test="randomCode2 != null" >
+        #{randomCode2,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +170,12 @@
       <if test="macAddr != null" >
         mac_addr = #{macAddr,jdbcType=VARCHAR},
       </if>
+      <if test="randomCode1 != null" >
+        random_code1 = #{randomCode1,jdbcType=VARCHAR},
+      </if>
+      <if test="randomCode2 != null" >
+        random_code2 = #{randomCode2,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -171,7 +191,9 @@
       resolution = #{resolution,jdbcType=VARCHAR},
       sid = #{sid,jdbcType=VARCHAR},
       ip_addr = #{ipAddr,jdbcType=VARCHAR},
-      mac_addr = #{macAddr,jdbcType=VARCHAR}
+      mac_addr = #{macAddr,jdbcType=VARCHAR},
+      random_code1 = #{randomCode1,jdbcType=VARCHAR},
+      random_code2 = #{randomCode2,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
@@ -195,6 +217,7 @@
   <sql id="allScreen">
   	select 
   		sc.id sc_id,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.admin_id,sc.type,sc.ip_addr, sc.mac_addr,
+  		sc.random_code1, sc.random_code2,
   		ad.id ad_id,ad.truename,
   		ro.id ro_id,ro.num,ro.building_id,
   		bu.id bu_id,bu.building_name,bu.admin_id bu_admin_id,
@@ -226,6 +249,9 @@
 			</if>
 			<if test="sid!=null">
 				and sc.sid=#{sid}
+			</if>
+			<if test="randomCode1 !=null">
+				and sc.random_code1=#{randomCode1} or sc.random_code2=#{randomCode1} or sc.username=#{randomCode1}
 			</if>
 		</where> 
 		order by zo.id,bu.id,ro.id,sc.id 

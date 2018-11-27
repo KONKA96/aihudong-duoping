@@ -185,15 +185,10 @@ public class QianduanController {
 			
 			screen = (Screen) selectAllScreen.get(0);
 			session.setAttribute("screen", screen);
-			String stringRandom = StringRandom.getStringRandom(3);
-
-			servletContext.setAttribute(screen.getUsername(), stringRandom);
-			servletContext.setAttribute(stringRandom, session);
 
 			screen.setRole(4);
 			String sessionId = session.getId();
 			screen.setSessionId(sessionId);
-			screen.setRandomname(stringRandom);
 
 			record.setUserId(screen.getId());
 			record.setRole(Integer.valueOf(4));
@@ -262,6 +257,36 @@ public class QianduanController {
 		argMap.put("code", Integer.valueOf(200));
 		argMap.put("serverhost", serverhost);
 
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 通过屏幕号查询其随机数
+	 * @author KONKA
+	 * @param usernameScreen
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/askForRandomCode", produces = { "text/json;charset=UTF-8" })
+	public String askForRandomCode(String usernameScreen,HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		//参数集合
+		Map<String, Object> argMap = new HashMap<>();
+		if(usernameScreen==null || usernameScreen=="") {
+			argMap.put("code", Integer.valueOf(1001));
+			argMap.put("message", "屏幕号为空！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		Screen screen = new Screen();
+		screen.setUsername(usernameScreen);
+		List<Screen> screenList = screenService.selectAllScreen(screen);
+		if(screenList==null || screenList.size()==0) {
+			argMap.put("code", Integer.valueOf(1002));
+			argMap.put("message", "屏幕不存在！");
+			return JsonUtils.objectToJson(argMap);
+		}
+		argMap.put("code", Integer.valueOf(200));
+		argMap.put("screen", screenList.get(0));
 		return JsonUtils.objectToJson(argMap);
 	}
 
@@ -396,7 +421,8 @@ public class QianduanController {
 			return JsonUtils.objectToJson(argMap);
 		}
 		Screen screen = new Screen();
-		screen.setUsername(usernameScreen);
+		//screen.setUsername(usernameScreen);
+		screen.setRandomCode1(usernameScreen);
 		List<Screen> selectAllScreen = this.screenService.selectAllScreen(screen);
 		if (selectAllScreen.size() <= 0) {
 			argMap.put("code", Integer.valueOf(1003));
@@ -406,11 +432,7 @@ public class QianduanController {
 		screen = (Screen) selectAllScreen.get(0);
 		Room room = this.roomService.selectScreenByRoom(screen.getRoom());
 		List<Screen> screenList = room.getScreenList();
-		for (Screen scr : screenList) {
-			if (!scr.getUsername().equals(usernameScreen)) {
-				scr.setRandomname(StringRandom.getStringRandom(3));
-			}
-		}
+		
 		int id = ((Integer) session.getAttribute("recordId")).intValue();
 		Record record = new Record();
 		record.setId(Integer.valueOf(id));
@@ -724,6 +746,91 @@ public class QianduanController {
 		virtualRoomRecordService.updateByPrimaryKeySelective(virtualRoomRecord);
 		argMap.put("code", "200");
 		return JsonUtils.objectToJson(argMap);
+	}
+	
+	@RequestMapping("/jinzhiLogin")
+	public String jinzhiLogin(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		ServletContext servletContext = request.getServletContext();
+		String username = request.getRemoteUser();// 获取登录用户id
+		
+		if(username==null) {
+			//用户名为空
+		}
+		
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+
+		teacher = teacherService.teacherLogin(teacher);
+
+		Student student = new Student();
+		student.setUsername(username);
+
+		student = studentService.studentLogin(student);
+		
+		//记录对象
+		Record record = new Record();
+		//返回参数
+		Map<String, Object> argMap = new HashMap<>();
+		//登录者为教师对象
+		if(teacher!=null && teacher.getId()!=null) {
+			session.setAttribute("teacher", teacher);
+
+			servletContext.setAttribute(teacher.getUsername(), session);
+			String sessionId = session.getId();
+			teacher.setSessionId(sessionId);
+
+			teacher.setRole(1);
+
+			record.setUserId(teacher.getId());
+			record.setRole(Integer.valueOf(1));
+			argMap.put("role", Integer.valueOf(1));
+			argMap.put("truename", teacher.getTruename());
+			
+			//统计在线人数
+			Object tcount = servletContext.getAttribute("tcount");
+			if(tcount==null) {
+				servletContext.setAttribute("tcount", 1);
+			}else {
+				servletContext.setAttribute("tcount", Integer.parseInt(tcount.toString())+1);
+			}
+		}
+		//登陆者为学生对象
+		if(student!=null && student.getId()!=null) {
+			session.setAttribute("student", student);
+			servletContext.setAttribute(student.getUsername(), session);
+			student.setRole(2);
+			String sessionId = session.getId();
+			student.setSessionId(sessionId);
+
+			argMap.put("role", Integer.valueOf(2));
+			argMap.put("truename", student.getTruename());
+			record.setUserId(student.getId());
+			record.setRole(Integer.valueOf(2));
+			//统计在线人数
+			Object scount = servletContext.getAttribute("scount");
+			if(scount==null) {
+				servletContext.setAttribute("scount", 1);
+			}else {
+				servletContext.setAttribute("scount", Integer.parseInt(scount.toString())+1);
+			}
+		}
+		
+		session.setAttribute("count", Integer.valueOf(0));
+
+		session.setAttribute("startTime", new Date());
+
+		record.setStartTime(new Date());
+		this.recordService.insertSelective(record);
+
+		session.setAttribute("recordId", record.getId());
+		session.setAttribute("startTime", record.getStartTime());
+		session.setAttribute("role", record.getRole());
+		session.setAttribute("userId", record.getUserId());
+		argMap.put("code", Integer.valueOf(200));
+		//argMap.put("serverhost", serverhost);
+		
+		return "";
 	}
 
 	@RequestMapping("/uploadFileRecordUser")

@@ -20,5 +20,5 @@ public interface RoomService {
 
 	int updateByPrimaryKeySelective(Room room);
 	
-	int insertVirtualRoom(Room room);
+	int insertVirtualRoom(List<String> idList,String num,String password,String userId);
 }

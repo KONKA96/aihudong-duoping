@@ -91,6 +91,12 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">备注</label>
+                                <div class="col-sm-10">
+                                    <input name="remake" value="${student.remake }" type="text" class="form-control" placeholder="备注">
+                                </div>
+                            </div>
                             
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">

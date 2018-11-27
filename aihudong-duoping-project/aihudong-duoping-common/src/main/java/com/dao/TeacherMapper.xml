@@ -223,7 +223,7 @@
   <sql id="teacher">
   	select 
   		t.id t_id,t.username,t.password,t.truename,t.sex,t.telephone,t.email,t.job,
-  		t.duration,t.times,t.screen_num_sametime,
+  		t.duration,t.times,t.screen_num_sametime,t.remake,
   		s.id s_id,s.subject_name,
   		f.id f_id,f.faculty_name
   	from teacher t left join subject s on t.subject_id=s.id
