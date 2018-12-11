@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.SetUpMapper" >
+  <resultMap id="BaseResultMap" type="com.model.SetUp" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="water_mark" property="waterMark" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="brush" property="brush" jdbcType="VARCHAR" />
+    <result column="blackboard" property="blackboard" jdbcType="VARCHAR" />
+    <result column="copy" property="copy" jdbcType="VARCHAR" />
+    <result column="black_screen" property="blackScreen" jdbcType="VARCHAR" />
+    <result column="sharing_the_desktop" property="sharingTheDesktop" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, water_mark, logo, brush, blackboard, copy, black_screen, sharing_the_desktop
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from `set-up`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from `set-up`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.SetUp" >
+    insert into set-up (id, water_mark, logo, 
+      brush, blackboard, copy, 
+      black_screen, sharing_the_desktop)
+    values (#{id,jdbcType=INTEGER}, #{waterMark,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
+      #{brush,jdbcType=VARCHAR}, #{blackboard,jdbcType=VARCHAR}, #{copy,jdbcType=VARCHAR}, 
+      #{blackScreen,jdbcType=VARCHAR}, #{sharingTheDesktop,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.SetUp" >
+    insert into `set-up`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterMark != null" >
+        water_mark,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="brush != null" >
+        brush,
+      </if>
+      <if test="blackboard != null" >
+        blackboard,
+      </if>
+      <if test="copy != null" >
+        copy,
+      </if>
+      <if test="blackScreen != null" >
+        black_screen,
+      </if>
+      <if test="sharingTheDesktop != null" >
+        sharing_the_desktop,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterMark != null" >
+        #{waterMark,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="brush != null" >
+        #{brush,jdbcType=VARCHAR},
+      </if>
+      <if test="blackboard != null" >
+        #{blackboard,jdbcType=VARCHAR},
+      </if>
+      <if test="copy != null" >
+        #{copy,jdbcType=VARCHAR},
+      </if>
+      <if test="blackScreen != null" >
+        #{blackScreen,jdbcType=VARCHAR},
+      </if>
+      <if test="sharingTheDesktop != null" >
+        #{sharingTheDesktop,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.SetUp" >
+    update `set-up`
+    <set >
+      <if test="waterMark != null" >
+        water_mark = #{waterMark,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="brush != null" >
+        brush = #{brush,jdbcType=VARCHAR},
+      </if>
+      <if test="blackboard != null" >
+        blackboard = #{blackboard,jdbcType=VARCHAR},
+      </if>
+      <if test="copy != null" >
+        copy = #{copy,jdbcType=VARCHAR},
+      </if>
+      <if test="blackScreen != null" >
+        black_screen = #{blackScreen,jdbcType=VARCHAR},
+      </if>
+      <if test="sharingTheDesktop != null" >
+        sharing_the_desktop = #{sharingTheDesktop,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.SetUp" >
+    update set-up
+    set water_mark = #{waterMark,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      brush = #{brush,jdbcType=VARCHAR},
+      blackboard = #{blackboard,jdbcType=VARCHAR},
+      copy = #{copy,jdbcType=VARCHAR},
+      black_screen = #{blackScreen,jdbcType=VARCHAR},
+      sharing_the_desktop = #{sharingTheDesktop,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

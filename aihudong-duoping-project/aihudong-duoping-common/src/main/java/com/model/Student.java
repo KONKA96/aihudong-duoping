@@ -36,7 +36,17 @@ public class Student {
     private int role;
     
     private String sessionId;
+    
+    private String type;
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getOpenId() {
 		return openId;
 	}
@@ -187,7 +197,7 @@ public class Student {
 				+ ", truename=" + truename + ", nickname=" + nickname + ", sex=" + sex + ", telephone=" + telephone
 				+ ", email=" + email + ", subjectId=" + subjectId + ", duration=" + duration + ", time=" + time
 				+ ", remake=" + remake + ", groupId=" + groupId + ", subject=" + subject + ", group=" + group
-				+ ", role=" + role + ", sessionId=" + sessionId + "]";
+				+ ", role=" + role + ", sessionId=" + sessionId + ", type=" + type + "]";
 	}
 
 }

@@ -1,7 +1,10 @@
 package com.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,24 @@ public class FacultyController {
 
 	@Autowired
 	private FacultyService facultyService;
+	
+	/**
+	 * 后台页面获取院系专业集合
+	 * @author KONKA
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getAllFaculty", produces = { "text/json;charset=UTF-8" })
+	public String getAllFaculty(HttpServletResponse response) {
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> argMap = new HashMap<>();
+//		获取院系专业集合
+		List<Faculty> facultyList = facultyService.selectAllFaculty(null);
+		argMap.put("facultyList", facultyList);
+		return JsonUtils.objectToJson(argMap);
+	}
 	
 	/**
 	 * 通过系查询其所有的科目

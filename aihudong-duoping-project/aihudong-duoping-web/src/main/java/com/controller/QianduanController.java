@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -39,6 +38,8 @@ import com.service.ScreenService;
 import com.service.StudentService;
 import com.service.TeacherService;
 import com.service.VirtualRoomRecordService;
+import com.task.DeleteTemporaryScreen;
+import com.task.DeleteTemporaryUser;
 import com.util.JsonUtils;
 import com.util.StringRandom;
 
@@ -69,6 +70,8 @@ public class QianduanController {
 	private String httpUrl;
 	@Value("${salt}")
 	private String salt;
+	@Value("${defaultPwd}")
+	private String defaultPwd;
 
 	Logger logger = Logger.getLogger(this.getClass());
 
@@ -180,6 +183,17 @@ public class QianduanController {
 				return JsonUtils.objectToJson(argMap);
 			}
 			
+			if(selectAllScreen.get(0).getSid()!=null && sid!=null && !sid.equals(selectAllScreen.get(0).getSid())) {
+				argMap.put("code", Integer.valueOf(1002));
+				argMap.put("message", "该屏幕号已经绑定，请咨询管理员！");
+				return JsonUtils.objectToJson(argMap);
+			}
+			
+			if(sid==null || "".equals(sid) || "undefined".equals(sid)) {
+				argMap.put("code", Integer.valueOf(1002));
+				argMap.put("message", "该屏幕未绑定机器码，请咨询管理员！");
+				return JsonUtils.objectToJson(argMap);
+			}
 
 			argMap.put("username", selectAllScreen.get(0).getUsername());
 			
@@ -391,6 +405,7 @@ public class QianduanController {
 		int number = screen.getNumber();
 		String duration = screen.getDuration();
 
+		screen.setPassword(null);
 		screen.setNumber(number + 1);
 		screen.setDuration(countTime(duration, hour, minute, sec));
 		screenService.updateByPrimaryKeySelective(screen);
@@ -417,7 +432,7 @@ public class QianduanController {
 		HttpSession session = (HttpSession) servletContext.getAttribute(usernameUser);
 		if (session == null) {
 			argMap.put("code", Integer.valueOf(1002));
-			argMap.put("message", "session失效");
+			argMap.put("message", "会话已失效，请重新登录");
 			return JsonUtils.objectToJson(argMap);
 		}
 		Screen screen = new Screen();
@@ -447,9 +462,149 @@ public class QianduanController {
 		argMap.put("meetingName", room.getNum());
 		argMap.put("meetingType", 1);
 
+		argMap.put("type", screen.getType());
 		argMap.put("role", role);
 		argMap.put("serverhost", serverhost);
 		argMap.put("code", Integer.valueOf(200));
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 创建临时用户、访客
+	 * @author KONKA
+	 * @param username 创建人用户名
+	 * @param num 创建临时用户数量
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/createTemporaryUser")
+	public String createTemporaryUser(@RequestParam(required = false) String username,
+			@RequestParam(required = false,defaultValue="5") String num) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(username==null||username.equals("")) {
+			argMap.put("code", Integer.valueOf(1002));
+			argMap.put("message", "请传入用户名");
+			return JsonUtils.objectToJson(argMap);
+		}
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+		teacher = teacherService.teacherLogin(teacher);
+		if(teacher==null || teacher.getId()==null) {
+			argMap.put("code", Integer.valueOf(1002));
+			argMap.put("message", "用户名不存在");
+			return JsonUtils.objectToJson(argMap);
+		}
+		//查询所有学生
+		List<Student> studentList = studentService.selectAllStudent(null);
+		//存放临时用户、访客
+		List<Student> temporaryList = new ArrayList<>();
+		for (int i = 0; i < Integer.parseInt(num); i++) {
+			Student student = new Student();
+			while(true) {
+				String randomName = StringRandom.getStringRandom(3);
+				int count = 0;
+				for (Student stu : studentList) {
+					
+					if(stu.getUsername().equals(randomName)) {
+						break;
+					}else {
+						count++;
+					}
+				}
+				if(count==studentList.size()) {
+					student.setId(randomName);
+					student.setUsername(randomName);
+					student.setPassword(defaultPwd);
+					student.setTruename(randomName);
+					//设置学生为临时账户标识
+					student.setType("5");
+					studentService.insertSelective(student);
+					
+					temporaryList.add(student);
+					//设置线程，一段时间后自动删除
+					DeleteTemporaryUser dt = new DeleteTemporaryUser();
+					dt.setId(randomName);
+					dt.setStudentService(studentService);
+					Thread thread = new Thread(dt);
+					thread.start();
+
+					break;
+				}
+			}
+		}
+		
+		argMap.put("code", Integer.valueOf(200));
+		argMap.put("temporaryList",temporaryList);
+		
+		return JsonUtils.objectToJson(argMap);
+	}
+	
+	/**
+	 * 创建临时屏幕
+	 * @author KONKA
+	 * @param username 创建人用户名
+	 * @param num 创建临时屏幕数量
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/createTemporaryScreen")
+	public String createTemporaryScreen(@RequestParam(required = false) String username,
+			@RequestParam(required = false,defaultValue="5") String num,@RequestParam(required = false) String roomId) {
+		Map<String, Object> argMap = new HashMap<>();
+		if(username==null||username.equals("")) {
+			argMap.put("code", Integer.valueOf(1002));
+			argMap.put("message", "请传入用户名");
+			return JsonUtils.objectToJson(argMap);
+		}
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+		teacher = teacherService.teacherLogin(teacher);
+		if(teacher==null || teacher.getId()==null) {
+			argMap.put("code", Integer.valueOf(1002));
+			argMap.put("message", "用户名不存在");
+			return JsonUtils.objectToJson(argMap);
+		}
+		//查询所有屏幕
+		List<Screen> screenList = screenService.selectAllScreen(null);
+		//存放新建的临时屏幕
+		List<Screen> temporaryList = new ArrayList<>();
+		for (int i = 0; i < Integer.parseInt(num); i++) {
+			Screen screen = new Screen();
+			while(true) {
+				String randomName = StringRandom.getStringRandom(3);
+				int count = 0;
+				for (Screen scr : screenList) {
+					
+					if(scr.getUsername().equals(randomName)) {
+						break;
+					}else {
+						count++;
+					}
+				}
+				if(count==screenList.size()) {
+					screen.setId(randomName);
+					screen.setUsername(randomName);
+					screen.setPassword(defaultPwd);
+					//设置临时屏幕种类
+					screen.setType("5");
+					screen.setRoomId(roomId);
+					screenService.insertSelective(screen);
+					
+					temporaryList.add(screen);
+					
+					//设置线程，一段时间后自动删除
+					DeleteTemporaryScreen dt = new DeleteTemporaryScreen();
+					dt.setId(randomName);
+					dt.setScreenService(screenService);
+					Thread thread = new Thread(dt);
+					thread.start();
+					break;
+				}
+			}
+		}
+		argMap.put("code", Integer.valueOf(200));
+		argMap.put("temporaryList",temporaryList);
+		
 		return JsonUtils.objectToJson(argMap);
 	}
 	
@@ -748,90 +903,7 @@ public class QianduanController {
 		return JsonUtils.objectToJson(argMap);
 	}
 	
-	@RequestMapping("/jinzhiLogin")
-	public String jinzhiLogin(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		ServletContext servletContext = request.getServletContext();
-		String username = request.getRemoteUser();// 获取登录用户id
-		
-		if(username==null) {
-			//用户名为空
-		}
-		
-		Teacher teacher = new Teacher();
-		teacher.setUsername(username);
-
-		teacher = teacherService.teacherLogin(teacher);
-
-		Student student = new Student();
-		student.setUsername(username);
-
-		student = studentService.studentLogin(student);
-		
-		//记录对象
-		Record record = new Record();
-		//返回参数
-		Map<String, Object> argMap = new HashMap<>();
-		//登录者为教师对象
-		if(teacher!=null && teacher.getId()!=null) {
-			session.setAttribute("teacher", teacher);
-
-			servletContext.setAttribute(teacher.getUsername(), session);
-			String sessionId = session.getId();
-			teacher.setSessionId(sessionId);
-
-			teacher.setRole(1);
-
-			record.setUserId(teacher.getId());
-			record.setRole(Integer.valueOf(1));
-			argMap.put("role", Integer.valueOf(1));
-			argMap.put("truename", teacher.getTruename());
-			
-			//统计在线人数
-			Object tcount = servletContext.getAttribute("tcount");
-			if(tcount==null) {
-				servletContext.setAttribute("tcount", 1);
-			}else {
-				servletContext.setAttribute("tcount", Integer.parseInt(tcount.toString())+1);
-			}
-		}
-		//登陆者为学生对象
-		if(student!=null && student.getId()!=null) {
-			session.setAttribute("student", student);
-			servletContext.setAttribute(student.getUsername(), session);
-			student.setRole(2);
-			String sessionId = session.getId();
-			student.setSessionId(sessionId);
-
-			argMap.put("role", Integer.valueOf(2));
-			argMap.put("truename", student.getTruename());
-			record.setUserId(student.getId());
-			record.setRole(Integer.valueOf(2));
-			//统计在线人数
-			Object scount = servletContext.getAttribute("scount");
-			if(scount==null) {
-				servletContext.setAttribute("scount", 1);
-			}else {
-				servletContext.setAttribute("scount", Integer.parseInt(scount.toString())+1);
-			}
-		}
-		
-		session.setAttribute("count", Integer.valueOf(0));
-
-		session.setAttribute("startTime", new Date());
-
-		record.setStartTime(new Date());
-		this.recordService.insertSelective(record);
-
-		session.setAttribute("recordId", record.getId());
-		session.setAttribute("startTime", record.getStartTime());
-		session.setAttribute("role", record.getRole());
-		session.setAttribute("userId", record.getUserId());
-		argMap.put("code", Integer.valueOf(200));
-		//argMap.put("serverhost", serverhost);
-		
-		return "";
-	}
+	
 
 	@RequestMapping("/uploadFileRecordUser")
 	public void uploadFileRecordUser(@RequestParam(required = false) String fileName,

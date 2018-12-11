@@ -2,6 +2,8 @@ package com.model;
 
 public class Screen {
     private String id;
+    
+    private String title;
 
     private String username;
 
@@ -38,7 +40,35 @@ public class Screen {
     private String randomCode1;
     
     private String randomCode2;
+    
+    private String isSpeaker;
+    
+    private String isVideo;
 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getIsSpeaker() {
+		return isSpeaker;
+	}
+
+	public void setIsSpeaker(String isSpeaker) {
+		this.isSpeaker = isSpeaker;
+	}
+
+	public String getIsVideo() {
+		return isVideo;
+	}
+
+	public void setIsVideo(String isVideo) {
+		this.isVideo = isVideo;
+	}
+
 	public String getRandomCode1() {
 		return randomCode1;
 	}
@@ -239,11 +269,12 @@ public class Screen {
 
 	@Override
 	public String toString() {
-		return "Screen [id=" + id + ", username=" + username + ", password=" + password + ", roomId=" + roomId
-				+ ", adminId=" + adminId + ", duration=" + duration + ", number=" + number + ", divice=" + divice
-				+ ", room=" + room + ", role=" + role + ", sessionId=" + sessionId + ", type=" + type + ", resolution="
-				+ resolution + ", admin=" + admin + ", sid=" + sid + ", ipAddr=" + ipAddr + ", macAddr=" + macAddr
-				+ ", randomCode1=" + randomCode1 + ", randomCode2=" + randomCode2 + "]";
+		return "Screen [id=" + id + ", title=" + title + ", username=" + username + ", password=" + password
+				+ ", roomId=" + roomId + ", adminId=" + adminId + ", duration=" + duration + ", number=" + number
+				+ ", divice=" + divice + ", room=" + room + ", role=" + role + ", sessionId=" + sessionId + ", type="
+				+ type + ", resolution=" + resolution + ", admin=" + admin + ", sid=" + sid + ", ipAddr=" + ipAddr
+				+ ", macAddr=" + macAddr + ", randomCode1=" + randomCode1 + ", randomCode2=" + randomCode2
+				+ ", isSpeaker=" + isSpeaker + ", isVideo=" + isVideo + "]";
 	}
 
 }

@@ -14,7 +14,7 @@
     <result column="screen_num" property="screenNum" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num
+    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num ,screen_remain
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

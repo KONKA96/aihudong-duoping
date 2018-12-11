@@ -11,12 +11,14 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -40,11 +42,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.model.Admin;
 import com.model.Logger;
+import com.model.Record;
 import com.model.Room;
 import com.model.Screen;
+import com.model.Student;
+import com.model.Teacher;
 import com.service.AdminService;
+import com.service.RecordService;
 import com.service.RoomService;
 import com.service.ScreenService;
+import com.service.StudentService;
+import com.service.TeacherService;
+import com.util.JsonUtils;
+import com.util.OSUtils;
 import com.util.ProduceId;
 import com.util.ProduceUsername4;
 import com.util.TestSha1;
@@ -71,6 +81,12 @@ public class test {
 	private ScreenService screenService;
 	@Autowired
 	private RoomService roomService;
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private RecordService recordService;
 	
 	@Autowired AdminService adminService;
 	
@@ -133,6 +149,98 @@ public class test {
 		return "login";
 		//return "redirect:/admin/test";
 	}
+	
+	/**
+	 * 对接金智单点登录
+	 * @author KONKA
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/jinzhiLogin")
+	public String jinzhiLogin(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		ServletContext servletContext = request.getServletContext();
+		String username = request.getRemoteUser();// 获取登录用户id
+		
+		if(username==null) {
+			//用户名为空
+		}
+		
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+
+		teacher = teacherService.teacherLogin(teacher);
+
+		Student student = new Student();
+		student.setUsername(username);
+
+		student = studentService.studentLogin(student);
+		
+		//记录对象
+		Record record = new Record();
+		//返回参数
+		Map<String, Object> argMap = new HashMap<>();
+		//登录者为教师对象
+		if(teacher!=null && teacher.getId()!=null) {
+			session.setAttribute("teacher", teacher);
+
+			servletContext.setAttribute(teacher.getUsername(), session);
+			String sessionId = session.getId();
+			teacher.setSessionId(sessionId);
+
+			teacher.setRole(1);
+
+			record.setUserId(teacher.getId());
+			record.setRole(Integer.valueOf(1));
+			argMap.put("role", Integer.valueOf(1));
+			argMap.put("truename", teacher.getTruename());
+			
+			//统计在线人数
+			Object tcount = servletContext.getAttribute("tcount");
+			if(tcount==null) {
+				servletContext.setAttribute("tcount", 1);
+			}else {
+				servletContext.setAttribute("tcount", Integer.parseInt(tcount.toString())+1);
+			}
+		}
+		//登陆者为学生对象
+		if(student!=null && student.getId()!=null) {
+			session.setAttribute("student", student);
+			servletContext.setAttribute(student.getUsername(), session);
+			student.setRole(2);
+			String sessionId = session.getId();
+			student.setSessionId(sessionId);
+
+			argMap.put("role", Integer.valueOf(2));
+			argMap.put("truename", student.getTruename());
+			record.setUserId(student.getId());
+			record.setRole(Integer.valueOf(2));
+			//统计在线人数
+			Object scount = servletContext.getAttribute("scount");
+			if(scount==null) {
+				servletContext.setAttribute("scount", 1);
+			}else {
+				servletContext.setAttribute("scount", Integer.parseInt(scount.toString())+1);
+			}
+		}
+		
+		session.setAttribute("count", Integer.valueOf(0));
+
+		session.setAttribute("startTime", new Date());
+
+		record.setStartTime(new Date());
+		this.recordService.insertSelective(record);
+
+		session.setAttribute("recordId", record.getId());
+		session.setAttribute("startTime", record.getStartTime());
+		session.setAttribute("role", record.getRole());
+		session.setAttribute("userId", record.getUserId());
+		argMap.put("code", Integer.valueOf(200));
+		//argMap.put("serverhost", serverhost);
+		
+		return "";
+	}
+	
 	/**
 	 * 管理员登录
 	 * @param admin
@@ -340,4 +448,20 @@ public class test {
         }
         return result.toString();
     }
+	
+	@ResponseBody
+	@RequestMapping(value="/testCpu",produces = { "text/json;charset=UTF-8" })
+	public String testCpu() {
+		Map<String, Object> argMap = new HashMap<>();
+		
+		Map<?, ?> cpuinfo = OSUtils.cpuinfo();
+		argMap.put("cpuinfo", cpuinfo);
+		int cpuUsage = OSUtils.cpuUsage();
+		argMap.put("cpuUsage", cpuUsage);
+		int disk = OSUtils.disk();
+		argMap.put("disk", disk);
+		int memoryUsage = OSUtils.memoryUsage();
+		argMap.put("memoryUsage", memoryUsage);
+		return JsonUtils.objectToJson(argMap);
+	}
 }

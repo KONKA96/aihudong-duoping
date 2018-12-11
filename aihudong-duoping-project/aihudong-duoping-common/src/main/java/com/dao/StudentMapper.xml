@@ -16,10 +16,11 @@
     <result column="time" property="time" jdbcType="INTEGER" />
     <result column="remake" property="remake" jdbcType="VARCHAR" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, username, password, open_id, truename, nickname, sex, telephone, email, subject_id, 
-    duration, time, remake, group_id
+    duration, time, remake, group_id, type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -36,12 +37,14 @@
       open_id, truename, nickname, 
       sex, telephone, email, 
       subject_id, duration, time, 
-      remake, group_id)
+      remake, group_id, type
+      )
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{openId,jdbcType=VARCHAR}, #{truename,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
       #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{subjectId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, 
-      #{remake,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER})
+      #{remake,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.model.Student" >
     insert into student
@@ -88,6 +91,9 @@
       <if test="groupId != null" >
         group_id,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -131,6 +137,9 @@
       </if>
       <if test="groupId != null" >
         #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="groupId != null" >
         group_id = #{groupId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -193,7 +205,8 @@
       duration = #{duration,jdbcType=VARCHAR},
       time = #{time,jdbcType=INTEGER},
       remake = #{remake,jdbcType=VARCHAR},
-      group_id = #{groupId,jdbcType=INTEGER}
+      group_id = #{groupId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   

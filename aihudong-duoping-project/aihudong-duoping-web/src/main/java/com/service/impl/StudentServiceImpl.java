@@ -55,8 +55,8 @@ public class StudentServiceImpl implements StudentService {
 			}
 		}
 		
-		//通过开关控制，新增教师新开一间虚拟教室
-		if(virtualRoomSwitch) {
+		//通过开关控制，新开一间虚拟教室 (临时账户除外)
+		if(!"5".equals(student.getType()) && virtualRoomSwitch) {
 			List<String> roomIdList = roomService.selectAllId();
 			
 			roomService.insertVirtualRoom(roomIdList, student.getUsername()+"'s Virtual Room", defaultPwd, student.getId());

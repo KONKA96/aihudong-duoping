@@ -3,6 +3,7 @@
 <mapper namespace="com.dao.ScreenMapper" >
    <resultMap id="BaseResultMap" type="com.model.Screen" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="room_id" property="roomId" jdbcType="VARCHAR" />
@@ -16,10 +17,12 @@
     <result column="mac_addr" property="macAddr" jdbcType="VARCHAR" />
     <result column="random_code1" property="randomCode1" jdbcType="VARCHAR" />
     <result column="random_code2" property="randomCode2" jdbcType="VARCHAR" />
+    <result column="is_speaker" property="isSpeaker" jdbcType="INTEGER" />
+    <result column="is_video" property="isVideo" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, room_id, admin_id, duration, number, type, resolution, sid, 
-    ip_addr, mac_addr, random_code1, random_code2
+    id, title, username, password, room_id, admin_id, duration, number, type, resolution, 
+    sid, ip_addr, mac_addr, random_code1, random_code2, is_speaker, is_video
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -32,22 +35,27 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.model.Screen" >
-    insert into screen (id, username, password, 
-      room_id, admin_id, duration, 
-      number, type, resolution, 
-      sid, ip_addr, mac_addr, 
-      random_code1, random_code2)
-    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{roomId,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
-      #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, 
-      #{sid,jdbcType=VARCHAR}, #{ipAddr,jdbcType=VARCHAR}, #{macAddr,jdbcType=VARCHAR}, 
-      #{randomCode1,jdbcType=VARCHAR}, #{randomCode2,jdbcType=VARCHAR})
+    insert into screen (id, title, username, 
+      password, room_id, admin_id, 
+      duration, number, type, 
+      resolution, sid, ip_addr, 
+      mac_addr, random_code1, random_code2, 
+      is_speaker, is_video)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, 
+      #{duration,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{resolution,jdbcType=VARCHAR}, #{sid,jdbcType=VARCHAR}, #{ipAddr,jdbcType=VARCHAR}, 
+      #{macAddr,jdbcType=VARCHAR}, #{randomCode1,jdbcType=VARCHAR}, #{randomCode2,jdbcType=VARCHAR}, 
+      #{isSpeaker,jdbcType=INTEGER}, #{isVideo,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.model.Screen" >
     insert into screen
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="title != null" >
+        title,
       </if>
       <if test="username != null" >
         username,
@@ -88,10 +96,19 @@
       <if test="randomCode2 != null" >
         random_code2,
       </if>
+      <if test="isSpeaker != null" >
+        is_speaker,
+      </if>
+      <if test="isVideo != null" >
+        is_video,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
@@ -132,11 +149,20 @@
       <if test="randomCode2 != null" >
         #{randomCode2,jdbcType=VARCHAR},
       </if>
+      <if test="isSpeaker != null" >
+        #{isSpeaker,jdbcType=INTEGER},
+      </if>
+      <if test="isVideo != null" >
+        #{isVideo,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.model.Screen" >
     update screen
     <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -176,12 +202,19 @@
       <if test="randomCode2 != null" >
         random_code2 = #{randomCode2,jdbcType=VARCHAR},
       </if>
+      <if test="isSpeaker != null" >
+        is_speaker = #{isSpeaker,jdbcType=INTEGER},
+      </if>
+      <if test="isVideo != null" >
+        is_video = #{isVideo,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.model.Screen" >
     update screen
-    set username = #{username,jdbcType=VARCHAR},
+    set title = #{title,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       room_id = #{roomId,jdbcType=VARCHAR},
       admin_id = #{adminId,jdbcType=INTEGER},
@@ -193,7 +226,9 @@
       ip_addr = #{ipAddr,jdbcType=VARCHAR},
       mac_addr = #{macAddr,jdbcType=VARCHAR},
       random_code1 = #{randomCode1,jdbcType=VARCHAR},
-      random_code2 = #{randomCode2,jdbcType=VARCHAR}
+      random_code2 = #{randomCode2,jdbcType=VARCHAR},
+      is_speaker = #{isSpeaker,jdbcType=INTEGER},
+      is_video = #{isVideo,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
@@ -216,8 +251,8 @@
   
   <sql id="allScreen">
   	select 
-  		sc.id sc_id,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.admin_id,sc.type,sc.ip_addr, sc.mac_addr,
-  		sc.random_code1, sc.random_code2,
+  		sc.id sc_id,sc.title,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.admin_id,sc.sid,sc.type,sc.ip_addr, 
+  		sc.mac_addr,sc.random_code1, sc.random_code2, sc.is_speaker, sc.is_video,
   		ad.id ad_id,ad.truename,
   		ro.id ro_id,ro.num,ro.building_id,
   		bu.id bu_id,bu.building_name,bu.admin_id bu_admin_id,
