@@ -20,8 +20,8 @@ public class TeacherServiceImpl implements TeacherService {
 	
 	@Value("${defaultPwd}")
 	private String defaultPwd;
-	@Value("${virtualRoomSwitch}")
-	private boolean virtualRoomSwitch;
+	/*@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;*/
 	
 	@Autowired
 	private RoomService roomService;
@@ -67,11 +67,11 @@ public class TeacherServiceImpl implements TeacherService {
 			}
 		}
 		//通过开关控制，新增教师新开一间虚拟教室
-		if(virtualRoomSwitch) {
+		/*if(virtualRoomSwitch) {
 			List<String> roomIdList = roomService.selectAllId();
 			
 			roomService.insertVirtualRoom(roomIdList, teacher.getUsername()+"'s Virtual Room", defaultPwd, teacher.getId());
-		}
+		}*/
 		
 		if(teacher.getPassword()!=null) {
 			String password = new String(encoder.encode(teacher.getPassword().getBytes()));

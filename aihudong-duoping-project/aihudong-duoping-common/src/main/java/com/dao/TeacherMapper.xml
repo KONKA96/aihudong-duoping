@@ -17,10 +17,16 @@
     <result column="duration" property="duration" jdbcType="VARCHAR" />
     <result column="times" property="times" jdbcType="INTEGER" />
     <result column="remake" property="remake" jdbcType="VARCHAR" />
+    <result column="is_brush" property="isBrush" jdbcType="INTEGER" />
+    <result column="is_blackboard" property="isBlackboard" jdbcType="INTEGER" />
+    <result column="is_copy" property="isCopy" jdbcType="INTEGER" />
+    <result column="is_black_screen" property="isBlackScreen" jdbcType="INTEGER" />
+    <result column="is_share_the_desktop" property="isShareTheDesktop" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, username, password, open_id, truename, nickname, sex, telephone, email, job, 
-    subject_id, screen_num_sametime, duration, times, remake
+    subject_id, screen_num_sametime, duration, times, remake, is_brush, is_blackboard, 
+    is_copy, is_black_screen, is_share_the_desktop
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -37,14 +43,16 @@
       open_id, truename, nickname, 
       sex, telephone, email, 
       job, subject_id, screen_num_sametime, 
-      duration, times, remake
-      )
+      duration, times, remake, 
+      is_brush, is_blackboard, is_copy, 
+      is_black_screen, is_share_the_desktop)
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{openId,jdbcType=VARCHAR}, #{truename,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
       #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{job,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER}, #{screenNumSametime,jdbcType=INTEGER}, 
-      #{duration,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR}
-      )
+      #{duration,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR}, 
+      #{isBrush,jdbcType=INTEGER}, #{isBlackboard,jdbcType=INTEGER}, #{isCopy,jdbcType=INTEGER}, 
+      #{isBlackScreen,jdbcType=INTEGER}, #{isShareTheDesktop,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.model.Teacher" >
     insert into teacher
@@ -94,6 +102,21 @@
       <if test="remake != null" >
         remake,
       </if>
+      <if test="isBrush != null" >
+        is_brush,
+      </if>
+      <if test="isBlackboard != null" >
+        is_blackboard,
+      </if>
+      <if test="isCopy != null" >
+        is_copy,
+      </if>
+      <if test="isBlackScreen != null" >
+        is_black_screen,
+      </if>
+      <if test="isShareTheDesktop != null" >
+        is_share_the_desktop,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -140,6 +163,21 @@
       </if>
       <if test="remake != null" >
         #{remake,jdbcType=VARCHAR},
+      </if>
+      <if test="isBrush != null" >
+        #{isBrush,jdbcType=INTEGER},
+      </if>
+      <if test="isBlackboard != null" >
+        #{isBlackboard,jdbcType=INTEGER},
+      </if>
+      <if test="isCopy != null" >
+        #{isCopy,jdbcType=INTEGER},
+      </if>
+      <if test="isBlackScreen != null" >
+        #{isBlackScreen,jdbcType=INTEGER},
+      </if>
+      <if test="isShareTheDesktop != null" >
+        #{isShareTheDesktop,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -188,6 +226,21 @@
       <if test="remake != null" >
         remake = #{remake,jdbcType=VARCHAR},
       </if>
+      <if test="isBrush != null" >
+        is_brush = #{isBrush,jdbcType=INTEGER},
+      </if>
+      <if test="isBlackboard != null" >
+        is_blackboard = #{isBlackboard,jdbcType=INTEGER},
+      </if>
+      <if test="isCopy != null" >
+        is_copy = #{isCopy,jdbcType=INTEGER},
+      </if>
+      <if test="isBlackScreen != null" >
+        is_black_screen = #{isBlackScreen,jdbcType=INTEGER},
+      </if>
+      <if test="isShareTheDesktop != null" >
+        is_share_the_desktop = #{isShareTheDesktop,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -206,7 +259,12 @@
       screen_num_sametime = #{screenNumSametime,jdbcType=INTEGER},
       duration = #{duration,jdbcType=VARCHAR},
       times = #{times,jdbcType=INTEGER},
-      remake = #{remake,jdbcType=VARCHAR}
+      remake = #{remake,jdbcType=VARCHAR},
+      is_brush = #{isBrush,jdbcType=INTEGER},
+      is_blackboard = #{isBlackboard,jdbcType=INTEGER},
+      is_copy = #{isCopy,jdbcType=INTEGER},
+      is_black_screen = #{isBlackScreen,jdbcType=INTEGER},
+      is_share_the_desktop = #{isShareTheDesktop,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
@@ -223,7 +281,8 @@
   <sql id="teacher">
   	select 
   		t.id t_id,t.username,t.password,t.truename,t.sex,t.telephone,t.email,t.job,
-  		t.duration,t.times,t.screen_num_sametime,t.remake,
+  		t.duration,t.times,t.screen_num_sametime,t.remake,t.is_brush, t.is_blackboard, 
+    	t.is_copy, t.is_black_screen, t.is_share_the_desktop,
   		s.id s_id,s.subject_name,
   		f.id f_id,f.faculty_name
   	from teacher t left join subject s on t.subject_id=s.id

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,8 @@ public class ScreenController {
 	@Autowired
 	private PageUtil pageUtil;
 	
+	@Value("${defaultPwd}")
+	private String defaultPwd;
 	/**
      * 查询所有屏幕信息，包括模糊查询，分页
      * @param screen
@@ -279,8 +282,9 @@ public class ScreenController {
 		for(int i=0;i<Integer.parseInt(number);i++){
 			Screen screen=new Screen();
 			screen.setId("sc"+Integer.parseInt(usernameNewList.get(i)));
+			screen.setTitle("屏幕"+(i+1));
 			screen.setUsername(usernameNewList.get(i));
-			screen.setPassword("123");
+			screen.setPassword(defaultPwd);
 			screen.setRoomId(room.getId());
 			screenListNew.add(screen);
 			String role=newId.substring(0,2);

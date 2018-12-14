@@ -6,16 +6,10 @@ public class SetUp {
     private String waterMark;
 
     private String logo;
+    
+    private Double teacherMaxResourceSize;
 
-    private String brush;
-
-    private String blackboard;
-
-    private String copy;
-
-    private String blackScreen;
-
-    private String sharingTheDesktop;
+    private Double studentMaxResourceSize;
 
     public Integer getId() {
         return id;
@@ -41,43 +35,20 @@ public class SetUp {
         this.logo = logo == null ? null : logo.trim();
     }
 
-    public String getBrush() {
-        return brush;
-    }
+	public Double getTeacherMaxResourceSize() {
+		return teacherMaxResourceSize;
+	}
 
-    public void setBrush(String brush) {
-        this.brush = brush == null ? null : brush.trim();
-    }
+	public void setTeacherMaxResourceSize(Double teacherMaxResourceSize) {
+		this.teacherMaxResourceSize = teacherMaxResourceSize;
+	}
 
-    public String getBlackboard() {
-        return blackboard;
-    }
+	public Double getStudentMaxResourceSize() {
+		return studentMaxResourceSize;
+	}
 
-    public void setBlackboard(String blackboard) {
-        this.blackboard = blackboard == null ? null : blackboard.trim();
-    }
-
-    public String getCopy() {
-        return copy;
-    }
-
-    public void setCopy(String copy) {
-        this.copy = copy == null ? null : copy.trim();
-    }
-
-    public String getBlackScreen() {
-        return blackScreen;
-    }
-
-    public void setBlackScreen(String blackScreen) {
-        this.blackScreen = blackScreen == null ? null : blackScreen.trim();
-    }
-
-    public String getSharingTheDesktop() {
-        return sharingTheDesktop;
-    }
-
-    public void setSharingTheDesktop(String sharingTheDesktop) {
-        this.sharingTheDesktop = sharingTheDesktop == null ? null : sharingTheDesktop.trim();
-    }
+	public void setStudentMaxResourceSize(Double studentMaxResourceSize) {
+		this.studentMaxResourceSize = studentMaxResourceSize;
+	}
+    
 }

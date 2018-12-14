@@ -141,6 +141,7 @@
 						<thead>
 							<tr>
 								<th>序号</th>
+								<th>屏幕名称</th>
 								<th>屏幕用户名</th>
 								<th>屏幕密码</th>
 								<th>屏幕类型</th>
@@ -208,7 +209,8 @@
 										.append(
 												"<tr><input type='hidden' name='screenList["+i+"].id' value='"+screenListOld[i].id+"'><td>"
 														+ i
-														+ "</td><td><input type='text' disabled='disabled' name='screenList["+i+"].username' value='" + screenListOld[i].username
+														+ "</td><td><input type='text' disabled='disabled' name='screenList["+i+"].title' value='" + screenListOld[i].title
+														+ "'/></td><td><input type='text' disabled='disabled' name='screenList["+i+"].username' value='" + screenListOld[i].username
 										+ "'/></td><td><input type='text' disabled='disabled' name='screenList["+i+"].password' value='" + screenListOld[i].password
 										+ "'/></td><td><select name='screenList["+i+"].type'><option value='1'>触摸屏</option><option value='2'>文档屏</option><option value='3'>投影</option><option value='4'>电视</option><option value='5'>临时屏幕</option></select></td><td>原有</td></tr>");
 							}
@@ -226,7 +228,8 @@
 									.append(
 											"<tr><input type='hidden' name='screenList["+j+"].id' value='"+screenListNew[j-screenOldLength].id+"'><td>"
 													+ j
-													+ "</td><td><input type='text' name='screenList["+j+"].username'  value='" + screenListNew[j-screenOldLength].username
+													+ "</td><td><input type='text' name='screenList["+j+"].title'  value='" + screenListNew[j-screenOldLength].title
+													+ "' readonly='true'/></td><td><input type='text' name='screenList["+j+"].username'  value='" + screenListNew[j-screenOldLength].username
 										+ "' readonly='true'/></td><td><input type='text'  name='screenList["+j+"].password' value='" + screenListNew[j-screenOldLength].password
 										+ "' readonly='true'/></td><td><select name='screenList["+j+"].type'><option value='1'>触摸屏</option><option value='2'>文档屏</option><option value='3'>投影</option><option value='4'>电视</option><option value='5'>临时屏幕</option></select></td><td>新增</td></tr>");
 						}

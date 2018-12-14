@@ -47,21 +47,6 @@ public class SetUpController {
 		if(setUp.getWaterMark()==null) {
 			setUp.setWaterMark("off");
 		}
-		if(setUp.getBrush()==null) {
-			setUp.setBrush("off");
-		}
-		if(setUp.getBlackboard()==null) {
-			setUp.setBlackboard("off");
-		}
-		if(setUp.getCopy()==null) {
-			setUp.setCopy("off");
-		}
-		if(setUp.getBlackScreen()==null) {
-			setUp.setBlackScreen("off");
-		}
-		if(setUp.getSharingTheDesktop()==null) {
-			setUp.setSharingTheDesktop("off");
-		}
 		setUpService.updateByPrimaryKeySelective(setUp);
 		return "success";
 	}

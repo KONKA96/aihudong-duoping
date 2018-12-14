@@ -37,6 +37,56 @@ public class Teacher {
 	
 	private int role;
 	
+	private Integer isBrush;
+
+    private Integer isBlackboard;
+
+    private Integer isCopy;
+
+    private Integer isBlackScreen;
+
+    private Integer isShareTheDesktop;
+	
+	public Integer getIsBrush() {
+		return isBrush;
+	}
+
+	public void setIsBrush(Integer isBrush) {
+		this.isBrush = isBrush;
+	}
+
+	public Integer getIsBlackboard() {
+		return isBlackboard;
+	}
+
+	public void setIsBlackboard(Integer isBlackboard) {
+		this.isBlackboard = isBlackboard;
+	}
+
+	public Integer getIsCopy() {
+		return isCopy;
+	}
+
+	public void setIsCopy(Integer isCopy) {
+		this.isCopy = isCopy;
+	}
+
+	public Integer getIsBlackScreen() {
+		return isBlackScreen;
+	}
+
+	public void setIsBlackScreen(Integer isBlackScreen) {
+		this.isBlackScreen = isBlackScreen;
+	}
+
+	public Integer getIsShareTheDesktop() {
+		return isShareTheDesktop;
+	}
+
+	public void setIsShareTheDesktop(Integer isShareTheDesktop) {
+		this.isShareTheDesktop = isShareTheDesktop;
+	}
+
 	public String getOpenId() {
 		return openId;
 	}

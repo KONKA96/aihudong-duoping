@@ -26,30 +26,23 @@
 					logo：<input type="checkbox" name="logo"
 						${setUp.logo=='on' ? 'checked' : ''} />
 				</div>
-				
-				<div class="switch switch-large">
-					画笔：<input type="checkbox" name="brush"
-						${setUp.brush=='on' ? 'checked' : ''} />
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label">教师最大上传文件大小：</label>
+
+					<div class="col-sm-10">
+						<input id="" name="teacherMaxResourceSize" value="${setUp.teacherMaxResourceSize }"
+							type="text" class="form-control" placeholder="教师最大上传文件大小">
+					</div>
 				</div>
 				
-				<div class="switch switch-large">
-					黑板：<input type="checkbox" name="blackboard"
-						${setUp.blackboard=='on' ? 'checked' : ''} />
-				</div>
-				
-				<div class="switch switch-large">
-					复制：<input type="checkbox" name="copy"
-						${setUp.copy=='on' ? 'checked' : ''} />
-				</div>
-				
-				<div class="switch switch-large">
-					黑屏：<input type="checkbox" name="blackScreen"
-						${setUp.blackScreen=='on' ? 'checked' : ''} />
-				</div>
-				
-				<div class="switch switch-large">
-					分享桌面：<input type="checkbox" name="sharingTheDesktop"
-						${setUp.sharingTheDesktop=='on' ? 'checked' : ''} />
+				<div class="form-group">
+					<label class="col-sm-2 control-label">学生最大上传文件大小：</label>
+
+					<div class="col-sm-10">
+						<input id="" name="studentMaxResourceSize" value="${setUp.studentMaxResourceSize }"
+							type="text" class="form-control" placeholder="学生最大上传文件大小">
+					</div>
 				</div>
 			</div>
 		</div>

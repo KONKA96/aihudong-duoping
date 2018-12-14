@@ -29,6 +29,13 @@
                         <form class="form-horizontal" id="editForm">
                         	<input type="hidden" name="id" value="${screen.id }">
                         	<div class="form-group">
+                                <label class="col-sm-2 control-label">屏幕名称</label>
+                                <div class="col-sm-10">
+                                    <input name="title" value="${screen.title }" type="text" class="form-control" placeholder="屏幕名称">
+                                </div>
+                            </div>
+                        	
+                        	<div class="form-group">
                                 <label class="col-sm-2 control-label">屏幕登录名</label>
                                 <div class="col-sm-10">
                                     <input name="username" value="${screen.username }" type="text" class="form-control" placeholder="屏幕登录名">

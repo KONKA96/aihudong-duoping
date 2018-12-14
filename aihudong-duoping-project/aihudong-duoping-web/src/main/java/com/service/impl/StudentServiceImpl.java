@@ -20,8 +20,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Value("${defaultPwd}")
 	private String defaultPwd;
-	@Value("${virtualRoomSwitch}")
-	private boolean virtualRoomSwitch;
+	/*@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;*/
 	
 	@Autowired
 	private RoomService roomService;
@@ -56,11 +56,11 @@ public class StudentServiceImpl implements StudentService {
 		}
 		
 		//通过开关控制，新开一间虚拟教室 (临时账户除外)
-		if(!"5".equals(student.getType()) && virtualRoomSwitch) {
+		/*if(!"5".equals(student.getType()) && virtualRoomSwitch) {
 			List<String> roomIdList = roomService.selectAllId();
 			
 			roomService.insertVirtualRoom(roomIdList, student.getUsername()+"'s Virtual Room", defaultPwd, student.getId());
-		}
+		}*/
 		
 		if(student.getPassword()!=null) {
 			String password = new String(encoder.encode(student.getPassword().getBytes()));

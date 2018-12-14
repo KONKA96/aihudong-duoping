@@ -120,6 +120,7 @@
 										<th>校区</th>
 										<th>教学楼</th>
 										<th>教室</th>
+										<th>屏幕名称</th>
 										<th>屏幕账号</th>
 										<th>屏幕分配者</th>
 										<th>使用总时长</th>
@@ -137,6 +138,7 @@
 											<td>${screen.room.building.zone.zoneName }</td>
 											<td>${screen.room.building.buildingName }</td>
 											<td>${screen.room.num }</td>
+											<td>${screen.title }</td>
 											<td>${screen.username }</td>
 											<td>${screen.admin.truename }</td>
 											<td>${screen.duration }</td>

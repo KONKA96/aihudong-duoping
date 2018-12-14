@@ -28,6 +28,7 @@ import com.model.FileRecord;
 import com.model.Record;
 import com.model.Room;
 import com.model.Screen;
+import com.model.SetUp;
 import com.model.Student;
 import com.model.Teacher;
 import com.model.VirtualRoomRecord;
@@ -35,11 +36,13 @@ import com.service.FileRecordService;
 import com.service.RecordService;
 import com.service.RoomService;
 import com.service.ScreenService;
+import com.service.SetUpService;
 import com.service.StudentService;
 import com.service.TeacherService;
 import com.service.VirtualRoomRecordService;
 import com.task.DeleteTemporaryScreen;
 import com.task.DeleteTemporaryUser;
+import com.util.ADUserUtils;
 import com.util.JsonUtils;
 import com.util.StringRandom;
 
@@ -65,6 +68,8 @@ public class QianduanController {
 	private FileRecordService fileRecordService;
 	@Autowired
 	private VirtualRoomRecordService virtualRoomRecordService;
+	@Autowired
+	private SetUpService setUpService;
 
 	@Value("${httpUrl}")
 	private String httpUrl;
@@ -77,6 +82,13 @@ public class QianduanController {
 
 	// private String BigBlueButtonURL = httpUrl + "/bigbluebutton/";
 
+	@ResponseBody
+	@RequestMapping("/adTest")
+	public String adTest() {
+		ADUserUtils utils = new ADUserUtils();
+		return utils.toString();
+	}
+	
 	/**
 	 * 用户登录
 	 * @author KONKA
@@ -903,6 +915,23 @@ public class QianduanController {
 		return JsonUtils.objectToJson(argMap);
 	}
 	
+	/**
+	 * 查询水印、logo、上传资源大小等设置
+	 * @author KONKA
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectSetUp", produces = { "text/json;charset=UTF-8" })
+	public String selectSetUp() {
+		Map<String, Object> argMap = new HashMap<>();
+		SetUp setUp = new SetUp();
+		setUp.setId(1);
+		setUp = setUpService.selectByPrimaryKey(setUp);
+		
+		argMap.put("setUp", setUp);
+		argMap.put("code", "200");
+		return JsonUtils.objectToJson(argMap);
+	}
 	
 
 	@RequestMapping("/uploadFileRecordUser")
