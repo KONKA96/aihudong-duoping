@@ -152,12 +152,12 @@ public class test {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException 
 	 */
-	@ResponseBody
-	@RequestMapping(value = "/checkToken", produces = { "text/json;charset=UTF-8" })
+	@RequestMapping(value = "/checkToken")
 	public String checkToken(@RequestParam(required = false) String token,
 			@RequestParam(required = false) String tenant, @RequestParam(required = false) String sign,
 			@RequestParam(required = false) String user) throws NoSuchAlgorithmException, IOException {
 		Map<String, Object> argMap = new HashMap<>();
+		String param2 = "";
 		if (token != null && tenant != null && user != null) {
 			String testSha1 = TestSha1.testSha1( tenant, user);
 			if (sign != null && sign.equals(testSha1)) {
@@ -180,11 +180,35 @@ public class test {
 				String data1 = jsonObject.getString("data");
 				
 				if("1".equals(result)&&"true".equals(data1)) {
-					argMap.put("result", "1");
+					
+					Teacher teacher = new Teacher();
+					teacher.setUsername(user);
+
+					teacher = teacherService.teacherLogin(teacher);
+
+					Student student = new Student();
+					student.setUsername(user);
+
+					student = studentService.studentLogin(student);
+					
+					if (teacher != null && teacher.getId() != null) {
+						param2 = param2+"?username="+teacher.getUsername();
+						param2 = param2+"&password="+teacher.getPassword();
+					}
+					else if (student != null && student.getId() != null) {
+						param2 = param2+"?username="+teacher.getUsername();
+						param2 = param2+"&password="+teacher.getPassword();
+					}
+					else {
+						argMap.put("result", "0");
+						argMap.put("message", "用户不存在");
+						argMap.put("data", "false");
+					}
+					
+					/*argMap.put("result", "1");
 					argMap.put("message", "成功");
-					argMap.put("data", "true");
-				}else 
-				{
+					argMap.put("data", "true");*/
+				} else {
 					argMap.put("result", "0");
 					argMap.put("message", "token验证失败");
 					argMap.put("data", "false");
@@ -196,7 +220,7 @@ public class test {
 				argMap.put("data", "false");
 			}
 		}
-		return JsonUtils.objectToJson(argMap);
+		return "redirect:https://ys.51asj.com/html5client/login"+param2;
 	}
 
 	/**

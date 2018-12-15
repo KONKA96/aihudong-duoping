@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 10/12/2018 15:45:35
+ Date: 15/12/2018 17:51:15
 */
 
 SET NAMES utf8mb4;
@@ -6273,29 +6273,31 @@ CREATE TABLE `screen`  (
 -- ----------------------------
 -- Records of screen
 -- ----------------------------
-INSERT INTO `screen` VALUES ('sc1', NULL, '0001', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, '111', '172.16.4.43', NULL, 'eaz', 'gby', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc10', NULL, '0010', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.4', NULL, 'ko8', 'oak', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc11', NULL, '0011', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.6', NULL, 'rx0', '2w6', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc12', NULL, '0012', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '7up', 'dp8', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc13', NULL, '0013', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'rbc', 'bc4', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc14', NULL, '0014', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '6zy', 'sle', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc15', NULL, '0015', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'bpe', 'bvt', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc16', NULL, '0016', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '9am', '0wn', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc17', NULL, '0017', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'zln', 'btk', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc18', NULL, '0018', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'pqi', 'cg7', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc19', NULL, '0019', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '5', NULL, NULL, NULL, NULL, 'vmj', 'znq', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc2', NULL, '0002', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'p2v', 'de3', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc20', NULL, '0020', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'pkl', '80o', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc21', NULL, '0021', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'guw', '09h', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc22', NULL, '0022', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, '90b', 'i37', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc23', NULL, '0023', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '2bz', 'bc0', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc3', NULL, '0003', 'TVRJeg==', '783595', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'ht3', 'y8m', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc4', NULL, '0004', 'TVRJeg==', '783618', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '8ql', 'h76', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc5', NULL, '0005', 'TVRJeg==', '783726', 1, '0:0:52', 2, '1', NULL, NULL, '172.16.4.28', NULL, 'ao7', 'dly', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc6', NULL, '0006', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, '82m', 'vqn', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc7', NULL, '0007', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, 'jz3', 'm6v', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc8', NULL, '0008', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.2', NULL, 'pid', '80b', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc9', NULL, '0009', 'TVRJeg==', '1001407', 1, '0:1:15', 1, '1', NULL, '123', '172.16.3.3', NULL, 'kxk', 'e9p', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc1', NULL, '0001', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, '111', '172.16.4.43', NULL, 'ggf', 'cwq', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc10', NULL, '0010', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.4', NULL, '0u6', 'u7a', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc11', NULL, '0011', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.6', NULL, 'bjh', '2w4', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc12', NULL, '0012', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'nzf', 'ms9', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc13', NULL, '0013', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'y3t', 'tyb', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc14', NULL, '0014', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'wk4', 'hfb', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc15', NULL, '0015', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '37w', 'hsa', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc16', NULL, '0016', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'sm3', 'azo', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc17', NULL, '0017', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '4nz', 'z57', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc18', NULL, '0018', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'k7m', '3e1', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc19', NULL, '0019', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '5', NULL, NULL, NULL, NULL, '07j', '3vy', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc2', NULL, '0002', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'krq', 'yky', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc20', NULL, '0020', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'tid', '2cm', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc21', NULL, '0021', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 's9r', 'hyi', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc22', NULL, '0022', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, '1xl', 'ujc', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc23', NULL, '0023', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '0t4', 'kzj', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc24', '屏幕1', '0024', 'TVRJeg==', '75c9fb4e-7263-47f5-9e5e-d10cc493cafb', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'awe', 'pvc', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc25', '屏幕2', '0025', 'TVRJeg==', '75c9fb4e-7263-47f5-9e5e-d10cc493cafb', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '9nx', '4y8', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc3', '屏幕3', '0003', 'TVRJeg==', '783595', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '62i', 'pb5', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc4', NULL, '0004', 'TVRJeg==', '783618', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '2jn', 'jrm', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc5', NULL, '0005', 'TVRJeg==', '783726', 1, '0:0:52', 2, '1', NULL, NULL, '172.16.4.28', NULL, 'u9c', 'qqt', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc6', NULL, '0006', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, 'pwo', 'g7d', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc7', NULL, '0007', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, '3ys', 'pju', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc8', NULL, '0008', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.2', NULL, 'few', '74c', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc9', NULL, '0009', 'TVRJeg==', '1001407', 1, '0:1:15', 1, '1', NULL, '123', '172.16.3.3', NULL, 'ysa', 'w7h', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for set-up
@@ -6305,13 +6307,15 @@ CREATE TABLE `set-up`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `water_mark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `teacher_max_resource_size` double NULL DEFAULT NULL,
+  `student_max_resource_size` double NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of set-up
 -- ----------------------------
-INSERT INTO `set-up` VALUES (1, 'on', 'on');
+INSERT INTO `set-up` VALUES (1, 'on', 'off', 85, 50);
 
 -- ----------------------------
 -- Table structure for student
@@ -6412,49 +6416,55 @@ CREATE TABLE `teacher`  (
   `duration` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `times` int(11) NULL DEFAULT NULL,
   `remake` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `is_brush` int(11) NULL DEFAULT NULL,
+  `is_blackboard` int(11) NULL DEFAULT NULL,
+  `is_copy` int(11) NULL DEFAULT NULL,
+  `is_black_screen` int(11) NULL DEFAULT NULL,
+  `is_share_the_desktop` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of teacher
 -- ----------------------------
-INSERT INTO `teacher` VALUES ('te1', '1', 'TVRJeg==', 'oWOMN1N0taIcAmqpmdD0rgNqa6bY', '123', NULL, 0, '123', '123', '1', 2, 0, '0:0:13', 1, NULL);
-INSERT INTO `teacher` VALUES ('te10', '1234', 'TVRJeg==', 'oWOMN1DLZeCP1aBhaKU7fHvlGDdo', '王守忠', NULL, 0, '13845721684', '123@qq.com', '教授', 1, 100, '0:8:43', 3, NULL);
-INSERT INTO `teacher` VALUES ('te11', '3', 'TVRJeg==', NULL, '3', NULL, 0, '3', '3', '3', 4, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te12', 'username', 'TVRJeg==', NULL, 'truename', NULL, 1, 'telephone', 'email', 'job', 1, 0, '00:00:00', 0, 'remake');
-INSERT INTO `teacher` VALUES ('te13', 'lcb', 'TVRJeg==', NULL, '1', NULL, 0, '1', '', '1', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te14', '1234123123', 'TVRJeg==', NULL, '123213', NULL, 0, '123213', '1321321', '123213', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te15', '2132321', 'TVRJeg==', NULL, '213213', NULL, 0, '1321', '132', '132', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te16', '31232', 'TVRJeg==', NULL, '213', NULL, 0, '123', '123', '132', 1, 0, '2:5:12', 0, NULL);
-INSERT INTO `teacher` VALUES ('te17', '555666', 'TVRJeg==', NULL, '123', NULL, 0, '123', '123', '222', 7, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te18', 'zyl', 'TVRJeg==', 'oWOMN1N0taIcAmqpmdD0rgNqa6bY', '张勇良', NULL, 0, NULL, NULL, NULL, 1, 100, '2:16:7', 39, NULL);
-INSERT INTO `teacher` VALUES ('te19', 'zyl0', 'TVRJeg==', NULL, 'zyl', NULL, 0, '', '', '', 8, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te2', '5678', 'TVRJeg==', NULL, '孙素华', NULL, 1, '15675458478', '123@qq.com', '助教', 1, 100, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te20', 'konka', 'TVRJeg==', 'oc7pG4xjuSob5NXWGe6B6fr7KNEM', '康佳', '庚仁仕', 0, '157', '', '11111', 1, 0, '0:0:13', 1, NULL);
-INSERT INTO `teacher` VALUES ('te21', '1111', 'TVRJeg==', 'oWOMN1B0jvttaFIUjLhqKly-cSk4', '王老师', NULL, 0, '1111', '1111', '1111', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te22', '2222', 'TVRJeg==', NULL, '2222', NULL, 0, '2222', '2222', '2222', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te23', '3333', 'TVRJeg==', NULL, '3333', NULL, 0, '3333', '3333', '3333', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te24', '4444', 'TVRJeg==', NULL, '4444', NULL, 0, '4444', '4444', '4444', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te25', '5555', 'TVRJeg==', NULL, '5555', NULL, 0, '5555', '5555', '5555', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te26', '6666', 'TVRJeg==', NULL, '6666', NULL, 0, '6666', '6666', '6666', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te27', 'zyl1', 'TVRJeg==', NULL, 'zyl1', NULL, 0, 'zyl1', 'zyl1', '教授', 8, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te28', '0000', 'TVRJeg==', NULL, '仇老师', NULL, 0, '11111', '1111', '领导', 1, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te29', '13883157511', 'TVRJeg==', NULL, '曾老师', NULL, 0, '13883157511', '', '', 3, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te3', 'a123', 'TVRJeg==', NULL, '杨金山', NULL, 0, '18254568741', '456@qq.com', '讲师', 2, 100, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te30', '13883157512', 'TVRJeg==', NULL, '李老师', NULL, 0, '13883157512', '', '', 9, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te31', '13883157513', 'TVRJeg==', NULL, '王老师', NULL, 0, '13883157513', '', '', 7, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te32', 'xmys', 'TVRJeg==', NULL, 'xmys', NULL, 0, '1', '1', '1', 6, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te33', 'zyl3', 'TVRJeg==', NULL, '张三', NULL, 0, '1', '1', '', 2, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te34', 'zyl4', 'TVRJeg==', NULL, '张四', NULL, 0, '1', '1', '', 2, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te35', 'zyl5', 'TVRJeg==', NULL, '张五', NULL, 0, '1', '1', '', 2, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te36', 'txy', 'TVRJeg==', NULL, 'MR田', NULL, 0, '13483346057', 'tian670437202@126.com', '排雷兵', 4, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te37', '51asj1', 'TVRJeg==', NULL, '51asj1', NULL, 0, '51asj1', '51asj1', '51asj1', 4, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te4', 'f123', 'TVRJeg==', NULL, '冯俊丽', NULL, 1, '18354796547', '789652@qq.com', '讲师', 6, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te5', 'i789', 'TVRJeg==', NULL, '李亚辉', NULL, 1, '15587462541', '451@qq.com', '讲师', 8, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te6', 's123', 'TVRJeg==', NULL, '宋博文', NULL, 0, '16532547852', '154@qq.com', '教授', 3, 0, '4:45:12', 26, NULL);
-INSERT INTO `teacher` VALUES ('te7', 'l456', 'TVRJeg==', NULL, '李启超', NULL, 1, '18465475412', '789@qq.com', '副教授', 3, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te8', 'ff789', 'TVRJeg==', NULL, '冯娜', NULL, 1, '15865475412', '157@163.com', '导员', 6, 0, '00:00:00', 0, NULL);
-INSERT INTO `teacher` VALUES ('te9', '2', 'TVRJeg==', NULL, '2', NULL, 0, '2', '2', '2', 3, 0, '00:00:00', 0, NULL);
+INSERT INTO `teacher` VALUES ('te1', '1', 'TVRJeg==', 'oWOMN1N0taIcAmqpmdD0rgNqa6bY', '123', NULL, 0, '123', '123', '1', 2, 0, '0:0:13', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te10', '1234', 'TVRJeg==', 'oWOMN1DLZeCP1aBhaKU7fHvlGDdo', '王守忠', NULL, 0, '13845721684', '123@qq.com', '教授', 1, 100, '0:8:43', 3, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te11', '3', 'TVRJeg==', NULL, '3', NULL, 0, '3', '3', '3', 4, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te12', 'username', 'TVRJeg==', NULL, 'truename', NULL, 1, 'telephone', 'email', 'job', 1, 0, '00:00:00', 0, 'remake', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te13', 'lcb', 'TVRJeg==', NULL, '1', NULL, 0, '1', '', '1', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te14', '1234123123', 'TVRJeg==', NULL, '123213', NULL, 0, '123213', '1321321', '123213', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te15', '2132321', 'TVRJeg==', NULL, '213213', NULL, 0, '1321', '132', '132', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te16', '31232', 'TVRJeg==', NULL, '213', NULL, 0, '123', '123', '132', 1, 0, '2:5:12', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te17', '555666', 'TVRJeg==', NULL, '123', NULL, 0, '123', '123', '222', 7, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te18', 'zyl', 'TVRJeg==', 'oWOMN1N0taIcAmqpmdD0rgNqa6bY', '张勇良', NULL, 0, NULL, NULL, NULL, 1, 100, '2:16:7', 39, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te19', 'zyl0', 'TVRJeg==', NULL, 'zyl', NULL, 0, '', '', '', 8, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te2', '5678', 'TVRJeg==', NULL, '孙素华', NULL, 1, '15675458478', '123@qq.com', '助教', 1, 100, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te20', 'konka', 'TVRJeg==', 'oc7pG4xjuSob5NXWGe6B6fr7KNEM', '康佳', '庚仁仕', 0, '157', '', '11111', 1, 0, '0:0:13', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te21', '1111', 'TVRJeg==', 'oWOMN1B0jvttaFIUjLhqKly-cSk4', '王老师', NULL, 0, '1111', '1111', '1111', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te22', '2222', 'TVRJeg==', NULL, '2222', NULL, 0, '2222', '2222', '2222', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te23', '3333', 'TVRJeg==', NULL, '3333', NULL, 0, '3333', '3333', '3333', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te24', '4444', 'TVRJeg==', NULL, '4444', NULL, 0, '4444', '4444', '4444', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te25', '5555', 'TVRJeg==', NULL, '5555', NULL, 0, '5555', '5555', '5555', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te26', '6666', 'TVRJeg==', NULL, '6666', NULL, 0, '6666', '6666', '6666', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te27', 'zyl1', 'TVRJeg==', NULL, 'zyl1', NULL, 0, 'zyl1', 'zyl1', '教授', 8, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te28', '0000', 'TVRJeg==', NULL, '仇老师', NULL, 0, '11111', '1111', '领导', 1, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te29', '13883157511', 'TVRJeg==', NULL, '曾老师', NULL, 0, '13883157511', '', '', 3, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te3', 'a123', 'TVRJeg==', NULL, '杨金山', NULL, 0, '18254568741', '456@qq.com', '讲师', 2, 100, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te30', '13883157512', 'TVRJeg==', NULL, '李老师', NULL, 0, '13883157512', '', '', 9, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te31', '13883157513', 'TVRJeg==', NULL, '王老师', NULL, 0, '13883157513', '', '', 7, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te32', 'xmys', 'TVRJeg==', NULL, 'xmys', NULL, 0, '1', '1', '1', 6, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te33', 'zyl3', 'TVRJeg==', NULL, '张三', NULL, 0, '1', '1', '', 2, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te34', 'zyl4', 'TVRJeg==', NULL, '张四', NULL, 0, '1', '1', '', 2, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te35', 'zyl5', 'TVRJeg==', NULL, '张五', NULL, 0, '1', '1', '', 2, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te36', 'txy', 'TVRJeg==', NULL, 'MR田', NULL, 0, '13483346057', 'tian670437202@126.com', '排雷兵', 4, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te37', '51asj1', 'TVRJeg==', NULL, '51asj1', NULL, 0, '51asj1', '51asj1', '51asj1', 4, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te38', 'Testzhang', 'TVRJeg==', NULL, 'Testzhang', NULL, 0, '111', '111', '111', 4, 0, '00:00:00', 0, '111', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te4', 'f123', 'TVRJeg==', NULL, '冯俊丽', NULL, 1, '18354796547', '789652@qq.com', '讲师', 6, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te5', 'i789', 'TVRJeg==', NULL, '李亚辉', NULL, 1, '15587462541', '451@qq.com', '讲师', 8, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te6', 's123', 'TVRJeg==', NULL, '宋博文', NULL, 0, '16532547852', '154@qq.com', '教授', 3, 0, '4:45:12', 26, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te7', 'l456', 'TVRJeg==', NULL, '李启超', NULL, 1, '18465475412', '789@qq.com', '副教授', 3, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te8', 'ff789', 'TVRJeg==', NULL, '冯娜', NULL, 1, '15865475412', '157@163.com', '导员', 6, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `teacher` VALUES ('te9', '2', 'TVRJeg==', NULL, '2', NULL, 0, '2', '2', '2', 3, 0, '00:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for virtual_room_record
