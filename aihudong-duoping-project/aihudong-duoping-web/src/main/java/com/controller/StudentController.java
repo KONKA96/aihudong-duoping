@@ -49,6 +49,8 @@ public class StudentController {
 	
 	@Value("${defaultPwd}")
 	private String defaultPwd;
+	@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 
@@ -226,7 +228,7 @@ public class StudentController {
 			if(student.getPassword()==null) {
 				student.setPassword(defaultPwd);
 			}
-			if(studentService.insertSelective(student)>0){
+			if(studentService.insertSelective(student,virtualRoomSwitch)>0){
 				try {
 					logger.info(SjAdmin.getUsername()+"添加学生:"+student.getUsername());
 				} catch (Exception e) {
@@ -300,7 +302,7 @@ public class StudentController {
                 student.setEmail(String.valueOf(lo.get(5)));
                 student.setSubjectId(Integer.parseInt(String.valueOf(lo.get(6))));
                 student.setRemake(String.valueOf(lo.get(7)));
-                resultList.add(studentService.insertSelective(student));
+                resultList.add(studentService.insertSelective(student,virtualRoomSwitch));
                 System.out.println(student);
             } 
         }catch (Exception e) {

@@ -22,7 +22,7 @@ public interface TeacherService {
 	
 	int updateTeacherSelected(Teacher teacher);
 	
-	int insertTeacherSelected(Teacher teacher);
+	int insertTeacherSelected(Teacher teacher ,boolean virtualRoomSwitch);
 	
 	int deleteTeacherById(Teacher teacher);
 }

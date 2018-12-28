@@ -16,7 +16,7 @@ public interface StudentService {
 	
 	int deleteByPrimaryKey(Student student);
 	 
-	int insertSelective(Student student);
+	int insertSelective(Student student,boolean virtualRoomSwitch);
 
 	Student selectByPrimaryKey(Student student);
 

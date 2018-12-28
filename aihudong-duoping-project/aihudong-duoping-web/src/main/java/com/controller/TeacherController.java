@@ -53,6 +53,8 @@ public class TeacherController {
 	
 	@Value("${defaultPwd}")
 	private String defaultPwd;
+	@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
@@ -224,7 +226,7 @@ public class TeacherController {
 			if(teacher.getPassword()==null) {
 				teacher.setPassword(defaultPwd);
 			}
-			if(teacherService.insertTeacherSelected(teacher)>0){
+			if(teacherService.insertTeacherSelected(teacher,virtualRoomSwitch)>0){
 				
 				try {
 					logger.info(admin.getUsername()+"添加了教师:"+teacher.getUsername());
@@ -300,7 +302,7 @@ public class TeacherController {
                 teacher.setSubjectId(Integer.parseInt(String.valueOf(lo.get(7))));
                 teacher.setScreenNumSametime(Integer.parseInt(String.valueOf(lo.get(8))));
                 teacher.setRemake(String.valueOf(lo.get(9)));
-                resultList.add(teacherService.insertTeacherSelected(teacher));
+                resultList.add(teacherService.insertTeacherSelected(teacher,virtualRoomSwitch));
                 System.out.println(teacher);
             } 
         }catch (Exception e) {

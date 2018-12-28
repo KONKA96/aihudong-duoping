@@ -90,12 +90,12 @@
 				                   	<span class="nav-label">屏幕分配</span>
 				                   </a>
 			                </li>
-			                <li>
+			                <!-- <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/message/showAllMessage">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">消息推送</span>
 				                   </a>
-			                </li>
+			                </li> -->
 			                <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/setup/toIndex">
 				                   	<i class="fa fa-columns"></i> 

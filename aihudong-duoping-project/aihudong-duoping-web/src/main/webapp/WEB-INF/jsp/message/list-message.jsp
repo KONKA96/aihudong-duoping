@@ -91,12 +91,12 @@
 										<tr class="gradeA">
 											<td>${message.messageName }</td>
 											<td>
-												${message.startTimeString }
+												<%-- ${message.startTimeString }
 												<br/>
-												${message.endTimeString }
-												<%-- <fmt:formatDate value="${message.startTimeString }" pattern="yyyy-MM-dd HH:mm:ss"/>
+												${message.endTimeString } --%>
+												<fmt:formatDate value="${message.startTimeString }" pattern="yyyy-MM-dd"/>
 												至
-												<fmt:formatDate value="${message.endTimeString }" pattern="yyyy-MM-dd HH:mm:ss"/> --%>
+												<fmt:formatDate value="${message.endTimeString }" pattern="yyyy-MM-dd"/>
 											</td>
 											<td><a onclick="showPic(${message.id})">详情</a></td>
 											<td><a onclick="showContent(${message.id})">详情</a></td>

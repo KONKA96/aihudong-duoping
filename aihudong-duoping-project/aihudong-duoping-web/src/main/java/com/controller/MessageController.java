@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +31,13 @@ import com.model.Building;
 import com.model.Logger;
 import com.model.Message;
 import com.model.Room;
+import com.model.Screen;
 import com.model.Zone;
 import com.service.MessageService;
 import com.service.RoomService;
+import com.service.ScreenService;
 import com.service.ZoneService;
+import com.util.HttpsUtil;
 import com.util.JsonUtils;
 import com.util.PageUtil;
 
@@ -54,7 +59,12 @@ public class MessageController {
 	@Autowired
 	private RoomService roomService;
 	@Autowired
+	private ScreenService screenService;
+	@Autowired
 	private PageUtil pageUtil;
+	
+	@Value("${uploadMsg}")
+	private String uploadMsg;
 	
 	/**
 	 * 消息推送对接接口
@@ -114,8 +124,11 @@ public class MessageController {
 		
 		Page<Message> messageList = (Page<Message>) messageService.selectAllMessage(map);
 		for (Message mess : messageList) {
-			String[] startSplit=sdf.format(mess.getStartTime()).split(" ");
+			/*String[] startSplit=sdf.format(mess.getStartTime()).split(" ");
 			String[] endSplit=sdf.format(mess.getEndTime()).split(" ");
+			mess.setStartTimeString(startSplit[0]+"-"+endSplit[0]);
+			mess.setEndTimeString(startSplit[1]+"-"+endSplit[1]);
+			*/
 			if(mess.getStartTime().getTime()>new Date().getTime()) {
 				mess.setMessageState(0);
 			}else if(mess.getStartTime().getTime()<new Date().getTime() && mess.getEndTime().getTime()>new Date().getTime()) {
@@ -123,8 +136,7 @@ public class MessageController {
 			}else if(mess.getEndTime().getTime()<new Date().getTime()) {
 				mess.setMessageState(2);
 			}
-			mess.setStartTimeString(startSplit[0]+"-"+endSplit[0]);
-			mess.setEndTimeString(startSplit[1]+"-"+endSplit[1]);
+			
 		}
 		pageUtil.setPageInfo(messageList, index, pageSize,request);
 		
@@ -341,5 +353,86 @@ public class MessageController {
 		}
 		
 		return JsonUtils.objectToJson(picList);
+	}
+	
+	/**
+	 * 消息推送接口
+	 * @param id 消息id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/sendMsg", produces = { "text/json;charset=UTF-8" })
+	public void sendMsg(Integer id) {
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd日");
+		Map<String, Object> argMap = new HashMap<>();
+		
+		Message msg = new Message();
+		msg.setId(id);
+		msg=messageService.selectByPrimaryKey(msg);
+		argMap.put("planId", msg.getId());
+		String screenId = msg.getScreenId();
+		String[] screenIdArray = screenId.split(",");
+		
+		List<Screen> screenList = new ArrayList<>();
+		for (int i = 0; i < screenIdArray.length; i++) {
+			Screen screen = new Screen();
+			screen.setId(screenIdArray[i]);
+			List<Screen> scrList = screenService.selectAllScreen(screen);
+			scrList.get(0).setRoom(null);
+			scrList.get(0).setAdmin(null);
+			screenList.addAll(scrList);
+		}
+		argMap.put("screenList", screenList);
+		argMap.put("startTime", sdf.format(msg.getStartTime()));
+		argMap.put("endTime", sdf.format(msg.getEndTime()));
+		argMap.put("idlePresentent", msg.getIdlePresentent());
+		
+		String idleTime = msg.getIdleTime();
+		String[] idleTimeArray = idleTime.split(",");
+		argMap.put("idleTimes", Arrays.asList(idleTimeArray));
+		argMap.put("messageType", msg.getMessageType());
+		
+		String messagePic = msg.getMessagePic();
+		String[] messagePicArray = messagePic.split(",");
+	
+		for (int i = 0; i < messagePicArray.length; i++) {
+			messagePicArray[i] = uploadMsg+messagePicArray[i];
+		}
+		List<String> messageContent = Arrays.asList(messagePicArray);
+		argMap.put("messageContent", messageContent);
+		System.out.println(JsonUtils.objectToJson(argMap));
+		String httpsRequest = HttpsUtil.httpsRequest("https://172.16.4.161/html5client/publishMessage", "POST", JsonUtils.objectToJson(argMap));
+		System.out.println(httpsRequest);
+	}
+	
+	/**
+	 * 取消消息推送接口
+	 * @author KONKA
+	 * @param id
+	 */
+	@ResponseBody
+	@RequestMapping("/cancelMsg")
+	public void cancelMsg(Integer id) {
+		Map<String, Object> argMap = new HashMap<>();
+		
+		Message msg = new Message();
+		msg.setId(id);
+		msg=messageService.selectByPrimaryKey(msg);
+		
+		argMap.put("planId", msg.getId());
+		
+		String screenId = msg.getScreenId();
+		String[] screenIdArray = screenId.split(",");
+		
+		List<Screen> screenList = new ArrayList<>();
+		for (int i = 0; i < screenIdArray.length; i++) {
+			Screen screen = new Screen();
+			screen.setId(screenIdArray[i]);
+			List<Screen> scrList = screenService.selectAllScreen(screen);
+			screenList.addAll(scrList);
+		}
+		argMap.put("screenList", screenList);
+		String httpsRequest = HttpsUtil.httpsRequest("https://172.16.3.155/html5client/cancelPublish", "POST", JsonUtils.objectToJson(argMap));
+		System.out.println(httpsRequest);
 	}
 }

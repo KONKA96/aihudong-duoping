@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,6 +43,7 @@ import com.service.RoomService;
 import com.service.ScreenService;
 import com.service.StudentService;
 import com.service.TeacherService;
+import com.util.ADUserUtils;
 import com.util.JsonUtils;
 import com.util.OSUtils;
 import com.util.ProduceId;
@@ -51,7 +51,6 @@ import com.util.ProduceUsername4;
 import com.util.TestSha1;
 
 import net.sf.json.JSONObject;
-import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -68,6 +67,11 @@ public class test {
 	private String httpUrl;
 	@Value("${salt}")
 	private String salt;
+	@Value("${defaultPwd}")
+	private String defaultPwd;
+	@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;
+
 	@Autowired
 	private ScreenService screenService;
 	@Autowired
@@ -91,9 +95,13 @@ public class test {
 		return "redirect:" + url;
 	}
 
+	@ResponseBody
 	@RequestMapping("/testjsp")
 	public String testjsp() {
-		return "/test";
+		
+		ADUserUtils ad = new ADUserUtils();
+		
+		return ad.testConnect();
 	}
 
 	/**
@@ -193,16 +201,28 @@ public class test {
 					
 					if (teacher != null && teacher.getId() != null) {
 						param2 = param2+"?username="+teacher.getUsername();
-						param2 = param2+"&password="+teacher.getPassword();
 					}
 					else if (student != null && student.getId() != null) {
 						param2 = param2+"?username="+teacher.getUsername();
-						param2 = param2+"&password="+teacher.getPassword();
 					}
 					else {
-						argMap.put("result", "0");
-						argMap.put("message", "用户不存在");
-						argMap.put("data", "false");
+						teacher = new Teacher();
+						List<String> idList = teacherService.selectAllId();
+						String newId=null;
+						if(idList.size()==0){
+//							如果表内没有数据，手动生成id
+							newId="te1";
+						}else{
+							newId=ProduceId.produceUserId(idList);
+						}
+						if(newId!=null){
+							teacher.setId(newId);
+						}
+						teacher.setUsername(user);
+						teacher.setPassword(defaultPwd);
+						teacher.setTruename(user);
+						teacherService.insertTeacherSelected(teacher, virtualRoomSwitch);
+						param2 = param2+"?username="+teacher.getUsername();
 					}
 					
 					/*argMap.put("result", "1");
@@ -220,7 +240,7 @@ public class test {
 				argMap.put("data", "false");
 			}
 		}
-		return "redirect:https://ys.51asj.com/html5client/login"+param2;
+		return "redirect:https://celzxkt.buct.edu.cn/html5client/login"+param2;
 	}
 
 	/**

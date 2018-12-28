@@ -77,16 +77,20 @@
   		<collection property="roomList" ofType="Room" autoMapping="true">
   			<id column="r_id" property="id"/>
   			<result column="r_desc" property="desc"/>
+  			<collection property="screenList" ofType="Screen" autoMapping="true">
+  				<id column="s_id" property="id"/>
+  			</collection>
   		</collection>
   	</collection>
   </resultMap>
   <sql id="zoneSql">
   	select z.id z_id,z.zone_name,z.desc z_desc,
   		b.id b_id,b.building_name,b.admin_id,b.zone_id,
-  		r.id r_id,r.num,r.building_id,r.desc r_desc
+  		r.id r_id,r.num,r.building_id,r.desc r_desc,
+  		s.id s_id, s.title, s.username
   	from zone z left join building b on z.id=b.zone_id
   	left join room r on b.id=r.building_id
-  	 
+  	left join screen s on s.room_id=r.id 
   </sql>
   <select id="selectAllZone" parameterType="Zone" resultMap="zoneMap">
   	<include refid="zoneSql"></include>

@@ -56,7 +56,7 @@ public class TeacherServiceImpl implements TeacherService {
 		return teacherMapper.updateByPrimaryKeySelective(teacher);
 	}
 
-	public int insertTeacherSelected(Teacher teacher) {
+	public int insertTeacherSelected(Teacher teacher,boolean virtualRoomSwitch) {
 		// TODO Auto-generated method stub
 //		base64转码
 		BASE64Encoder encoder = new BASE64Encoder();
@@ -67,11 +67,11 @@ public class TeacherServiceImpl implements TeacherService {
 			}
 		}
 		//通过开关控制，新增教师新开一间虚拟教室
-		/*if(virtualRoomSwitch) {
+		if(virtualRoomSwitch) {
 			List<String> roomIdList = roomService.selectAllId();
 			
 			roomService.insertVirtualRoom(roomIdList, teacher.getUsername()+"'s Virtual Room", defaultPwd, teacher.getId());
-		}*/
+		}
 		
 		if(teacher.getPassword()!=null) {
 			String password = new String(encoder.encode(teacher.getPassword().getBytes()));

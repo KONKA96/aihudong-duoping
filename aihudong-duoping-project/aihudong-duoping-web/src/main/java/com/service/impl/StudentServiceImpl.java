@@ -44,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
 		return studentMapper.deleteByPrimaryKey(student.getId());
 	}
 	@Override
-	public int insertSelective(Student student) {
+	public int insertSelective(Student student,boolean virtualRoomSwitch) {
 		// TODO Auto-generated method stub
 //		base64转码
 		BASE64Encoder encoder = new BASE64Encoder();
@@ -56,11 +56,11 @@ public class StudentServiceImpl implements StudentService {
 		}
 		
 		//通过开关控制，新开一间虚拟教室 (临时账户除外)
-		/*if(!"5".equals(student.getType()) && virtualRoomSwitch) {
+		if(!"5".equals(student.getType()) && virtualRoomSwitch) {
 			List<String> roomIdList = roomService.selectAllId();
 			
 			roomService.insertVirtualRoom(roomIdList, student.getUsername()+"'s Virtual Room", defaultPwd, student.getId());
-		}*/
+		}
 		
 		if(student.getPassword()!=null) {
 			String password = new String(encoder.encode(student.getPassword().getBytes()));

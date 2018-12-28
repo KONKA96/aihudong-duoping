@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 15/12/2018 17:51:15
+ Date: 20/12/2018 16:29:43
 */
 
 SET NAMES utf8mb4;
@@ -165,22 +165,25 @@ CREATE TABLE `message`  (
   `message_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `message_pic` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `admin_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `start_time` datetime(0) NULL DEFAULT NULL,
-  `end_time` datetime(0) NULL DEFAULT NULL,
+  `start_time` date NULL DEFAULT NULL,
+  `end_time` date NULL DEFAULT NULL,
   `message_state` int(11) NULL DEFAULT NULL,
   `zone_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `building_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `room_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `screen_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `idle_presentent` int(11) NULL DEFAULT NULL,
+  `idle_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of message
 -- ----------------------------
-INSERT INTO `message` VALUES (1, '校庆通知', 1, NULL, NULL, '1', '2018-06-24 09:00:00', '2018-06-25 16:00:00', NULL, '1', '1', '783595');
-INSERT INTO `message` VALUES (2, '放假通知', 1, NULL, '5b5a6706-f09d-4194-abee-487b69234c40.jpg,51f925e7-6f87-462d-bdbf-90c0eef49fa0.jpg,c5205e83-e7c8-4d14-98ed-79e46b3c8c09.jpg,7e5921cf-a4dd-47bf-85d3-a5269ce085ec.jpg,020deaa2-8d3a-4b15-b765-6c0093db78b3.jpg,2ed6066d-4acd-452c-918b-c3410ac08b6d.jpg,9f66db1c-ee8f-42e0-9f01-de340480a9c8.jpg,3eb91ec2-ec30-4d45-b9e3-61685a3f68d2.png', '1', '2018-06-29 10:25:58', '2018-07-20 21:00:59', NULL, '2', '9,23,15,16,17,18,19,20', '1001420,896141,896142,896143,896144,896145,1004826,888492,888496,899759,899760,899765,899766');
-INSERT INTO `message` VALUES (4, 'aaaa', 2, NULL, 'd6721a3b-95c0-4770-aaac-51a317c9adcf.jpg,cd4ced04-a64d-418f-9566-275cbf695b60.jpg', '1', '2018-07-04 11:02:07', '2018-07-04 11:07:02', NULL, '1', '24,27,29,1,3,7', '1005157,1005832,1011366,783595,783618,783726,783762,876710,790650');
-INSERT INTO `message` VALUES (5, '德国回家了', 2, NULL, '1.jpg,2.jpg,3.jpg,4.jpg,5.jpg', '1', '2018-07-07 02:05:00', '2018-08-16 22:00:00', NULL, '4', '8,3,2,28,30', '1010405,1013502,1014400');
+INSERT INTO `message` VALUES (1, '校庆通知', 1, NULL, NULL, '1', '2018-06-24', '2018-06-25', NULL, '1', '1', '783595', NULL, NULL, NULL);
+INSERT INTO `message` VALUES (2, '放假通知', 1, NULL, '5b5a6706-f09d-4194-abee-487b69234c40.jpg,51f925e7-6f87-462d-bdbf-90c0eef49fa0.jpg,c5205e83-e7c8-4d14-98ed-79e46b3c8c09.jpg,7e5921cf-a4dd-47bf-85d3-a5269ce085ec.jpg,020deaa2-8d3a-4b15-b765-6c0093db78b3.jpg,2ed6066d-4acd-452c-918b-c3410ac08b6d.jpg,9f66db1c-ee8f-42e0-9f01-de340480a9c8.jpg,3eb91ec2-ec30-4d45-b9e3-61685a3f68d2.png', '1', '2018-06-29', '2018-07-20', NULL, '2', '9,23,15,16,17,18,19,20', '1001420,896141,896142,896143,896144,896145,1004826,888492,888496,899759,899760,899765,899766', NULL, NULL, NULL);
+INSERT INTO `message` VALUES (4, 'aaaa', 2, NULL, 'd6721a3b-95c0-4770-aaac-51a317c9adcf.jpg,cd4ced04-a64d-418f-9566-275cbf695b60.jpg', '1', '2018-07-04', '2018-07-04', NULL, '1', '24,27,29,1,3,7', '1005157,1005832,1011366,783595,783618,783726,783762,876710,790650', NULL, NULL, NULL);
+INSERT INTO `message` VALUES (5, '德国回家了', 2, NULL, '1.jpg,2.jpg,3.jpg,4.jpg,5.jpg', '1', '2018-12-18', '2019-01-01', NULL, '1', '11', 'af0d3481-a833-4e8e-968e-850d94a9a452', 'sc17,sc18,sc19', 1, '08:50:00-09:00:00,09:50:00-10:00:00');
 
 -- ----------------------------
 -- Table structure for record

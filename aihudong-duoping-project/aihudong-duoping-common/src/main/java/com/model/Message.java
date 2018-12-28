@@ -41,11 +41,52 @@ public class Message {
     
     private List<Room> roomList;
     
+    private String screenId;
+    
+    private List<Screen> screenList;
+    
     private Admin admin;
     
-    private List<MultipartFile> fileList; 
+    private List<MultipartFile> fileList;
     
-    public String getStartTimeString() {
+    private Integer idlePresentent;
+
+    private String idleTime;
+    
+    public String getIdleTime() {
+		return idleTime;
+	}
+
+	public void setIdleTime(String idleTime) {
+		this.idleTime = idleTime;
+	}
+
+	public Integer getIdlePresentent() {
+		return idlePresentent;
+	}
+
+	public void setIdlePresentent(Integer idlePresentent) {
+		this.idlePresentent = idlePresentent;
+	}
+
+
+	public String getScreenId() {
+		return screenId;
+	}
+
+	public void setScreenId(String screenId) {
+		this.screenId = screenId;
+	}
+
+	public List<Screen> getScreenList() {
+		return screenList;
+	}
+
+	public void setScreenList(List<Screen> screenList) {
+		this.screenList = screenList;
+	}
+
+	public String getStartTimeString() {
 		return startTimeString;
 	}
 

@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal" action="/aihudong-web/message/updateMessage" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal" action="/aihudong-duoping-web/message/updateMessage" method="post" enctype="multipart/form-data">
                         	<input type="hidden" name="id" value="${message.id }">
                         	<div class="form-group">
                                 <label class="col-sm-2 control-label">计划名称</label>

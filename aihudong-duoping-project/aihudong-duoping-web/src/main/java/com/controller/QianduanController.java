@@ -77,6 +77,8 @@ public class QianduanController {
 	private String salt;
 	@Value("${defaultPwd}")
 	private String defaultPwd;
+	@Value("${virtualRoomSwitch}")
+	private boolean virtualRoomSwitch;
 
 	Logger logger = Logger.getLogger(this.getClass());
 
@@ -105,7 +107,7 @@ public class QianduanController {
 	public String UserLogin(@RequestParam(required = false) String username,
 			@RequestParam(required = false) String password, @RequestParam(required = false) String sid,
 			@RequestParam(required = false) String serverhost, @RequestParam(required = false) String openid,
-			HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) throws IOException {
+			@RequestParam(required = false) String dandianFlag,HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) throws IOException {
 		response.setCharacterEncoding("utf-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		ServletContext servletContext = request.getServletContext();
@@ -157,7 +159,7 @@ public class QianduanController {
 			return JsonUtils.objectToJson(argMap);
 		}
 		if ((teacher != null) && (teacher.getUsername() != null)) {
-			if (!teacher.getPassword().equals(password)) {
+			if (!"1".equals(dandianFlag) && !teacher.getPassword().equals(password)) {
 				argMap.put("code", Integer.valueOf(1002));
 				argMap.put("message", "密码错误");
 				return JsonUtils.objectToJson(argMap);
@@ -240,7 +242,7 @@ public class QianduanController {
 				screenService.updateByPrimaryKeySelective(selectAllScreen.get(0));
 			}
 		} else if ((student != null) && (student.getUsername() != null)) {
-			if (!student.getPassword().equals(password)) {
+			if (!"1".equals(dandianFlag) && !student.getPassword().equals(password)) {
 				argMap.put("code", Integer.valueOf(1002));
 				argMap.put("message", "密码错误");
 				return JsonUtils.objectToJson(argMap);
@@ -268,7 +270,8 @@ public class QianduanController {
 				servletContext.setAttribute("scount", Integer.parseInt(scount.toString())+1);
 			}
 		}
-		session.setMaxInactiveInterval(-1);
+		//默认设置session8小时
+		session.setMaxInactiveInterval(60*60*8);
 		session.setAttribute("count", Integer.valueOf(0));
 
 		session.setAttribute("startTime", new Date());
@@ -530,7 +533,7 @@ public class QianduanController {
 					student.setTruename(randomName);
 					//设置学生为临时账户标识
 					student.setType("5");
-					studentService.insertSelective(student);
+					studentService.insertSelective(student,virtualRoomSwitch);
 					
 					temporaryList.add(student);
 					//设置线程，一段时间后自动删除
@@ -659,6 +662,9 @@ public class QianduanController {
 			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
 			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
 				Room room = virtualRoomRecord.getRoom();
+				if(room.getId()==null || "".equals(room.getId())) {
+					continue;
+				}
 				room.setKey(room.getId());
 				if(room.getUserId().equals(teacher.getId())) {
 					room.setRole(1);
@@ -777,8 +783,8 @@ public class QianduanController {
 		}else {
 			argMap.put("role", "2");
 		}
-		
-		session.setMaxInactiveInterval(0);
+		//默认设置session8小时
+		session.setMaxInactiveInterval(60*60*8);
 		virtualRoomRecordService.insertSelective(virtualRoomRecord);
 		ServletContext servletContext = session.getServletContext();
 		session.setAttribute("virtualRoomRecord", virtualRoomRecord.getId());

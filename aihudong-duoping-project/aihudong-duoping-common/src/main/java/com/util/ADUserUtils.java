@@ -22,7 +22,7 @@ import javax.naming.ldap.InitialLdapContext;
  */
 public class ADUserUtils {
     DirContext dc = null;
-    String root = "CN=administrator,OU=Aishijie,DC="; // LDAP的根节点的DC
+    String root = "OU=教师,OU=学院,OU=Aishijie,OU=Person,OU=vmware,DC=hdycjy,DC=com"; // LDAP的根节点的DC  
     
     /**
      * @Description:程序入口
@@ -39,7 +39,7 @@ public class ADUserUtils {
 //        
 //        utils.modifyInformation(sr.getName(), "M1380005");
         
-//        utils.searchInformation(utils.root);
+        utils.searchInformation(utils.root);
         
 //        utils.renameEntry("CN=JimGreen,OU=Java开发组,OU=软件研发部,DC=moonxy,DC=com", "CN=JimGreen,OU=Web前端组,OU=软件研发部,DC=moonxy,DC=com");
         
@@ -55,6 +55,35 @@ public class ADUserUtils {
         super();
         init();
     }
+    
+    public String testConnect() {
+    	Properties env = new Properties();
+        /*String adminName = "ybjt\\administrator";//username@domain
+        String adminPassword = "1qaz@WSX";//password
+        String ldapURL = "LDAP://192.168.10.222:389";//ip:port
+*/      String adminName = "CN=Administrator,CN=Users,DC=hdycjy,DC=com";//username@domain
+        String adminPassword = "huagongYCJY@789.com";//password
+        String ldapURL = "LDAP://172.25.1.17:636";//ip:port
+        env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.SECURITY_AUTHENTICATION, "simple");//LDAP访问安全级别："none","simple","strong"
+        env.put(Context.SECURITY_PRINCIPAL, adminName);
+        env.put(Context.SECURITY_CREDENTIALS, adminPassword);
+        env.put(Context.PROVIDER_URL, ldapURL);
+        //env.put("java.naming.ldap.factory.socket", "org.utils.ad.DummySSLSocketFactory");
+        env.put(Context.SECURITY_PROTOCOL, "ssl");
+        String keystore = "C:\\Program Files\\Java\\jdk1.8.0_191\\jre\\lib\\security\\cacerts"; 
+    	System.setProperty("javax.net.ssl.trustStore", keystore);
+    	System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+    	 try {
+             dc = new InitialLdapContext(env, null);
+             return "AD域服务连接认证成功";
+         } catch (Exception e) {
+             System.out.println("AD域服务连接认证失败");
+             e.printStackTrace();
+             return  e.getMessage();
+         }
+    	
+    }
 
     /**
      * @Description:初始化AD域服务连接
@@ -62,18 +91,24 @@ public class ADUserUtils {
      * @date 2018-05-15
      */
     public void init() {
+    	
         Properties env = new Properties();
-       /* String adminName = "ybjt\\administrator";//username@domain
+        /*String adminName = "ybjt\\administrator";//username@domain
         String adminPassword = "1qaz@WSX";//password
         String ldapURL = "LDAP://192.168.10.222:389";//ip:port
-*/      String adminName = "administrator";//username@domain
+*/      String adminName = "CN=Administrator,CN=Users,DC=hdycjy,DC=com";//username@domain
         String adminPassword = "huagongYCJY@789.com";//password
-        String ldapURL = "LDAP://172.25.1.17:389";//ip:port
+        String ldapURL = "LDAP://172.25.1.17:636";//ip:port
         env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.SECURITY_AUTHENTICATION, "simple");//LDAP访问安全级别："none","simple","strong"
         env.put(Context.SECURITY_PRINCIPAL, adminName);
         env.put(Context.SECURITY_CREDENTIALS, adminPassword);
         env.put(Context.PROVIDER_URL, ldapURL);
+        //env.put("java.naming.ldap.factory.socket", "org.utils.ad.DummySSLSocketFactory");
+        env.put(Context.SECURITY_PROTOCOL, "ssl");
+        String keystore = "C:\\Program Files\\Java\\jdk1.8.0_191\\jre\\lib\\security\\cacerts"; 
+    	System.setProperty("javax.net.ssl.trustStore", keystore);
+    	System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
         try {
             dc = new InitialLdapContext(env, null);
             System.out.println("AD域服务连接认证成功");
@@ -109,7 +144,7 @@ public class ADUserUtils {
             attrs.put("objectClass", "user");
             attrs.put("samAccountName", newUserName);
             attrs.put("displayName", newUserName);
-            attrs.put("userPrincipalName", newUserName + "@moonxy.com");
+            attrs.put("userPrincipalName", newUserName + "@hdycjy.com");
             
             dc.createSubcontext("CN=" + newUserName + "," + root, attrs);
             System.out.println("新增AD域用户成功:" + newUserName);
