@@ -323,7 +323,7 @@ public class TeacherController {
         	result+="共"+resultList.size()+"条信息，成功导入"+i+"条信息，导入失败"+(resultList.size()-i)+"条信息";
         }
         logger.info(result);
-        return "redirect:showAllTeacher";  
+        return "redirect:/teacher/showAllTeacher";  
     }
     
     /**

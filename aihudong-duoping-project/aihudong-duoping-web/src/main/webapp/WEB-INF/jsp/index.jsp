@@ -72,12 +72,12 @@
 	                                    	</li>
 	                                </ul>
 	                        </li>
-			                <li>
+			               <!--  <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/screen/showAllScreen">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">屏幕管理</span>
 				                   </a>
-			                </li>
+			                </li> -->
 			               <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/admin/showAllAdmin">
 				                   	<i class="fa fa-columns"></i> 
@@ -85,58 +85,64 @@
 				                   </a>
 			                </li>
 			                 <li>
+				               <a class="J_menuItem" href="/aihudong-duoping-web/faculty/showAllFaculty">
+				                   	<i class="fa fa-columns"></i> 
+				                   	<span class="nav-label">院系管理</span>
+				                   </a>
+			                </li>
+			                <!--  <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/screen/screenDistribute">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">屏幕分配</span>
 				                   </a>
-			                </li>
+			                </li> -->
 			                <!-- <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/message/showAllMessage">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">消息推送</span>
 				                   </a>
 			                </li> -->
-			                <li>
+			                <!-- <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/setup/toIndex">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">其他设置</span>
 				                   </a>
-			                </li>
-			                 <li>
+			                </li> -->
+			                 <!-- <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/admin/showLicense">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">license管理</span>
 				                   </a>
-			                </li>
+			                </li> -->
 		                </c:if>
 		                <!-- 一级管理员 -->
 		                <c:if test="${admin.power==1 }">
-			                <li>
+			                <!-- <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/screen/showAllScreen">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">屏幕信息查询</span>
 				                   </a>
-			                </li>
+			                </li> -->
 			               <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/admin/showAllAdmin">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">管理员管理</span>
 				                   </a>
 			                </li>
-			                 <li>
+			                <!--  <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/screen/screenDistribute">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">屏幕分配</span>
 				                   </a>
-			                </li>
+			                </li> -->
 		                </c:if>
 		                 <c:if test="${admin.power==2 }">
-		                 	 <li>
+		                 	 <!-- <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/screen/showAllScreen">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">屏幕管理</span>
 				                   </a>
-			                </li>
+			                </li> -->
 		                 </c:if>
                     <!-- 左侧菜单结束 -->
                 </ul>
@@ -147,7 +153,9 @@
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <span style="text-align:center;font-size:18px;line-height:3; margin-left: 5px;">北京化工大学在线课堂管理后台</span>
                         <!-- <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                             <div class="form-group">
                                 <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
@@ -265,7 +273,7 @@
                 <a href="/aihudong-duoping-web/admin/adminLogout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/aihudong-duoping-web/admin/toAdminIndex" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/aihudong-duoping-web/teacher/showAllTeacher" frameborder="0" data-id="index_v1.html" seamless></iframe>
            		<%-- <c:if test="${admin.power==1 }">
                 	<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/aihudong-duoping-web/yiji/toAdminIndex" frameborder="0" data-id="index_v1.html" seamless></iframe>
            		</c:if> --%>

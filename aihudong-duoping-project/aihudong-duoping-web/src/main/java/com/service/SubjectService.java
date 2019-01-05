@@ -10,4 +10,8 @@ public interface SubjectService {
 	int updateByPrimaryKeySelective(Subject subject);
 	
 	Subject selectByPrimaryKey(Integer id);
+	
+	int insertSelective(Subject subject);
+	
+	int deleteByPrimaryKey(Subject subject);
 }

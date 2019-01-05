@@ -29,9 +29,9 @@
 									<option value="1" selected>教师</option>
 									<option value="2">学生</option>
 								</c:if>
-								<c:if test="${admin.power==0 || admin.power==2 }">
+								<%-- <c:if test="${admin.power==0 || admin.power==2 }">
 									<option value="4">屏幕</option>
-								</c:if>
+								</c:if> --%>
 							</select>
 						</div>
 						<div id="facultySelect" class="input-group">

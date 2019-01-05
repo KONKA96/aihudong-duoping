@@ -56,6 +56,9 @@
         #{desc,jdbcType=VARCHAR},
       </if>
     </trim>
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	    	SELECT LAST_INSERT_ID() AS id
+	</selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.model.Faculty" >
     update faculty
@@ -90,13 +93,29 @@
   	select 
   		f.id f_id,f.faculty_name,f.admin_id,
   		s.id s_id,s.subject_name,s.faculty_id
-  	from faculty f,subject s
-  	where f.id=s.faculty_id
+  	from faculty f left join subject s
+  	on f.id=s.faculty_id
+  	<where>
   		<if test="id!=null">
-  			and f.id=#{id}
+  			and f.id = #{id}
   		</if>
   		<if test="facultyName!=null and facultyName!=''">
-  			and f.faculty_name like concat ('%',#{facultyName},'%')
+  			and f.faculty_name = #{facultyName}
   		</if>
+  	</where>
+  </select>
+  
+  <select id="selectAllFaculty" parameterType="java.util.Map" resultType="Faculty">
+  	select
+  		 id, faculty_name, admin_id, `desc`
+  	from faculty
+  	<where>
+  		<if test="id!=null">
+  			and id=#{id}
+  		</if>
+  		<if test="facultyName!=null and facultyName!=''">
+  			and faculty_name like concat ('%',#{facultyName},'%')
+  		</if>
+  	</where>
   </select>
 </mapper>
