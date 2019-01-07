@@ -77,12 +77,12 @@
                                 </div>
                             </div>
                             
-                            <%-- <div class="form-group">
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">屏幕数</label>
                                 <div class="col-sm-10">
                                     <input name="screenNum" value="${admin.screenNum }" type="text" disabled="disabled" class="form-control" placeholder="屏幕数">
                                 </div>
-                            </div> --%>
+                            </div>
                             
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">

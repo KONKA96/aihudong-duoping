@@ -363,7 +363,7 @@ public class MessageController {
 	@ResponseBody
 	@RequestMapping(value="/sendMsg", produces = { "text/json;charset=UTF-8" })
 	public void sendMsg(Integer id) {
-		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd日");
 		Map<String, Object> argMap = new HashMap<>();
 		
 		Message msg = new Message();
@@ -432,7 +432,7 @@ public class MessageController {
 			screenList.addAll(scrList);
 		}
 		argMap.put("screenList", screenList);
-		String httpsRequest = HttpsUtil.httpsRequest("https://172.16.4.161/html5client/cancelPublish", "POST", JsonUtils.objectToJson(argMap));
+		String httpsRequest = HttpsUtil.httpsRequest("https://172.16.3.155/html5client/cancelPublish", "POST", JsonUtils.objectToJson(argMap));
 		System.out.println(httpsRequest);
 	}
 }

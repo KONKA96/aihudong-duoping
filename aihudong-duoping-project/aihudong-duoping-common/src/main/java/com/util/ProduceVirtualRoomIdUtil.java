@@ -14,29 +14,23 @@ public class ProduceVirtualRoomIdUtil {
 	public String ProduceVirtualRoomId(List<String> idList) {
 		String roomId=null;
 		Random random = new Random();
-		if(idList==null || idList.size()==0) {
+		A:while(true) {
+			//随机产生6位数字[100000,999999]
 			Integer nextInt = (Integer)random.nextInt(900000)+100000;
-			roomId=String.valueOf(nextInt);
-		}else {
-			A:while(true) {
-				//随机产生6位数字[100000,999999]
-				Integer nextInt = (Integer)random.nextInt(900000)+100000;
-				int i=0;
-				for (String string : idList) {
-					if(string.equals(String.valueOf(nextInt))) {
-						break;
-					}else {
-						i++;
-					}
-					
-					if(i==idList.size()) {
-						roomId=String.valueOf(nextInt);
-						break A;
-					}
+			int i=0;
+			for (String string : idList) {
+				if(string.equals(String.valueOf(nextInt))) {
+					break;
+				}else {
+					i++;
+				}
+				
+				if(i==idList.size()) {
+					roomId=String.valueOf(nextInt);
+					break A;
 				}
 			}
 		}
-		
 		return roomId;
 	}
 

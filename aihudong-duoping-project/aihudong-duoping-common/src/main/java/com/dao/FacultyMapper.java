@@ -1,13 +1,10 @@
 package com.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import com.model.Faculty;
 
 public interface FacultyMapper {
-	List<Faculty> selectAllFaculty(Map<String,Object> map);
-	
 	List<Faculty> selectAll(Faculty faculty);
 	
     int deleteByPrimaryKey(Integer id);
