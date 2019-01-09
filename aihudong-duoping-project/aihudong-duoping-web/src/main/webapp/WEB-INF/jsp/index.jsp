@@ -97,6 +97,12 @@
 				                   </a>
 			                </li> -->
 			                <li>
+				               <a class="J_menuItem" href="/aihudong-duoping-web/faculty/showAllFaculty">
+				                   	<i class="fa fa-columns"></i> 
+				                   	<span class="nav-label">院系管理</span>
+				                   </a>
+			                </li>
+			                <li>
 				               <a class="J_menuItem" href="/aihudong-duoping-web/setup/toIndex">
 				                   	<i class="fa fa-columns"></i> 
 				                   	<span class="nav-label">其他设置</span>

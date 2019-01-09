@@ -667,6 +667,7 @@ public class QianduanController {
 				}
 				room.setKey(room.getId());
 				if(room.getUserId().equals(teacher.getId())) {
+					room.setTruename(teacher.getTruename());
 					room.setRole(1);
 				}else {
 					room.setRole(2);
@@ -695,6 +696,7 @@ public class QianduanController {
 				Room room = virtualRoomRecord.getRoom();
 				room.setKey(room.getId());
 				if(room.getUserId().equals(student.getId())) {
+					room.setTruename(student.getTruename());
 					room.setRole(1);
 				}else {
 					room.setRole(2);

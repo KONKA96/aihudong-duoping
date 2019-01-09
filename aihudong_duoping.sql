@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 20/12/2018 16:29:43
+ Date: 07/01/2019 15:06:48
 */
 
 SET NAMES utf8mb4;
@@ -198,7 +198,7 @@ CREATE TABLE `record`  (
   `start_time` datetime(0) NULL DEFAULT NULL,
   `end_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6034 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6035 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of record
@@ -6202,6 +6202,7 @@ INSERT INTO `record` VALUES (6030, 'te20', 'sc22', 1, NULL, '2018-11-27 15:33:30
 INSERT INTO `record` VALUES (6031, 'sc1', NULL, 4, NULL, '2018-12-03 15:37:57', NULL);
 INSERT INTO `record` VALUES (6032, 'sc1', NULL, 4, NULL, '2018-12-03 15:39:01', NULL);
 INSERT INTO `record` VALUES (6033, 'sc9', NULL, 4, NULL, '2018-12-04 10:33:57', NULL);
+INSERT INTO `record` VALUES (6034, 'sc5', NULL, 4, NULL, '2019-01-07 10:35:42', NULL);
 
 -- ----------------------------
 -- Table structure for room
@@ -6276,31 +6277,31 @@ CREATE TABLE `screen`  (
 -- ----------------------------
 -- Records of screen
 -- ----------------------------
-INSERT INTO `screen` VALUES ('sc1', NULL, '0001', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, '111', '172.16.4.43', NULL, 'ggf', 'cwq', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc10', NULL, '0010', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.4', NULL, '0u6', 'u7a', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc11', NULL, '0011', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.6', NULL, 'bjh', '2w4', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc12', NULL, '0012', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'nzf', 'ms9', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc13', NULL, '0013', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'y3t', 'tyb', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc14', NULL, '0014', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'wk4', 'hfb', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc15', NULL, '0015', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '37w', 'hsa', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc16', NULL, '0016', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'sm3', 'azo', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc17', NULL, '0017', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '4nz', 'z57', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc18', NULL, '0018', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'k7m', '3e1', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc19', NULL, '0019', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '5', NULL, NULL, NULL, NULL, '07j', '3vy', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc2', NULL, '0002', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'krq', 'yky', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc20', NULL, '0020', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'tid', '2cm', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc21', NULL, '0021', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 's9r', 'hyi', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc22', NULL, '0022', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, '1xl', 'ujc', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc23', NULL, '0023', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '0t4', 'kzj', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc24', '屏幕1', '0024', 'TVRJeg==', '75c9fb4e-7263-47f5-9e5e-d10cc493cafb', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'awe', 'pvc', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc25', '屏幕2', '0025', 'TVRJeg==', '75c9fb4e-7263-47f5-9e5e-d10cc493cafb', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '9nx', '4y8', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc3', '屏幕3', '0003', 'TVRJeg==', '783595', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '62i', 'pb5', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc4', NULL, '0004', 'TVRJeg==', '783618', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '2jn', 'jrm', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc5', NULL, '0005', 'TVRJeg==', '783726', 1, '0:0:52', 2, '1', NULL, NULL, '172.16.4.28', NULL, 'u9c', 'qqt', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc6', NULL, '0006', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, 'pwo', 'g7d', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc7', NULL, '0007', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, '3ys', 'pju', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc8', NULL, '0008', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.2', NULL, 'few', '74c', NULL, NULL);
-INSERT INTO `screen` VALUES ('sc9', NULL, '0009', 'TVRJeg==', '1001407', 1, '0:1:15', 1, '1', NULL, '123', '172.16.3.3', NULL, 'ysa', 'w7h', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc1', NULL, '0001', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, '111', '172.16.4.43', NULL, 'uvj', 'azo', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc10', NULL, '0010', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.4', NULL, 'ypb', 'hly', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc11', NULL, '0011', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.6', NULL, 'uqf', 'yje', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc12', NULL, '0012', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'i7o', 'h8n', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc13', NULL, '0013', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'bhs', 'hog', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc14', NULL, '0014', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'vo5', 'czh', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc15', NULL, '0015', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'nzz', 'pvd', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc16', NULL, '0016', 'TVRJeg==', '840032', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'uly', 'wmi', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc17', NULL, '0017', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '42w', '6k9', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc18', NULL, '0018', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'kgo', 'rgk', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc19', NULL, '0019', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '5', NULL, NULL, NULL, NULL, 'rn6', 'jts', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc2', NULL, '0002', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'mth', 'kor', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc20', NULL, '0020', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'nt8', 'lmf', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc21', NULL, '0021', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, 'npv', 'z08', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc22', NULL, '0022', 'TVRJeg==', 'af0d3481-a833-4e8e-968e-850d94a9a452', 1, '00:00:00', 0, '3', NULL, NULL, NULL, NULL, '6bj', 'sjt', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc23', NULL, '0023', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'wet', '9fj', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc24', '屏幕1', '0024', 'TVRJeg==', '75c9fb4e-7263-47f5-9e5e-d10cc493cafb', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'v51', 'uqs', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc25', '屏幕2', '0025', 'TVRJeg==', '75c9fb4e-7263-47f5-9e5e-d10cc493cafb', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, '5zi', 'zdj', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc3', '屏幕3', '0003', 'TVRJeg==', '783595', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'ffp', 'e6i', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc4', NULL, '0004', 'TVRJeg==', '783618', 1, '00:00:00', 0, '1', NULL, NULL, NULL, NULL, 'g2w', 'yuk', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc5', NULL, '0005', 'TVRJeg==', '783726', 1, '0:0:52', 2, '1', NULL, NULL, '0:0:0:0:0:0:0:1', NULL, 'q7z', '9no', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc6', NULL, '0006', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, 'otw', 'uvz', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc7', NULL, '0007', 'TVRJeg==', '783726', 1, '00:00:00', 0, '1', NULL, NULL, '172.16.4.28', NULL, 'wto', '76r', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc8', NULL, '0008', 'TVRJeg==', '1001407', 1, '00:00:00', 0, '1', NULL, 'undefined', '172.16.3.2', NULL, 'cul', '4xv', NULL, NULL);
+INSERT INTO `screen` VALUES ('sc9', NULL, '0009', 'TVRJeg==', '1001407', 1, '0:1:15', 1, '1', NULL, '123', '172.16.3.3', NULL, 'm6t', '48x', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for set-up
@@ -6312,13 +6313,14 @@ CREATE TABLE `set-up`  (
   `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `teacher_max_resource_size` double NULL DEFAULT NULL,
   `student_max_resource_size` double NULL DEFAULT NULL,
+  `enterprise_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of set-up
 -- ----------------------------
-INSERT INTO `set-up` VALUES (1, 'on', 'off', 85, 50);
+INSERT INTO `set-up` VALUES (1, 'on', 'off', 85, 50, '爱视界');
 
 -- ----------------------------
 -- Table structure for student
@@ -6366,12 +6368,12 @@ INSERT INTO `student` VALUES ('st9', 'xmys01', 'TVRJeg==', NULL, '1', NULL, 0, '
 -- ----------------------------
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE `subject`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `subject_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `faculty_id` int(11) NULL DEFAULT NULL,
   `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of subject

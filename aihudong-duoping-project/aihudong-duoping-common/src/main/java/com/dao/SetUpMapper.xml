@@ -9,7 +9,7 @@
     <result column="student_max_resource_size" property="studentMaxResourceSize" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, water_mark, logo, teacher_max_resource_size, student_max_resource_size
+    id, water_mark, logo, teacher_max_resource_size, student_max_resource_size, enterprise_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,10 +23,10 @@
   </delete>
   <insert id="insert" parameterType="com.model.SetUp" >
     insert into set-up (id, water_mark, logo, 
-      teacher_max_resource_size, student_max_resource_size
+      teacher_max_resource_size, student_max_resource_size, enterprise_name
       )
     values (#{id,jdbcType=INTEGER}, #{waterMark,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
-      #{teacherMaxResourceSize,jdbcType=DOUBLE}, #{studentMaxResourceSize,jdbcType=DOUBLE}
+      #{teacherMaxResourceSize,jdbcType=DOUBLE}, #{studentMaxResourceSize,jdbcType=DOUBLE}, #{enterpriseName,jdbcType=VARCHAR})
       )
   </insert>
   <insert id="insertSelective" parameterType="com.model.SetUp" >
@@ -47,6 +47,9 @@
       <if test="studentMaxResourceSize != null" >
         student_max_resource_size,
       </if>
+      <if test="enterpriseName != null" >
+        enterprise_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -63,6 +66,9 @@
       </if>
       <if test="studentMaxResourceSize != null" >
         #{studentMaxResourceSize,jdbcType=DOUBLE},
+      </if>
+      <if test="enterpriseName != null" >
+        #{enterpriseName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -81,6 +87,9 @@
       <if test="studentMaxResourceSize != null" >
         student_max_resource_size = #{studentMaxResourceSize,jdbcType=DOUBLE},
       </if>
+      <if test="enterpriseName != null" >
+        enterprise_name = #{enterpriseName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -89,7 +98,8 @@
     set water_mark = #{waterMark,jdbcType=VARCHAR},
       logo = #{logo,jdbcType=VARCHAR},
       teacher_max_resource_size = #{teacherMaxResourceSize,jdbcType=DOUBLE},
-      student_max_resource_size = #{studentMaxResourceSize,jdbcType=DOUBLE}
+      student_max_resource_size = #{studentMaxResourceSize,jdbcType=DOUBLE},
+      enterprise_name = #{enterpriseName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

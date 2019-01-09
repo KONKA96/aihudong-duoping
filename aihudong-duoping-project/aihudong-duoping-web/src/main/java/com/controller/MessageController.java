@@ -363,7 +363,7 @@ public class MessageController {
 	@ResponseBody
 	@RequestMapping(value="/sendMsg", produces = { "text/json;charset=UTF-8" })
 	public void sendMsg(Integer id) {
-		SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd日");
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 		Map<String, Object> argMap = new HashMap<>();
 		
 		Message msg = new Message();

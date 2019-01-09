@@ -22,24 +22,26 @@ import javax.naming.ldap.InitialLdapContext;
  */
 public class ADUserUtils {
     DirContext dc = null;
-    String root = "OU=教师,OU=学院,OU=Aishijie,OU=Person,OU=vmware,DC=hdycjy,DC=com"; // LDAP的根节点的DC  
+    public String root = "OU=学生,OU=学院,OU=NEC,OU=Person,OU=vmware,DC=hdycjy,DC=com"; // LDAP的根节点的DC  
     
     /**
      * @Description:程序入口
      * @author moonxy
+     * @throws NamingException 
      * @date 2018-05-15
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NamingException {
         ADUserUtils utils = new ADUserUtils();
         
 //        utils.add("JimGreen");
         
-//        SearchResult sr = utils.searchByUserName(utils.root, "JimGreen");
+        SearchResult sr = utils.searchByUserName(utils.root, "huihui");
 //        System.out.println(sr.getName());
+        System.out.println(sr.getAttributes().get("givenName").get(0));
 //        
 //        utils.modifyInformation(sr.getName(), "M1380005");
         
-        utils.searchInformation(utils.root);
+//        utils.searchInformation(utils.root);
         
 //        utils.renameEntry("CN=JimGreen,OU=Java开发组,OU=软件研发部,DC=moonxy,DC=com", "CN=JimGreen,OU=Web前端组,OU=软件研发部,DC=moonxy,DC=com");
         
@@ -63,17 +65,17 @@ public class ADUserUtils {
         String ldapURL = "LDAP://192.168.10.222:389";//ip:port
 */      String adminName = "CN=Administrator,CN=Users,DC=hdycjy,DC=com";//username@domain
         String adminPassword = "huagongYCJY@789.com";//password
-        String ldapURL = "LDAP://172.25.1.17:636";//ip:port
+        String ldapURL = "LDAP://172.25.1.17:389";//ip:port
         env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.SECURITY_AUTHENTICATION, "simple");//LDAP访问安全级别："none","simple","strong"
         env.put(Context.SECURITY_PRINCIPAL, adminName);
         env.put(Context.SECURITY_CREDENTIALS, adminPassword);
         env.put(Context.PROVIDER_URL, ldapURL);
         //env.put("java.naming.ldap.factory.socket", "org.utils.ad.DummySSLSocketFactory");
-        env.put(Context.SECURITY_PROTOCOL, "ssl");
+       /* env.put(Context.SECURITY_PROTOCOL, "ssl");
         String keystore = "C:\\Program Files\\Java\\jdk1.8.0_191\\jre\\lib\\security\\cacerts"; 
     	System.setProperty("javax.net.ssl.trustStore", keystore);
-    	System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+    	System.setProperty("javax.net.ssl.trustStorePassword", "changeit");*/
     	 try {
              dc = new InitialLdapContext(env, null);
              return "AD域服务连接认证成功";
@@ -98,17 +100,17 @@ public class ADUserUtils {
         String ldapURL = "LDAP://192.168.10.222:389";//ip:port
 */      String adminName = "CN=Administrator,CN=Users,DC=hdycjy,DC=com";//username@domain
         String adminPassword = "huagongYCJY@789.com";//password
-        String ldapURL = "LDAP://172.25.1.17:636";//ip:port
+        String ldapURL = "LDAP://172.25.1.17:389";//ip:port
         env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.SECURITY_AUTHENTICATION, "simple");//LDAP访问安全级别："none","simple","strong"
         env.put(Context.SECURITY_PRINCIPAL, adminName);
         env.put(Context.SECURITY_CREDENTIALS, adminPassword);
         env.put(Context.PROVIDER_URL, ldapURL);
         //env.put("java.naming.ldap.factory.socket", "org.utils.ad.DummySSLSocketFactory");
-        env.put(Context.SECURITY_PROTOCOL, "ssl");
+      /*  env.put(Context.SECURITY_PROTOCOL, "ssl");
         String keystore = "C:\\Program Files\\Java\\jdk1.8.0_191\\jre\\lib\\security\\cacerts"; 
     	System.setProperty("javax.net.ssl.trustStore", keystore);
-    	System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+    	System.setProperty("javax.net.ssl.trustStorePassword", "changeit");*/
         try {
             dc = new InitialLdapContext(env, null);
             System.out.println("AD域服务连接认证成功");
@@ -240,7 +242,7 @@ public class ADUserUtils {
         SearchControls searchCtls = new SearchControls();
         searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         String searchFilter = "sAMAccountName=" + userName;
-        String returnedAtts[] = { "memberOf" }; //定制返回属性
+        String returnedAtts[] = { "memberOf" ,"givenName" }; //定制返回属性
         searchCtls.setReturningAttributes(returnedAtts); //设置返回属性集
         try {
             NamingEnumeration<SearchResult> answer = dc.search(searchBase, searchFilter, searchCtls);

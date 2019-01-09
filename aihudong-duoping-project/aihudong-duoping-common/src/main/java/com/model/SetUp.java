@@ -10,6 +10,8 @@ public class SetUp {
     private Double teacherMaxResourceSize;
 
     private Double studentMaxResourceSize;
+    
+    private String enterpriseName;
 
     public Integer getId() {
         return id;
@@ -49,6 +51,14 @@ public class SetUp {
 
 	public void setStudentMaxResourceSize(Double studentMaxResourceSize) {
 		this.studentMaxResourceSize = studentMaxResourceSize;
+	}
+
+	public String getEnterpriseName() {
+		return enterpriseName;
+	}
+
+	public void setEnterpriseName(String enterpriseName) {
+		this.enterpriseName = enterpriseName;
 	}
     
 }

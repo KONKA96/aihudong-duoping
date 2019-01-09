@@ -17,6 +17,8 @@ public class Room {
 	
 	private String userId;
 	
+	private String truename;
+	
 	private Integer role;
 	
 	private String key;
@@ -24,6 +26,14 @@ public class Room {
 	private String password;
 	
 	private String type;
+
+	public String getTruename() {
+		return truename;
+	}
+
+	public void setTruename(String truename) {
+		this.truename = truename;
+	}
 
 	public String getType() {
 		return type;

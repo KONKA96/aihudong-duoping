@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.model.Admin;
+import com.model.Faculty;
 import com.model.Logger;
 import com.model.Subject;
+import com.service.FacultyService;
 import com.service.SubjectService;
 
 /**
@@ -27,6 +29,77 @@ public class SubjectController {
 
 	@Autowired
 	private SubjectService subjectService;
+	@Autowired
+	private FacultyService facultyService;
+	
+	/**
+	 * 修改或添加科目
+	 * @author KONKA
+	 * @param subject
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/updateInfo")
+	public String updateInfo(Subject subject,HttpSession session){
+		Faculty faculty = new Faculty();
+		faculty.setId(subject.getFacultyId());
+		List<Faculty> facultyList = facultyService.selectAllFaculty(faculty);
+		List<Subject> subjectList = facultyList.get(0).getSubjectList();
+		//判断该院系下是否有科目
+		if(subjectList.size()!=0) {
+			int count = 0;
+			//遍历科目比对，如果有相同科目则添加失败
+			for (Subject sub : subjectList) {
+				if(sub.getSubjectName().equals(subject.getSubjectName())) {
+					return "exist";
+				}else {
+					count++;
+				}
+				
+				if(count==subjectList.size()) {
+					if(subject.getId()!=null) {
+						if(subjectService.updateByPrimaryKeySelective(subject)>0) {
+							return "success";
+						}
+					}else {
+						if(subjectService.insertSelective(subject)>0) {
+							return "success";
+						}
+					}
+
+				}
+			}
+		}else {
+			if(subject.getId()!=null) {
+				if(subjectService.updateByPrimaryKeySelective(subject)>0) {
+					return "success";
+				}
+			}else {
+				if(subjectService.insertSelective(subject)>0) {
+					return "success";
+				}
+			}
+		}
+		
+		
+		return "";
+	}
+	
+	/**
+	 * 删除科目
+	 * @author KONKA
+	 * @param subject
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/deleteSubject")
+	public String deleteSubject(Subject subject) {
+		if(subjectService.deleteByPrimaryKey(subject)>0) {
+			return "success";
+		}
+		return "";
+	}
 	
 	/**
 	 * 添加或修改科目负责人

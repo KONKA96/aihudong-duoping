@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.SearchResult;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -117,26 +120,6 @@ public class test {
 			@RequestParam(required = false) String user, @RequestParam(required = false) String sign)
 			throws IOException, NoSuchAlgorithmException {
 
-		// 化大成教对接单点
-		/*if (token != null && tenant != null && user != null) {
-			String testSha1 = TestSha1.testSha1(token, tenant, user);
-			if (sign != null && sign.equals(testSha1)) {
-				String url = "http://celjwmanager.buct.edu.cn/openapi/ssoservice";
-				Map<String, Object> params = new HashMap<>();
-				params.put("tenant", tenant);
-				params.put("method", "checkToken");
-				HashMap<String, String> data = new HashMap<>();
-				data.put("token", token);
-				data.put("tenant", tenant);
-				data.put("sign", sign);
-				data.put("appId", "hgdx90001");
-
-				params.put("data", data);
-				//String sendPost = sendPost(url, params);
-				//System.out.println(sendPost);
-			}
-		}*/
-
 		/*
 		 * Admin admin = new Admin();
 		 * 
@@ -159,11 +142,12 @@ public class test {
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException 
+	 * @throws NamingException 
 	 */
 	@RequestMapping(value = "/checkToken")
 	public String checkToken(@RequestParam(required = false) String token,
 			@RequestParam(required = false) String tenant, @RequestParam(required = false) String sign,
-			@RequestParam(required = false) String user) throws NoSuchAlgorithmException, IOException {
+			@RequestParam(required = false) String user) throws NoSuchAlgorithmException, IOException, NamingException {
 		Map<String, Object> argMap = new HashMap<>();
 		String param2 = "";
 		if (token != null && tenant != null && user != null) {
@@ -188,6 +172,10 @@ public class test {
 				String data1 = jsonObject.getString("data");
 				
 				if("1".equals(result)&&"true".equals(data1)) {
+					
+					ADUserUtils util = new ADUserUtils();
+					SearchResult sr = util.searchByUserName(util.root, user);
+					String truename = sr.getAttributes().get("givenName").get(0).toString();
 					
 					Teacher teacher = new Teacher();
 					teacher.setUsername(user);
@@ -220,7 +208,7 @@ public class test {
 						}
 						teacher.setUsername(user);
 						teacher.setPassword(defaultPwd);
-						teacher.setTruename(user);
+						teacher.setTruename(truename);
 						teacherService.insertTeacherSelected(teacher, virtualRoomSwitch);
 						param2 = param2+"?username="+teacher.getUsername();
 					}
