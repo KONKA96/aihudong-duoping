@@ -35,6 +35,8 @@ public class Teacher {
 	
 	private String openId;
 	
+	private String unionId;
+	
 	private int role;
 	
 	private Integer isBrush;
@@ -47,6 +49,14 @@ public class Teacher {
 
     private Integer isShareTheDesktop;
 	
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
+
 	public Integer getIsBrush() {
 		return isBrush;
 	}

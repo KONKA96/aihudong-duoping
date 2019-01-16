@@ -226,6 +226,7 @@ public class QianduanController {
 			argMap.put("meetingName", room.getNum());
 			argMap.put("meetingId", room.getId());
 			argMap.put("meetingType", 1);
+			argMap.put("screenType", screen.getType());
 			
 			String ip = getIp(request);
 			//设置ip
