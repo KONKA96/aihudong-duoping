@@ -8,6 +8,8 @@ public class Student {
     private String password;
     
     private String openId;
+    
+    private String unionId;
 
     private String truename;
 
@@ -39,6 +41,14 @@ public class Student {
     
     private String type;
 	
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
+
 	public String getType() {
 		return type;
 	}

@@ -6,6 +6,7 @@
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="union_id" property="unionId" jdbcType="VARCHAR" />
     <result column="truename" property="truename" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="INTEGER" />
@@ -19,8 +20,8 @@
     <result column="type" property="type" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, open_id, truename, nickname, sex, telephone, email, subject_id, 
-    duration, time, remake, group_id, type
+    id, username, password, open_id, union_id, truename, nickname, sex, telephone, email, 
+    subject_id, duration, time, remake, group_id, type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -34,17 +35,17 @@
   </delete>
   <insert id="insert" parameterType="com.model.Student" >
     insert into student (id, username, password, 
-      open_id, truename, nickname, 
-      sex, telephone, email, 
-      subject_id, duration, time, 
-      remake, group_id, type
-      )
+      open_id, union_id, truename, 
+      nickname, sex, telephone, 
+      email, subject_id, duration, 
+      time, remake, group_id, 
+      type)
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{openId,jdbcType=VARCHAR}, #{truename,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{subjectId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, 
-      #{remake,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}
-      )
+      #{openId,jdbcType=VARCHAR}, #{unionId,jdbcType=VARCHAR}, #{truename,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER}, #{duration,jdbcType=VARCHAR}, 
+      #{time,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.model.Student" >
     insert into student
@@ -60,6 +61,9 @@
       </if>
       <if test="openId != null" >
         open_id,
+      </if>
+      <if test="unionId != null" >
+        union_id,
       </if>
       <if test="truename != null" >
         truename,
@@ -108,6 +112,9 @@
       <if test="openId != null" >
         #{openId,jdbcType=VARCHAR},
       </if>
+      <if test="unionId != null" >
+        #{unionId,jdbcType=VARCHAR},
+      </if>
       <if test="truename != null" >
         #{truename,jdbcType=VARCHAR},
       </if>
@@ -155,6 +162,9 @@
       <if test="openId != null" >
         open_id = #{openId,jdbcType=VARCHAR},
       </if>
+      <if test="unionId != null" >
+        union_id = #{unionId,jdbcType=VARCHAR},
+      </if>
       <if test="truename != null" >
         truename = #{truename,jdbcType=VARCHAR},
       </if>
@@ -196,6 +206,7 @@
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       open_id = #{openId,jdbcType=VARCHAR},
+      union_id = #{unionId,jdbcType=VARCHAR},
       truename = #{truename,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=INTEGER},
@@ -223,7 +234,7 @@
   </resultMap>
   <select id="studentLogin" parameterType="Student" resultMap="studentMap">
   	select   
-  		stu.id stu_id, stu.username, stu.password, stu.truename, stu.nickname,
+  		stu.id stu_id, stu.username, stu.password, stu.truename, stu.nickname, stu.open_id, stu.union_id,
   		stu.sex, stu.telephone, stu.email, stu.subject_id, stu.duration, stu.time, stu.remake, stu.group_id,
   		sub.id sub_id, sub.subject_name, sub.faculty_id, sub.desc sub_desc,
   		g.id g_id, g.name, g.desc g_desc
@@ -275,6 +286,9 @@
   		<if test="openId!='' and openId!=null">
   			and stu.open_id=#{openId}
   		</if>
+  		<if test="unionId!='' and unionId!=null">
+	  		and stu.union_id=#{unionId}
+	  	</if>
   	</where>
  </select>
  
