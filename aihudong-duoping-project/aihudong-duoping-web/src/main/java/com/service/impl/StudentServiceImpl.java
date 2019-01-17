@@ -107,5 +107,10 @@ public class StudentServiceImpl implements StudentService {
 		// TODO Auto-generated method stub
 		return studentMapper.selectStudentByFaculty(map);
 	}
+	@Override
+	public int untyingUnionId(Student student) {
+		// TODO Auto-generated method stub
+		return studentMapper.untyingUnionId(student);
+	}
 
 }

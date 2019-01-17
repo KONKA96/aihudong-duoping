@@ -25,4 +25,6 @@ public interface TeacherService {
 	int insertTeacherSelected(Teacher teacher ,boolean virtualRoomSwitch);
 	
 	int deleteTeacherById(Teacher teacher);
+	
+	 int untyingUnionId(Teacher teacher);
 }

@@ -23,4 +23,6 @@ public interface StudentService {
 	int updateByPrimaryKeySelective(Student student);
 	
 	Student studentLogin(Student student);
+	
+	 int untyingUnionId(Student student);
 }

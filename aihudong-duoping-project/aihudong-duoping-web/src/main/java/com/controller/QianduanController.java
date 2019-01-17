@@ -106,7 +106,7 @@ public class QianduanController {
 	@RequestMapping(value = { "/userLogin" }, produces = { "text/json;charset=UTF-8" })
 	public String UserLogin(@RequestParam(required = false) String username,
 			@RequestParam(required = false) String password, @RequestParam(required = false) String sid,
-			@RequestParam(required = false) String serverhost, @RequestParam(required = false) String openid,
+			@RequestParam(required = false) String serverhost, @RequestParam(required = false) String openid,@RequestParam(required = false) String unionId,
 			@RequestParam(required = false) String dandianFlag,HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) throws IOException {
 		response.setCharacterEncoding("utf-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -176,8 +176,8 @@ public class QianduanController {
 			record.setRole(Integer.valueOf(1));
 			argMap.put("role", Integer.valueOf(1));
 			argMap.put("truename", teacher.getTruename());
-			if (openid != null && openid != "") {
-				teacher.setOpenId(openid);
+			if (unionId != null && unionId != "") {
+				teacher.setOpenId(unionId);
 				teacher.setPassword(null);
 				this.teacherService.updateTeacherSelected(teacher);
 			}
@@ -257,8 +257,8 @@ public class QianduanController {
 			argMap.put("truename", student.getTruename());
 			record.setUserId(student.getId());
 			record.setRole(Integer.valueOf(2));
-			if (openid != null && openid != "") {
-				student.setOpenId(openid);
+			if (unionId != null && unionId != "") {
+				student.setOpenId(unionId);
 				student.setPassword(null);
 				this.studentService.updateByPrimaryKeySelective(student);
 			}

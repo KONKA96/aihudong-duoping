@@ -29,4 +29,6 @@ public interface TeacherMapper {
     int updateByPrimaryKeySelective(Teacher record);
 
     int updateByPrimaryKey(Teacher record);
+    
+    int untyingUnionId(Teacher teacher);
 }

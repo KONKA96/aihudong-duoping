@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.model.Student;
+import com.model.Teacher;
 
 public interface StudentMapper {
 	Student selectStudentByUsername(Student student);
@@ -27,4 +28,6 @@ public interface StudentMapper {
     int updateByPrimaryKeySelective(Student record);
 
     int updateByPrimaryKey(Student record);
+    
+    int untyingUnionId(Student student);
 }

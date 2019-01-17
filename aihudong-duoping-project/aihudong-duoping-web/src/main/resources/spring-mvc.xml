@@ -53,6 +53,7 @@
 		        <mvc:exclude-mapping path="/index/*"/>
 		        <mvc:exclude-mapping path="/xiaoChengXu/*"/>
 		        <mvc:exclude-mapping path="/message/sendMsg"/>
+		        <mvc:exclude-mapping path="/message/cancelMsg"/>
 		        <mvc:exclude-mapping path="/**/fonts/*"/>
 			    <mvc:exclude-mapping path="/**/*.css"/>
 			    <mvc:exclude-mapping path="/**/*.js"/>

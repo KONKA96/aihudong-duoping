@@ -110,16 +110,51 @@ public class WeChatXiaoChengXuController {
 			argMap.put("message", "用户不存在");
 			return JsonUtils.objectToJson(argMap);
 		}else if(teacherList.size()!=0){
+			teacherList.get(0).setSubject(null);
 			argMap.put("user", teacherList.get(0));
 			argMap.put("role", 1);
 			argMap.put("code", "200");
 			return JsonUtils.objectToJson(argMap);
 		}else {
+			studentList.get(0).setSubject(null);
 			argMap.put("user", studentList.get(0));
 			argMap.put("role", 2);
 			argMap.put("code", "200");
 			return JsonUtils.objectToJson(argMap);
 		}
 		
+	}
+	
+	/**
+	 * 解除用户微信绑定接口
+	 * @author KONKA
+	 * @param username
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/untyingUnionId")
+	public String untyingUnionId(String username) {
+		Map<String, Object> argMap = new HashMap<>();
+		
+		Teacher teacher = new Teacher();
+		Student student = new Student();
+		teacher.setUsername(username);
+		student.setUsername(username);
+		List<Teacher> teacherList = teacherService.selectAllTeacher(teacher);
+		List<Student> studentList = studentService.selectAllStudent(student);
+		
+		if(teacherList.size()==0 && studentList.size()==0) {
+			argMap.put("code", "404");
+			argMap.put("message", "用户不存在");
+			return JsonUtils.objectToJson(argMap);
+		}else if(teacherList.size()!=0){
+			teacherService.untyingUnionId(teacher);
+			argMap.put("code", "200");
+			return JsonUtils.objectToJson(argMap);
+		}else {
+			studentService.untyingUnionId(student);
+			argMap.put("code", "200");
+			return JsonUtils.objectToJson(argMap);
+		}
 	}
 }

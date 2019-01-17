@@ -116,5 +116,10 @@ public class TeacherServiceImpl implements TeacherService {
 		// TODO Auto-generated method stub
 		return teacherMapper.selectTeacherByFaculty(map);
 	}
+	@Override
+	public int untyingUnionId(Teacher teacher) {
+		// TODO Auto-generated method stub
+		return teacherMapper.untyingUnionId(teacher);
+	}
 
 }

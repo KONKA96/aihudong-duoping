@@ -377,4 +377,8 @@
  <select id="selectAllId" resultType="java.lang.String">
  	select id from teacher
  </select>
+ 
+ <update id="untyingUnionId" parameterType="Teacher">
+ 	update teacher set union_id=null where username=#{username}
+ </update>
 </mapper>

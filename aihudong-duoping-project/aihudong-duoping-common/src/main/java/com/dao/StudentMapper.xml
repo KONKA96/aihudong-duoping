@@ -317,4 +317,8 @@
  		username=#{username}
  	</where>
  </select>
+ 
+ <update id="untyingUnionId" parameterType="Student">
+ 	update student set union_id=null where username=#{username}
+ </update>
 </mapper>
