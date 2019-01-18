@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import javax.naming.NamingException;
+import javax.naming.directory.SearchResult;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -159,11 +161,12 @@ public class test {
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException 
+	 * @throws NamingException 
 	 */
 	@RequestMapping(value = "/checkToken")
 	public String checkToken(@RequestParam(required = false) String token,
 			@RequestParam(required = false) String tenant, @RequestParam(required = false) String sign,
-			@RequestParam(required = false) String user) throws NoSuchAlgorithmException, IOException {
+			@RequestParam(required = false) String user) throws NoSuchAlgorithmException, IOException, NamingException {
 		Map<String, Object> argMap = new HashMap<>();
 		String param2 = "";
 		if (token != null && tenant != null && user != null) {
@@ -206,6 +209,10 @@ public class test {
 						param2 = param2+"?username="+teacher.getUsername();
 					}
 					else {
+						ADUserUtils utils = new ADUserUtils();
+				        
+				        SearchResult sr = utils.searchByUserName(utils.root, user);
+						
 						teacher = new Teacher();
 						List<String> idList = teacherService.selectAllId();
 						String newId=null;
@@ -220,7 +227,7 @@ public class test {
 						}
 						teacher.setUsername(user);
 						teacher.setPassword(defaultPwd);
-						teacher.setTruename(user);
+						teacher.setTruename(sr.getAttributes().get("givenName").get(0).toString());
 						teacherService.insertTeacherSelected(teacher, virtualRoomSwitch);
 						param2 = param2+"?username="+teacher.getUsername();
 					}

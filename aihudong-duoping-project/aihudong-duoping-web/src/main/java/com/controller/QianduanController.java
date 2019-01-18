@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.NamingException;
+import javax.naming.directory.SearchResult;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,6 +46,7 @@ import com.task.DeleteTemporaryScreen;
 import com.task.DeleteTemporaryUser;
 import com.util.ADUserUtils;
 import com.util.JsonUtils;
+import com.util.ProduceId;
 import com.util.StringRandom;
 
 /**
@@ -101,13 +104,14 @@ public class QianduanController {
 	 * @param modelMap
 	 * @return
 	 * @throws IOException
+	 * @throws NamingException 
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/userLogin" }, produces = { "text/json;charset=UTF-8" })
 	public String UserLogin(@RequestParam(required = false) String username,
 			@RequestParam(required = false) String password, @RequestParam(required = false) String sid,
 			@RequestParam(required = false) String serverhost, @RequestParam(required = false) String openid,@RequestParam(required = false) String unionId,
-			@RequestParam(required = false) String dandianFlag,HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) throws IOException {
+			@RequestParam(required = false) String dandianFlag,HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) throws IOException, NamingException {
 		response.setCharacterEncoding("utf-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		ServletContext servletContext = request.getServletContext();
@@ -152,8 +156,14 @@ public class QianduanController {
 			argMap.put("message", "用户名为空");
 			return JsonUtils.objectToJson(argMap);
 		}
+		
+		//查看化大ad域内是否有该用户
+		ADUserUtils utils = new ADUserUtils();
+        
+        SearchResult sr = utils.searchByUserName(utils.root, username);
+		
 		Record record = new Record();
-		if ((teacher == null) && (selectAllScreen.size() == 0) && (student == null)) {
+		if ((teacher == null) && (selectAllScreen.size() == 0) && (student == null) && (sr==null)) {
 			argMap.put("code", Integer.valueOf(1001));
 			argMap.put("message", "用户不存在");
 			return JsonUtils.objectToJson(argMap);
@@ -269,6 +279,34 @@ public class QianduanController {
 			}else {
 				servletContext.setAttribute("scount", Integer.parseInt(scount.toString())+1);
 			}
+		}else {
+			//化大域内存在该用户，数据库内不存在，需要先创建该用户
+			student = new Student();
+			List<String> idList = studentService.selectAllId();
+			String newId=null;
+			if(idList.size()==0){
+//				如果表内没有数据，手动生成id
+				newId="stu1";
+			}else{
+				newId=ProduceId.produceUserId(idList);
+			}
+			if(newId!=null){
+				student.setId(newId);
+			}
+			student.setUsername(username);
+			if(password!=null && "".equals(password)) {
+				student.setPassword(password);
+			}else {
+				student.setPassword(defaultPwd);
+			}
+			student.setTruename(sr.getAttributes().get("givenName").get(0).toString());
+			if (unionId != null && unionId != "") {
+				student.setUnionId(unionId);
+			}
+			studentService.insertSelective(student, virtualRoomSwitch);
+			
+			argMap.put("role", Integer.valueOf(2));
+			argMap.put("truename", student.getTruename());
 		}
 		//默认设置session8小时
 		session.setMaxInactiveInterval(60*60*8);
