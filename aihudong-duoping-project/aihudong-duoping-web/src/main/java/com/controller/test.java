@@ -65,14 +65,12 @@ import sun.misc.BASE64Encoder;
 public class test {
 	protected Logger logger = Logger.getLogger(this.getClass());
 
-	@Value("${httpUrl}")
-	private String httpUrl;
-	@Value("${salt}")
-	private String salt;
 	@Value("${defaultPwd}")
 	private String defaultPwd;
 	@Value("${virtualRoomSwitch}")
 	private boolean virtualRoomSwitch;
+	@Value("${checkTokenUrl}")
+	private String checkTokenUrl;
 
 	@Autowired
 	private ScreenService screenService;
@@ -87,15 +85,6 @@ public class test {
 
 	@Autowired
 	AdminService adminService;
-
-	@RequestMapping("/testaaa")
-	public String testaaa(@RequestParam String username, ModelMap modelMap) {
-		System.out.println(username);
-		modelMap.put("username", username);
-		modelMap.put("action", "create");
-		String url = httpUrl + "/demo/demo1.jsp";
-		return "redirect:" + url;
-	}
 
 	@ResponseBody
 	@RequestMapping("/testjsp")
@@ -172,8 +161,6 @@ public class test {
 		if (token != null && tenant != null && user != null) {
 			String testSha1 = TestSha1.testSha1( tenant, user);
 			if (sign != null && sign.equals(testSha1)) {
-				String url = "http://itraining.cet.buct.edu.cn:8080/HuadaLdapService.asmx/checkTokenInterfaces";
-
 				JSONObject params = new JSONObject();
 				params.put("tenant", tenant);
 				params.put("method", "checkToken");
@@ -184,7 +171,7 @@ public class test {
 				params.put("data", data);
 				
 				String param = "Jsondata=" + URLEncoder.encode(params.toString(), "UTF-8");
-				String sendPost = sendPost(url, param);
+				String sendPost = sendPost(checkTokenUrl, param);
 				System.out.println(sendPost);
 				JSONObject jsonObject = JSONObject.fromObject(sendPost);
 				String result = jsonObject.getString("result");
