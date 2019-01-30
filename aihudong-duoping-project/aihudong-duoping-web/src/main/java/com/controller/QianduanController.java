@@ -125,7 +125,7 @@ public class QianduanController {
 		Screen screen = new Screen();
 		Student student = null;
 		List<Screen> selectAllScreen = new ArrayList<>();
-		if (username != null) {
+		if (username != null && !"".equals(username)) {
 			modelMap.put("username", username);
 			teacher = new Teacher();
 			teacher.setUsername(username);
@@ -187,7 +187,7 @@ public class QianduanController {
 			argMap.put("role", Integer.valueOf(1));
 			argMap.put("truename", teacher.getTruename());
 			if (unionId != null && unionId != "") {
-				teacher.setOpenId(unionId);
+				teacher.setUnionId(unionId);
 				teacher.setPassword(null);
 				this.teacherService.updateTeacherSelected(teacher);
 			}
@@ -268,7 +268,7 @@ public class QianduanController {
 			record.setUserId(student.getId());
 			record.setRole(Integer.valueOf(2));
 			if (unionId != null && unionId != "") {
-				student.setOpenId(unionId);
+				student.setUnionId(unionId);
 				student.setPassword(null);
 				this.studentService.updateByPrimaryKeySelective(student);
 			}
@@ -850,6 +850,11 @@ public class QianduanController {
 			argMap.put("message", "房间ID为空！");
 			return JsonUtils.objectToJson(argMap);
 		}
+		if(username==null || "".equals(username)) {
+			argMap.put("code", "1001");
+			argMap.put("message", "用户名为空！");
+			return JsonUtils.objectToJson(argMap);
+		}
 		Map<String,Object> map = new HashMap<>();
 		map.put("username", username);
 		
@@ -912,10 +917,10 @@ public class QianduanController {
 		if(userId!=null) {
 			room.setUserId(userId);
 		}
-		if(desc!="" || desc!=null) {
+		if(desc!=null && !"".equals(desc)) {
 			room.setDesc(desc);
 		}
-		if(password!="" || password!=null) {
+		if(password!=null && !"".equals(password)) {
 			room.setPassword(password);
 		}
 		roomService.updateByPrimaryKeySelective(room);
