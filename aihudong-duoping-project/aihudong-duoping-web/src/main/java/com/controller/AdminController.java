@@ -11,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,9 @@ public class AdminController {
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
+	
+	@Value("${defaultPwd}")
+	private String defaultPwd;
 	@Autowired
 	private FacultyService facultyService;
 	@Autowired
@@ -101,10 +105,13 @@ public class AdminController {
 	 */
 	@ResponseBody
 	@RequestMapping("/testOldPwd")
-	public String testOldPwd(String password,HttpSession session) {
+	public String testOldPwd(String password,Admin admin) {
 //		base64转码
 		BASE64Encoder encoder = new BASE64Encoder();
-		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin.getId()==null) {
+			return "id is null";
+		}
+		admin = adminService.selectByPrimaryKey(admin);
 		password = new String(encoder.encode(password.getBytes()));
 		password = new String(encoder.encode(password.getBytes()));
 		if (password.equals(admin.getPassword())) {
@@ -221,16 +228,27 @@ public class AdminController {
 		}
     	List<Admin> adminList = adminService.selectAllAdmin(null);
     	for (Admin ad : adminList) {
-			if(ad.getUsername().equals(admin.getUsername())){
+			if(ad.getId()!=admin.getId() && ad.getUsername().equals(admin.getUsername())){
 				logger.info(admin.getUsername()+"用户名已存在，修改失败!");
 				return "exist";
 			}
 		}
 //    	进行修改和添加
+//		base64转码
+		BASE64Encoder encoder = new BASE64Encoder();
+		if(admin.getPassword()!=null) {
+			String password = new String(encoder.encode(admin.getPassword().getBytes()));
+			password = new String(encoder.encode(password.getBytes()));
+			admin.setPassword(password);
+		}
     	if(admin.getId()!=null){
     		if(adminService.updateByPrimaryKeySelective(admin)>0){
     			if(admin.getId().equals(SjAdmin.getId())){
-    				session.setAttribute("admin", admin);
+    				//将管理员自身的密码设置到session中
+    				if(admin.getPassword()==null) {
+    					admin.setPassword(SjAdmin.getPassword());
+    				}
+    				session.setAttribute("admin", SjAdmin);
     			}
     			logger.info(SjAdmin.getUsername()+"修改"+admin.getId()+"的信息成功!");
     			return "success";
@@ -264,6 +282,10 @@ public class AdminController {
 //    	进行删除
     	if(adminService.deleteByPrimaryKey(admin)>0){
     		logger.info(Sjadmin.getUsername()+"删除了管理员:"+admin.getId());
+    		if(shangji.getId()==Sjadmin.getId()) {
+    			Sjadmin.setScreenRemain(shangji.getScreenRemain());
+    			session.setAttribute("admin", Sjadmin);
+    		}
     		return "success";
     	}
     	return "error";
@@ -428,6 +450,7 @@ public class AdminController {
     		adminService.updateByPrimaryKeySelective(genjiAdmin);
     		session.setAttribute("admin", genjiAdmin);
     		admin.setScreenRemain(admin.getScreenNum());
+    		admin.setPassword(defaultPwd);
     		if(adminService.insertSelective(admin)>0){
     			logger.info(genjiAdmin.getUsername()+"添加管理员:"+admin.getUsername());
         		return "success";

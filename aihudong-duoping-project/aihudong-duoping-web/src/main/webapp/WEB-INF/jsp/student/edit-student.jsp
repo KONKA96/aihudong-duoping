@@ -45,14 +45,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">联系方式</label>
                                 <div class="col-sm-10">
-                                    <input name="telephone" value="${student.telephone }" type="text" class="form-control" placeholder="联系方式">
+                                    <input id="telephone" name="telephone" value="${student.telephone }" type="text" class="form-control" placeholder="联系方式">
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">电子邮箱</label>
                                 <div class="col-sm-10">
-                                    <input name="email" value="${student.email }" type="text" class="form-control" placeholder="电子邮箱">
+                                    <input id="email" name="email" value="${student.email }" type="text" class="form-control" placeholder="电子邮箱">
                                 </div>
                             </div>
                             
@@ -148,6 +148,9 @@
 	});
 	
 	function updateInfo(){
+		var phone = document.getElementById('telephone').value;
+		var email = document.getElementById('email').value;
+		
 		if($("#username")[0].value==""){
 			alert("用户名必填");
 			return false;
@@ -157,7 +160,13 @@
 		}else if($("#subjectSelected")[0].value==""){
 			alert("专业必填");
 			return false;
-		}
+		}else if(!(/^1[34578]\d{9}$/.test(phone))){ 
+	        alert("手机号码有误，请重填");  
+	        return false; 
+	    }else if(!(/\w+@\w+(\.\w+)+/.test(email))){
+	    	 alert("邮箱格式有误，请重填");  
+		     return false;
+	    }
 		
 		$.ajax({
 			url:"/aihudong-duoping-web/student/updateInfo",
@@ -190,6 +199,10 @@
 			confirmButtonText : "确定",
 			cancelButtonText : "取消",
 		}, function(inputValue) {
+			if(inputValue!="" && !(/^\w{6,12}$/.test(inputValue))){ 
+		        alert("密码必须为6到12位，只能包含字符、数字和下划线！");  
+		        return false; 
+		    }
 			$.ajax({
 				url : "/aihudong-duoping-web/student/testStudentOldPwd",
 				data : "id="+id+"&password="+inputValue ,

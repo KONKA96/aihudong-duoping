@@ -123,7 +123,8 @@
   </resultMap>
   <select id="selectScreenByRoom" resultMap="roomMap" parameterType="Room">
   	select
-  		sc.id sc_id,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.type, sc.resolution,
+  		sc.id sc_id,sc.title,sc.username,sc.password,sc.room_id,sc.duration,sc.number,sc.type, sc.resolution,
+  		sc.sid, sc.ip_addr, sc.mac_addr, sc.random_code1, sc.random_code2,
   		r.id r_id,r.num,r.building_id
   	from room r left join screen sc on r.id=sc.room_id
   	<where>

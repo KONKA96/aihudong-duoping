@@ -36,12 +36,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">密码</label>
-                                <div class="col-sm-10">
-                                    <input id="password" name="password" value="${admin.password }" type="text"  class="form-control" placeholder="密码">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-sm-2 control-label">真实姓名</label>
                                 <div class="col-sm-10">
                                     <input id="truename" name="truename" value="${admin.truename }" type="text" class="form-control" placeholder="真实姓名">
@@ -51,7 +45,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">联系方式</label>
                                 <div class="col-sm-10">
-                                    <input name="telephone" value="${admin.telephone }" type="text" class="form-control" placeholder="联系方式">
+                                    <input id="telephone" name="telephone" value="${admin.telephone }" type="text" class="form-control" placeholder="联系方式">
                                 </div>
                             </div>
                             
@@ -97,6 +91,7 @@
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-primary" type="button" onclick="updateInfo()">保存</button>
                                     <button class="btn btn-white" type="reset">取消</button>
+                                    <button class="btn btn-danger" type="button" onclick="resetPwd()">重置密码</button>
                                 </div>
                             </div>
                         </form> 
@@ -110,24 +105,7 @@
 
 </body>
 <script type="text/javascript">
-	/* function selectAdmin(obj){
-		if(obj.value==1||obj.value==''){
-			$("#yijiSelect").empty();
-			$("#yijiadmin").css("display","none");
-		}else if(obj.value==2){
-			$("#yijiadmin").css("display","block");
-			$.ajax({
-				url:"/aihudong-duoping-web/admin/selectAllYiJiAdmin",
-				type:"post",
-				success:function(data){
-					$("#yijiSelect").append("<option value=''>---请选择---</option>");
-					for (var i = 0; i < data.length; i++) {
-						$("#yijiSelect").append("<option value='"+data[i].id+"'>"+data[i].truename+"</option>");
-					}
-				}
-			})
-		}
-	} */
+	
 
 	$(document).ready(function () {
 	    $('.i-checks').iCheck({
@@ -137,16 +115,17 @@
 	});
 	
 	function updateInfo(){
+		var phone = document.getElementById('telephone').value;
 		if($("#username")[0].value==""){
 			alert("用户名必填");
-			return false;
-		}else if($("#password")[0].value==""){
-			alert("密码必填");
 			return false;
 		}else if($("#truename")[0].value==""){
 			alert("姓名必填");
 			return false;
-		}
+		}else if(!(/^1[34578]\d{9}$/.test(phone))){ 
+	        alert("手机号码有误，请重填");  
+	        return false; 
+	    } 
 		
 		$.ajax({
 			url:"/aihudong-duoping-web/admin/updateAdmin",
@@ -167,6 +146,96 @@
 	
 	function goback(){
 		window.history.back();
+	}
+	
+	var adminId = "${admin.id}";
+	function resetPwd() {
+		swal({
+			title : "请输入旧密码",
+			text : "",
+			type : "input",
+			showCancelButton : true,
+			closeOnConfirm : false,
+			closeOnCancel : true,
+			animation : "slide-from-top",
+			inputPlaceholder : "原密码",
+			confirmButtonText : "确定",
+			cancelButtonText : "取消",
+		}, function(inputValue) {
+			$.ajax({
+				url : "/aihudong-duoping-web/admin/testOldPwd",
+				data : "id="+adminId+"&password=" + inputValue,
+				type : "post",
+				//与原密码进行比对
+				success : function(data) {
+					//成功匹配，准备输入新密码
+					if (data == 'success') {
+						inputNewPwdFirst();
+					} else if(data == 'id is null'){
+						//未成功匹配
+						swal("操作错误！", "请重试", "error");
+					}else{
+						swal("与原密码不匹配!", "请重试", "error");
+					}
+				}
+			})
+		})
+	}
+
+	function inputNewPwdFirst() {
+		swal({
+			title : "请输入新密码",
+			text : "",
+			type : "input",
+			showCancelButton : true,
+			closeOnConfirm : false,
+			closeOnCancel : true,
+			animation : "slide-from-top",
+			inputPlaceholder : "密码",
+			confirmButtonText : "确定",
+			cancelButtonText : "取消",
+		}, function(inputValue) {
+			if(inputValue!="" && !(/^\w{6,12}$/.test(inputValue))){ 
+		        alert("密码必须为6到12位，只能包含字符、数字和下划线！");  
+		        return false; 
+		    }
+			inputNewPwdSecond(inputValue);
+		})
+	}
+
+	function inputNewPwdSecond(pwd) {
+		swal({
+			title : "请再次输入新密码",
+			text : "",
+			type : "input",
+			showCancelButton : true,
+			closeOnConfirm : false,
+			closeOnCancel : true,
+			animation : "slide-from-top",
+			inputPlaceholder : "密码",
+			confirmButtonText : "确定",
+			cancelButtonText : "取消",
+		}, function(inputValue) {
+			if (pwd != inputValue) {
+				swal("两次输入密码不一致!", "操作失败", "error");
+			} else {
+				$.ajax({
+					url : "/aihudong-duoping-web/admin/updateAdmin",
+					data : "id=" + adminId + "&password=" + inputValue,
+					type : "post",
+					//与原密码进行比对
+					success : function(data) {
+						//成功匹配，准备输入新密码
+						if (data == 'success') {
+							swal("添加成功!", "", "success");
+						} else {
+							//未成功匹配
+							swal("添加失败!", "请重试", "error");
+						}
+					}
+				})
+			}
+		})
 	}
 </script>
 </html>

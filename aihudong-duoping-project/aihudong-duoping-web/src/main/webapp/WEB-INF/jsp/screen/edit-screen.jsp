@@ -94,8 +94,11 @@
                                 <label class="col-sm-2 control-label">屏幕类型</label>
                                 <div class="col-sm-10">
                                    <select class="form-control m-b" name="type">
-                                   		<option value="1" ${screen.type==1 ? 'selected' : ''}>横屏</option>
-                                   		<option value="2" ${screen.type==2 ? 'selected' : ''}>竖屏</option>
+                                   		<option value="1" ${screen.type==1 ? 'selected' : ''}>触摸屏</option>
+                                   		<option value="2" ${screen.type==2 ? 'selected' : ''}>文档屏</option>
+                                   		<option value="3" ${screen.type==3 ? 'selected' : ''}>投影</option>
+                                   		<option value="4" ${screen.type==4 ? 'selected' : ''}>电视</option>
+                                   		<option value="5" ${screen.type==5 ? 'selected' : ''}>临时屏幕</option>
                                    </select>
                                 </div>
                             </div>

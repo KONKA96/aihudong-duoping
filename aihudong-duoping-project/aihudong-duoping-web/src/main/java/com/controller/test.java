@@ -345,6 +345,10 @@ public class test {
 		BASE64Encoder encoder = new BASE64Encoder();
 		String password = new String(encoder.encode(admin.getPassword().getBytes()));
 		password = new String(encoder.encode(password.getBytes()));
+		if(admin.getUsername()==null || "".equals(admin.getUsername())){
+			logger.info("用户名为空！");
+			return "none";
+		}
 		admin = adminService.adminLogin(admin);
 		if (admin == null || admin.getId() == null) {
 			logger.info("登录失败！");

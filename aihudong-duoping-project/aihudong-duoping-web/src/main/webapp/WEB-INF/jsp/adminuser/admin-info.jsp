@@ -31,27 +31,27 @@
                                 <label class="col-sm-2 control-label">用户名</label>
 
                                 <div class="col-sm-10">
-                                    <input name="username" value="${admin.username }" type="text" class="form-control" placeholder="用户名">
+                                    <input id="username" name="username" value="${admin.username }" type="text" class="form-control" placeholder="用户名">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">真实姓名</label>
                                 <div class="col-sm-10">
-                                    <input name="truename" value="${admin.truename }" type="text" class="form-control" placeholder="真实姓名">
+                                    <input id="truename" name="truename" value="${admin.truename }" type="text" class="form-control" placeholder="真实姓名">
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">联系方式</label>
                                 <div class="col-sm-10">
-                                    <input name="telephone" value="${admin.telephone }" type="text" class="form-control" placeholder="联系方式">
+                                    <input id="telephone" name="telephone" value="${admin.telephone }" type="text" class="form-control" placeholder="联系方式">
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">电子邮箱</label>
                                 <div class="col-sm-10">
-                                    <input name="email" value="${admin.email }" type="text" class="form-control" placeholder="电子邮箱">
+                                    <input id="email" name="email" value="${admin.email }" type="text" class="form-control" placeholder="电子邮箱">
                                 </div>
                             </div>
                             
@@ -111,6 +111,24 @@
 	});
 	
 	function updateInfo(){
+		
+		var phone = document.getElementById('telephone').value;
+		var email = document.getElementById('email').value;
+		
+		if($("#username")[0].value==""){
+			alert("用户名必填");
+			return false;
+		}else if($("#truename")[0].value==""){
+			alert("姓名必填");
+			return false;
+		}else if(!(/^1[34578]\d{9}$/.test(phone))){ 
+	        alert("手机号码有误，请重填");  
+	        return false; 
+	    }else if(!(/\w+@\w+(\.\w+)+/.test(email))){
+	    	 alert("邮箱格式有误，请重填");  
+		     return false;
+	    }
+		
 		$.ajax({
 			url:"/aihudong-duoping-web/admin/updateAdmin",
 			data:$("#editForm").serialize(),
@@ -142,13 +160,16 @@
 		}, function(inputValue) {
 			$.ajax({
 				url : "/aihudong-duoping-web/admin/testOldPwd",
-				data : "password=" + inputValue,
+				data : "id="+adminId+"&password=" + inputValue,
 				type : "post",
 				//与原密码进行比对
 				success : function(data) {
 					//成功匹配，准备输入新密码
 					if (data == 'success') {
 						inputNewPwdFirst();
+					}else if(data == 'id is null'){
+						//未成功匹配
+						swal("操作错误！", "请重试", "error");
 					} else {
 						//未成功匹配
 						swal("与原密码不匹配!", "请重试", "error");
@@ -171,6 +192,11 @@
 			confirmButtonText : "确定",
 			cancelButtonText : "取消",
 		}, function(inputValue) {
+			
+			if(inputValue!="" && !(/^\w{6,12}$/.test(inputValue))){ 
+		        alert("密码必须为6到12位，只能包含字符、数字和下划线！");  
+		        return false; 
+		    }
 			inputNewPwdSecond(inputValue);
 		})
 	}

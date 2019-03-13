@@ -67,7 +67,7 @@
 				type:"post",
 				success:function(data){
 					if(data=='success'){
-						alert("登录成功！");
+						//alert("登录成功！");
 						window.location="/aihudong-duoping-web/admin/test";
 					}else if(data=='none'){
 						alert("用户名不存在！");

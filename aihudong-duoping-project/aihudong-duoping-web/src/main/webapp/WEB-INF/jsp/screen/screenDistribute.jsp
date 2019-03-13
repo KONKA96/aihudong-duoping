@@ -11,47 +11,47 @@
 <jsp:include page="../common/include_js.jsp" />
 <body>
 	<c:if test="${admin.power==0 }">
-	<div style="display:inline-block;">
-	<div class=" alert alert-info" 
-		style="width: 500px; height: 35px; padding-top: 0px; padding-left: 0; margin-bottom: 0; margin-top: 10px">
-		<button type="button" class=" btn btn-link" data-toggle="collapse"
-			data-target="#demo1">
-			<span class=" glyphicon glyphicon-plus"></span>
-		</button>
-		<span onclick="showAdminInfo(${admin.id})">${admin.truename }&nbsp;&nbsp;屏幕数：${admin.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin.screenRemain }</span> 
-		<button onclick="addAdmin(${admin.id},1)">新增一级管理员</button>
-	</div>
-	<div id="demo1" class="collapse in"
-		style="margin-left: 40px; margin-bottom: 10px; margin-top: 0px">
-		<c:forEach items="${adminYijiList }" var="admin1">
-			<div class=" alert alert-info" 
-				style="margin-top: 20px; width: 460px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
+		<div style="display: inline-block;">
+			<div class=" alert alert-info"
+				style="width: 500px; height: 35px; padding-top: 0px; padding-left: 0; margin-bottom: 0; margin-top: 10px">
 				<button type="button" class=" btn btn-link" data-toggle="collapse"
-					data-target="#demo${admin1.id }">
+					data-target="#demo1">
 					<span class=" glyphicon glyphicon-plus"></span>
 				</button>
-				<span onclick="showAdminInfo(${admin1.id})">${admin1.truename }&nbsp;&nbsp;屏幕数：${admin1.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin1.screenRemain }</span>
-				<button onclick="addAdmin(${admin1.id},2)">新增操作管理员</button>
+				<span onclick="showAdminInfo(${admin.id})">${admin.truename }&nbsp;&nbsp;屏幕数：${admin.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin.screenRemain }</span>
+				<button onclick="addAdmin(${admin.id},1)">新增一级管理员</button>
 			</div>
-			<div id="demo${admin1.id }" class="collapse in"
-				style="margin-left: 80px; margin-bottom: 10px; margin-top: 0px">
-				<c:forEach items="${admin1.adminList }" var="admin2">
-					<c:if test="${admin2.id!=null }">
-						<div class=" alert alert-info" 
-							style="margin-top: 10px; width: 380px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
-							<span onclick="showAdminInfo(${admin2.id})">${admin2.truename }&nbsp;&nbsp;屏幕数：${admin2.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin2.screenRemain }</span>
-						</div>
-					</c:if>
-				</c:forEach>
+			<div id="demo1" class="collapse in"
+				style="margin-left: 40px; margin-bottom: 10px; margin-top: 0px">
+				<c:forEach items="${adminYijiList }" var="admin1">
+					<div class=" alert alert-info"
+						style="margin-top: 20px; width: 460px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
+						<button type="button" class=" btn btn-link" data-toggle="collapse"
+							data-target="#demo${admin1.id }">
+							<span class=" glyphicon glyphicon-plus"></span>
+						</button>
+						<span onclick="showAdminInfo(${admin1.id})">${admin1.truename }&nbsp;&nbsp;屏幕数：${admin1.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin1.screenRemain }</span>
+						<button onclick="addAdmin(${admin1.id},2)">新增操作管理员</button>
+					</div>
+					<div id="demo${admin1.id }" class="collapse in"
+						style="margin-left: 80px; margin-bottom: 10px; margin-top: 0px">
+						<c:forEach items="${admin1.adminList }" var="admin2">
+							<c:if test="${admin2.id!=null }">
+								<div class=" alert alert-info"
+									style="margin-top: 10px; width: 380px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
+									<span onclick="showAdminInfo(${admin2.id})">${admin2.truename }&nbsp;&nbsp;屏幕数：${admin2.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin2.screenRemain }</span>
+								</div>
+							</c:if>
+						</c:forEach>
 
+					</div>
+				</c:forEach>
 			</div>
-		</c:forEach>
-	</div>
-	</div>
+		</div>
 	</c:if>
 	<c:if test="${admin.power==1 }">
-		<div style="display:inline-block;">
-			<div class=" alert alert-info" 
+		<div style="display: inline-block;">
+			<div class=" alert alert-info"
 				style="margin-top: 20px; width: 410px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
 				<button type="button" class=" btn btn-link" data-toggle="collapse"
 					data-target="#demo${admin.id }">
@@ -63,10 +63,10 @@
 			<div id="demo${admin.id }" class="collapse in"
 				style="margin-left: 80px; margin-bottom: 10px; margin-top: 0px">
 				<c:forEach items="${admin.adminList }" var="admin1">
-						<div class=" alert alert-info" 
-							style="margin-top: 10px; width: 330px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
-							<span onclick="showAdminInfo(${admin1.id})">${admin1.truename }&nbsp;&nbsp;屏幕数：${admin1.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin1.screenRemain }</span>
-						</div>
+					<div class=" alert alert-info"
+						style="margin-top: 10px; width: 330px; height: 35px; padding-top: 7px; padding-left: 15px; margin-bottom: 0">
+						<span onclick="showAdminInfo(${admin1.id})">${admin1.truename }&nbsp;&nbsp;屏幕数：${admin1.screenNum }&nbsp;&nbsp;剩余屏幕数：${admin1.screenRemain }</span>
+					</div>
 				</c:forEach>
 
 			</div>
@@ -76,61 +76,77 @@
 	<div id="diaLogDiv" style="display: none;">
 		<div class="ibox-content">
 			<div class="dataTables_wrapper form-inline" role="grid">
-			 <form class="form-horizontal" id="editForm">
-				<table
-					class="table table-striped table-bordered table-hover dataTables-example">
-					<thead>
-						<tr>
-							<th>真实姓名</th>
-							<th>性别</th>
-							<th>电话</th>
-							<th>email</th>
-							<th>屏幕数</th>
-						</tr>
-					</thead>
-					<tbody id="tbody">
-					
-					</tbody>
-				</table>
-					<button class="btn btn-primary" type="button" onclick="updateInfo()">保存</button>
+				<form class="form-horizontal" id="editForm">
+					<table
+						class="table table-striped table-bordered table-hover dataTables-example">
+						<thead>
+							<tr>
+								<th>真实姓名</th>
+								<th>性别</th>
+								<th>电话</th>
+								<th>email</th>
+								<th>屏幕数</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
+					<button class="btn btn-primary" type="button"
+						onclick="updateInfo()">保存</button>
 				</form>
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 	<!-- 弹窗 -->
 	<div id="diaLogDivA" style="display: none;">
 		<div class="ibox-content">
 			<div class="dataTables_wrapper form-inline" role="grid">
-			 <form class="form-horizontal" id="editFormA">
-				<table
-					class="table table-striped table-bordered table-hover dataTables-example">
-					<thead>
-						<tr>
-							<th>用户名</th>
-							<th>真实姓名</th>
-							<th>性别</th>
-							<th>屏幕数</th>
-						</tr>
-					</thead>
-					<tbody id="tbodyA">
-						<tr>
-							<input id="powerInput" type="hidden" name="power" value="">
-							<input id="higherInput" type="hidden" name="higherId" value="">
-							<td><input type="text" class='form-control' name="username"></td>
-							<td><input type="text" class='form-control' name="truename"></td>
-							<td><input type="text" class='form-control' name="sex"></td>
-							<td><input type="text" class='form-control' name="screenNum"></td>
-						</tr>
-					</tbody>
-				</table>
+				<form class="form-horizontal" id="editFormA">
+					<table
+						class="table table-striped table-bordered table-hover dataTables-example">
+						<thead>
+							<tr>
+								<th>用户名</th>
+								<th>真实姓名</th>
+								<th>性别</th>
+								<th>屏幕数</th>
+							</tr>
+						</thead>
+						<tbody id="tbodyA">
+							<tr>
+								<input id="powerInput" type="hidden" name="power" value="">
+								<input id="higherInput" type="hidden" name="higherId" value="">
+								<td><input type="text" class='form-control' name="username"></td>
+								<td><input type="text" class='form-control' name="truename"></td>
+								<td>
+									<select class="form-control m-b" name="sex">
+										<option value="0">男</option>
+										<option value="1">女</option>
+									</select>
+								</td>
+								<td><input id="screenNum" type="text" class='form-control screenNum'
+									name="screenNum" onkeyup="changeNumber()"></td>
+							</tr>
+						</tbody>
+					</table>
 					<button class="btn btn-primary" type="button" onclick="saveInfo()">保存</button>
 				</form>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
+	function changeNumber(){
+		var result=$(".screenNum").val().match(/[0-9]{0,}/);
+		if(result!=$(".screenNum").val()){
+			$(".screenNum").val("");
+			alert("请输入数字！");
+			return false;
+		}
+	}
+	
 	function saveInfo(){
 		$.ajax({
 			url:"/aihudong-duoping-web/admin/insertAdminScreen",
@@ -189,7 +205,7 @@
 					$('#adminId').val(data.id);
 					var sex;
 					if(data.sex==0){sex='男';}else{sex='女';}
-					$("#tbody").append("<tr><input type='hidden' name='id' class='form-control' value='"+data.id+"'><input type='hidden' name='power' class='form-control' value='"+data.power+"'><td>"+data.truename+"</td><td>"+sex+"</td><td>"+data.telephone+"</td><td>"+data.email+"</td><td><input type='text' name='screenNum' class='form-control' value='"+data.screenNum+"'></td></tr>");
+					$("#tbody").append("<tr><input type='hidden' name='id' class='form-control' value='"+data.id+"'><input type='hidden' name='power' class='form-control' value='"+data.power+"'><td>"+data.truename+"</td><td>"+sex+"</td><td>"+data.telephone+"</td><td>"+data.email+"</td><td><input type='text' name='screenNum' class='form-control screenNum' value='"+data.screenNum+"'  onkeyup='changeNumber()'></td></tr>");
 				}
 			})
 			$("#diaLogDiv").css("display","inline-block");

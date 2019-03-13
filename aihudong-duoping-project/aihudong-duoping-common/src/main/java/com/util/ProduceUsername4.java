@@ -26,7 +26,7 @@ public class ProduceUsername4 {
 //		产生username
 		for (int i=1;i <= usrInteger.size();i++) {
 //			遍历到最后，则往后面再生成剩下的用户名
-			if(i==usrInteger.size()-1 && num!=0){
+			if(i==usrInteger.size() && num!=0){
 				while(true){
 					if(!usrInteger.contains(i)){
 						usernameNewList.add("000" + i);

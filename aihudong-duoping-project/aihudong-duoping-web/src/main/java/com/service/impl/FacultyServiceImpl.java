@@ -37,7 +37,7 @@ public class FacultyServiceImpl implements FacultyService {
 		
 		List<Subject> subjectList2 = facultyList.get(0).getSubjectList();
 		
-		List<Subject> subjectList = faculty.getSubjectList();
+		List<Subject> subjectList = facultyList.get(0).getSubjectList();
 		for (Subject subject : subjectList) {
 			if(subject.getId()==null && subject.getSubjectName()!=null && !"".equals(subject.getSubjectName())) {
 				subject.setFacultyId(faculty.getId());

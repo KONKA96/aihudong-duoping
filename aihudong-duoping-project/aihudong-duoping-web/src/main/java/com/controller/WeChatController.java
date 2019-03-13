@@ -322,7 +322,7 @@ public class WeChatController {
 		String encode =null;
 //		如果session中没有用户，则session失效，报1002
 		if(session==null){
-			Err err = new Err(1002,"会话过期");
+			Err err = new Err(1002,"会话已失效，请重新登录");
 			String errString = JsonUtils.objectToJson(err);
 			encode = encoder.encode(errString.getBytes());
 			writer.write(encode);

@@ -12,9 +12,11 @@
     <result column="power" property="power" jdbcType="INTEGER" />
     <result column="higher_id" property="higherId" jdbcType="INTEGER" />
     <result column="screen_num" property="screenNum" jdbcType="INTEGER" />
+    <result column="screen_remain" property="screenRemain" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num ,screen_remain
+    id, username, password, truename, sex, telephone, email, power, higher_id, screen_num, 
+    screen_remain
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -34,7 +36,7 @@
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{truename,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{power,jdbcType=INTEGER}, #{higherId,jdbcType=INTEGER}, 
-      #{screenNum,jdbcType=INTEGER})
+      #{screenNum,jdbcType=INTEGER}, #{screenRemain,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.model.Admin" >
     insert into admin
@@ -69,6 +71,9 @@
       <if test="screenNum != null" >
         screen_num,
       </if>
+      <if test="screenRemain != null" >
+        screen_remain,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -100,6 +105,9 @@
       </if>
       <if test="screenNum != null" >
         #{screenNum,jdbcType=INTEGER},
+      </if>
+      <if test="screenRemain != null" >
+        #{screenRemain,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -133,6 +141,9 @@
       <if test="screenNum != null" >
         screen_num = #{screenNum,jdbcType=INTEGER},
       </if>
+      <if test="screenRemain != null" >
+        screen_remain = #{screenRemain,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -147,6 +158,7 @@
       power = #{power,jdbcType=INTEGER},
       higher_id = #{higherId,jdbcType=INTEGER},
       screen_num = #{screenNum,jdbcType=INTEGER},
+      screen_remain = #{screenRemain,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   

@@ -315,8 +315,10 @@ public class QianduanController {
 			argMap.put("message", "屏幕不存在！");
 			return JsonUtils.objectToJson(argMap);
 		}
+		Room room = screenList.get(0).getRoom();
+		room = roomService.selectScreenByRoom(room);
 		argMap.put("code", Integer.valueOf(200));
-		argMap.put("screen", screenList.get(0));
+		argMap.put("screen", room.getScreenList().get(0));
 		return JsonUtils.objectToJson(argMap);
 	}
 

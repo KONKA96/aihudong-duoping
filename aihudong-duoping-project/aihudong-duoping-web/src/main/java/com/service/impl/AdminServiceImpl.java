@@ -60,13 +60,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateByPrimaryKeySelective(Admin admin) {
 		// TODO Auto-generated method stub
-//		base64转码
-		BASE64Encoder encoder = new BASE64Encoder();
-		if(admin.getPassword()!=null) {
-			String password = new String(encoder.encode(admin.getPassword().getBytes()));
-			password = new String(encoder.encode(password.getBytes()));
-			admin.setPassword(password);
-		}
+
 		return adminMapper.updateByPrimaryKeySelective(admin);
 	}
 
