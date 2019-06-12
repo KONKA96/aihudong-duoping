@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.model.Teacher;
+import com.model.Room;
 
 public interface TeacherService {
 	List<String> selectAllId();
@@ -27,4 +28,6 @@ public interface TeacherService {
 	int deleteTeacherById(Teacher teacher);
 	
 	 int untyingUnionId(Teacher teacher);
+	 
+	 List<Map<String, Object>> selectVirtualRoom(Map<String, Object> map);
 }

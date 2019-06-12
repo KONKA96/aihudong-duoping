@@ -381,4 +381,30 @@
  <update id="untyingUnionId" parameterType="Teacher">
  	update teacher set union_id=null where username=#{username}
  </update>
+ 
+ 
+ <resultMap type="java.util.HashMap" id="virtualRoomMap" autoMapping="true">
+  	<id column="id" property="id"/>
+  	<result column="num" property="num"/>
+  	<result column="password" property="password"/>
+  	<result column="desc" property="desc"/>
+  	<result column="user_id" property="user_id"/>
+  	<result column="truename" property="truename"/>
+  </resultMap>
+  
+ <select id="selectVirtualRoom" parameterType="java.util.HashMap" resultMap="virtualRoomMap">
+ 	select
+ 		r.id, r.num, r.password, r.building_id, r.`desc`, r.user_id, tea.truename
+ 	from room r, teacher tea 
+ 	<where>
+ 		r.user_id=tea.id
+ 		<if test="pattern!='' and pattern!=null">
+ 			and (concat (tea.username) like concat ('%',#{pattern},'%') or concat (r.id, r.num) like concat ('%',#{pattern},'%'))
+ 		</if>
+ 		<if test="userId!='' and userId!= null">
+ 			and r.user_id=#{userId}
+ 		</if>
+ 	</where>
+ </select>
+ 
 </mapper>

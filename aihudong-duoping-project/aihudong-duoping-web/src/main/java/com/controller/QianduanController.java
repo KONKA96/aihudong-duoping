@@ -158,12 +158,14 @@ public class QianduanController {
 		}
 		
 		//查看化大ad域内是否有该用户
-		ADUserUtils utils = new ADUserUtils();
-        
-        SearchResult sr = utils.searchByUserName(utils.root, username);
+//		ADUserUtils utils = new ADUserUtils();
+//        
+//        SearchResult sr = utils.searchByUserName(utils.root, username);
+		SearchResult sr = null;
 		
 		Record record = new Record();
 		if ((teacher == null) && (selectAllScreen.size() == 0) && (student == null) && (sr==null)) {
+//		if ((teacher == null) && (selectAllScreen.size() == 0) && (student == null)) {
 			argMap.put("code", Integer.valueOf(1001));
 			argMap.put("message", "用户不存在");
 			return JsonUtils.objectToJson(argMap);
@@ -689,66 +691,71 @@ public class QianduanController {
 		
 		teacher = teacherService.teacherLogin(teacher);
 		student = studentService.studentLogin(student);
-		
-		Set<Room> roomSet = new HashSet<>();
+
 		if(teacher==null && student==null) {
 			argMap.put("code", "1002");
 			argMap.put("message", "用户不存在！");
 			return JsonUtils.objectToJson(argMap);
 		}else if(teacher!=null) {
 			map.put("userId", teacher.getId());
-			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
-			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
-				Room room = virtualRoomRecord.getRoom();
-				if(room.getId()==null || "".equals(room.getId())) {
-					continue;
+			List<Map<String, Object>> vrrList = virtualRoomRecordService.selectVRR(map);
+			List<Map<String, Object>> roomList = new ArrayList<>();
+			for (Map<String, Object> room : vrrList) {
+				boolean exist = false;
+				for(Map<String, Object> r: roomList) {
+					if (room.get("id") == null || room.get("id").equals(r.get("id"))) {
+						exist = true;
+						break;
+					}
 				}
-				room.setKey(room.getId());
-				if(room.getUserId().equals(teacher.getId())) {
-					room.setRole(1);
-				}else {
-					room.setRole(2);
+				if (!exist) {
+					room.put("key", room.get("id"));
+					String userId = "";
+					Object user_id = room.get("user_id");
+					if ( user_id != null) {
+						userId = user_id.toString();
+					}
+					if(teacher!=null && userId.equals(teacher.getId())) {
+						room.put("role", 1);
+					}else {
+						room.put("role", 2);
+					}
+					roomList.add(room);
 				}
-				roomSet.add(room);
 			}
 			
-			List<Room> selectVirtualRoom = roomService.selectVirtualRoom(map);
-			if(selectVirtualRoom!=null && selectVirtualRoom.size()!=0) {
-				Room room = selectVirtualRoom.get(0);
-				if(room.getUserId().equals(teacher.getId())) {
-					room.setRole(1);
-				}else {
-					room.setRole(2);
-				}
-				room.setKey(room.getId());
-				roomSet.add(room);
-			}
 			argMap.put("code", "200");
-			argMap.put("roomList", roomSet);
+			argMap.put("roomList", roomList);
 		}else if(student!=null) {
 			map.put("userId", student.getId());
-			List<VirtualRoomRecord> vrrList = virtualRoomRecordService.selectVRR(map);
-			
-			for (VirtualRoomRecord virtualRoomRecord : vrrList) {
-				Room room = virtualRoomRecord.getRoom();
-				room.setKey(room.getId());
-				if(room.getUserId().equals(student.getId())) {
-					room.setRole(1);
-				}else {
-					room.setRole(2);
+			List<Map<String, Object>> vrrList = virtualRoomRecordService.selectVRR(map);
+			List<Map<String, Object>> roomList = new ArrayList<>();
+			for (Map<String, Object> room : vrrList) {
+				boolean exist = false;
+				for(Map<String, Object> r: roomList) {
+					if (room.get("id") == null || room.get("id").equals(r.get("id"))) {
+						exist = true;
+						break;
+					}
 				}
-				roomSet.add(room);
+				if (!exist) {
+					room.put("key", room.get("id"));
+					String userId = "";
+					Object user_id = room.get("user_id");
+					if ( user_id != null) {
+						userId = user_id.toString();
+					}
+					if(student!=null && userId.equals(student.getId())) {
+						room.put("role", 1);
+					}else {
+						room.put("role", 2);
+					}
+					roomList.add(room);
+				}
 			}
 			
-			List<Room> selectVirtualRoom = roomService.selectVirtualRoom(map);
-			if(selectVirtualRoom!=null && selectVirtualRoom.size()!=0) {
-				Room room = selectVirtualRoom.get(0);
-				room.setRole(1);
-				room.setKey(room.getId());
-				roomSet.add(room);
-			}
 			argMap.put("code", "200");
-			argMap.put("roomList", roomSet);
+			argMap.put("roomList", roomList);
 		}
 		return JsonUtils.objectToJson(argMap);
 	}
@@ -856,7 +863,7 @@ public class QianduanController {
 			return JsonUtils.objectToJson(argMap);
 		}
 		Map<String,Object> map = new HashMap<>();
-		map.put("username", username);
+//		map.put("username", username);
 		
 		Teacher teacher = new Teacher();
 		teacher.setUsername(username);
@@ -866,20 +873,32 @@ public class QianduanController {
 		
 		teacher = teacherService.teacherLogin(teacher);
 		student = studentService.studentLogin(student);
-		map.put("roomId", roomId);
-		List<Room> roomList = roomService.selectVirtualRoom(map);
+//		map.put("roomId", roomId);
+		// ugly modify for buct
+		map.put("pattern", roomId);
+//		List<Room> roomList = roomService.selectVirtualRoom(map);
+		List<Map<String, Object>> roomList = teacherService.selectVirtualRoom(map);
+//		roomList.addAll(teaRooms);
 		if(roomList.size()==0) {
 			argMap.put("code", "1002");
 			argMap.put("message", "房间不存在！");
 			return JsonUtils.objectToJson(argMap);
 		}
-		for (Room room : roomList) {
-			room.setKey(room.getId());
-			if((teacher!=null && room.getUserId().equals(teacher.getId())) || (student!=null && room.getUserId().equals(student.getId()))) {
-				room.setRole(1);
-			}else {
-				room.setRole(2);
+		int i = 0;
+		for (Map<String, Object> room : roomList) {
+			room.put("key", room.get("id"));
+			String userId = "";
+			Object user_id = room.get("user_id");
+			if ( user_id != null) {
+				userId = user_id.toString();
 			}
+			if((teacher!=null && userId.equals(teacher.getId())) || (student!=null && userId.equals(student.getId()))) {
+				room.put("role", 1);
+			}else {
+				room.put("role", 2);
+			}
+			roomList.set(i, room);
+			i++;
 		}
 		argMap.put("code", "200");
 		argMap.put("roomList", roomList);
@@ -920,9 +939,9 @@ public class QianduanController {
 		if(desc!=null && !"".equals(desc)) {
 			room.setDesc(desc);
 		}
-		if(password!=null && !"".equals(password)) {
-			room.setPassword(password);
-		}
+//		if(password!=null && !"".equals(password)) {
+//			room.setPassword(password);
+//		}
 		roomService.updateByPrimaryKeySelective(room);
 		argMap.put("code", "200");
 		return JsonUtils.objectToJson(argMap);

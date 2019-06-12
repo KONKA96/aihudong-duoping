@@ -48,6 +48,16 @@ public class Teacher {
     private Integer isBlackScreen;
 
     private Integer isShareTheDesktop;
+    
+    private Room room;
+    
+    public Room getRoom() {
+    	return room;
+    }
+    
+    public void setRoom(Room room) {
+    	this.room = room;
+    }
 	
 	public String getUnionId() {
 		return unionId;

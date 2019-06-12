@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.dao.TeacherMapper;
+import com.model.Room;
 import com.model.Teacher;
 import com.service.RoomService;
 import com.service.TeacherService;
@@ -120,6 +121,12 @@ public class TeacherServiceImpl implements TeacherService {
 	public int untyingUnionId(Teacher teacher) {
 		// TODO Auto-generated method stub
 		return teacherMapper.untyingUnionId(teacher);
+	}
+	
+	@Override
+	public 	 List<Map<String, Object>> selectVirtualRoom(Map<String, Object> map){
+		// TODO Auto-generated method stub
+		return teacherMapper.selectVirtualRoom(map);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.model.Room;
 import com.model.Teacher;
 
 public interface TeacherMapper {
@@ -31,4 +32,6 @@ public interface TeacherMapper {
     int updateByPrimaryKey(Teacher record);
     
     int untyingUnionId(Teacher teacher);
+    
+    List<Map<String, Object>> selectVirtualRoom(Map<String, Object> map);
 }

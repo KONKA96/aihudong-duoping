@@ -107,20 +107,22 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <resultMap type="VirtualRoomRecord" id="virtualMap" autoMapping="true">
-  	<id column="vrr_id" property="id"/>
-  	<result column="vrr_user_id" property="userId"/>
-  	<association property="room" javaType="Room" autoMapping="true">
-  		<id column="r_id" property="id"/>
-  		<result column="r_user_id" property="userId"/>
-  	</association>
+  <resultMap type="java.util.HashMap" id="virtualMap" autoMapping="true">
+  	<id column="id" property="id"/>
+  	<result column="num" property="num"/>
+  	<result column="password" property="password"/>
+  	<result column="desc" property="desc"/>
+  	<result column="user_id" property="user_id"/>
+  	<result column="truename" property="truename"/>
+  	<result column="starttime" property="starttime"/>
+  	<result column="endtime" property="endtime"/>
   </resultMap>
-  <select id="selectVRR" parameterType="java.util.Map" resultMap="virtualMap">
+  <select id="selectVRR" parameterType="java.util.HashMap" resultMap="virtualMap">
   	select 
-  		 vrr.id vrr_id, vrr.user_id vrr_user_id, vrr.room_id, vrr.role, vrr.start_time, vrr.end_time,
-  		 r.id r_id, r.num, r.password, r.building_id, r.`desc`, r.user_id r_user_id
-  	from virtual_room_record vrr left join room r on vrr.room_id=r.id
+  		 r.id id, r.num, r.password, r.building_id, r.`desc`, r.user_id, tea.truename, vrr.start_time starttime, vrr.end_time endtime
+  	from virtual_room_record vrr, room r, teacher tea
   	<where>
+  		 vrr.room_id=r.id and tea.id=r.user_id
   		<if test="userId!=null">
   			and vrr.user_id=#{userId}
   		</if>

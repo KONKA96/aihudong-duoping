@@ -166,7 +166,7 @@
  <select id="selectVirtualRoom" parameterType="java.util.Map" resultType="Room">
  	select
  		r.id, r.num, r.password, r.building_id, r.`desc`, r.user_id
- 	from room r
+ 	from room r 
  	<where>
  		r.user_id is not null
  		<if test="roomId!='' and roomId!=null">

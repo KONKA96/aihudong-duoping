@@ -6,7 +6,7 @@ import java.util.Map;
 import com.model.VirtualRoomRecord;
 
 public interface VirtualRoomRecordService {
-	List<VirtualRoomRecord> selectVRR(Map<String,Object> map);
+	List<Map<String, Object>> selectVRR(Map<String,Object> map);
 	
     int deleteByPrimaryKey(VirtualRoomRecord virtualRoomRecord);
 

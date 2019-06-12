@@ -17,7 +17,7 @@ public class VirtualRoomRecordServiceImpl implements VirtualRoomRecordService {
 	private VirtualRoomRecordMapper virtualRoomRecordMapper;
 	
 	@Override
-	public List<VirtualRoomRecord> selectVRR(Map<String, Object> map) {
+	public List<Map<String, Object>> selectVRR(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return virtualRoomRecordMapper.selectVRR(map);
 	}
